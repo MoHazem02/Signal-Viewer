@@ -291,6 +291,70 @@ background-image: &quot;Assets/zoomin.png&quot;;</string>
       <string>Rewind</string>
      </property>
     </widget>
+    <widget class="QScrollBar" name="horizontalScrollBar">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>210</y>
+       <width>221</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QScrollBar" name="horizontalScrollBar_2">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>440</y>
+       <width>221</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_14">
+     <property name="geometry">
+      <rect>
+       <x>610</x>
+       <y>200</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:#3366ff;</string>
+     </property>
+     <property name="text">
+      <string>Snapshot</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_15">
+     <property name="geometry">
+      <rect>
+       <x>620</x>
+       <y>430</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:#3366ff;</string>
+     </property>
+     <property name="text">
+      <string>Snapshot</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
@@ -538,6 +602,22 @@ background-image: &quot;Assets/zoomin.png&quot;;</string>
      </property>
      <property name="text">
       <string>Hide</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_12">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>90</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:#3366ff;</string>
+     </property>
+     <property name="text">
+      <string>Export</string>
      </property>
     </widget>
    </widget>
