@@ -256,7 +256,7 @@ background-image: &quot;Assets/zoomin.png&quot;;</string>
       <string notr="true">background-color:#3366ff;</string>
      </property>
      <property name="text">
-      <string>Play/Stop</string>
+      <string>Play</string>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_8">
@@ -272,7 +272,7 @@ background-image: &quot;Assets/zoomin.png&quot;;</string>
       <string notr="true">background-color:#3366ff;</string>
      </property>
      <property name="text">
-      <string>Play/Stop</string>
+      <string>Play</string>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_9">
@@ -368,11 +368,11 @@ background-image: &quot;Assets/zoomin.png&quot;;</string>
     <property name="title">
      <string>Controls</string>
     </property>
-    <widget class="QPushButton" name="pushButton_10">
+    <widget class="QPushButton" name="pushButton_11">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>30</y>
+       <y>110</y>
        <width>101</width>
        <height>31</height>
       </rect>
@@ -382,22 +382,6 @@ background-image: &quot;Assets/zoomin.png&quot;;</string>
      </property>
      <property name="text">
       <string>Link Graphs</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_11">
-     <property name="geometry">
-      <rect>
-       <x>130</x>
-       <y>30</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:#3366ff;</string>
-     </property>
-     <property name="text">
-      <string>Unlink Graphs</string>
      </property>
     </widget>
     <widget class="QComboBox" name="comboBox_3">
@@ -415,16 +399,6 @@ background-image: &quot;Assets/zoomin.png&quot;;</string>
      <item>
       <property name="text">
        <string>Channel 1</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Channel 2</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Channel 3</string>
       </property>
      </item>
     </widget>
@@ -483,7 +457,7 @@ background-image: &quot;Assets/zoomin.png&quot;;</string>
       <string notr="true">background-color:#3366ff;</string>
      </property>
      <property name="text">
-      <string>Change Color</string>
+      <string>Select Color</string>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_28">
@@ -560,7 +534,7 @@ background-image: &quot;Assets/zoomin.png&quot;;</string>
       <string notr="true">background-color:#3366ff;</string>
      </property>
      <property name="text">
-      <string>Change Color</string>
+      <string>Select Color</string>
      </property>
     </widget>
     <widget class="QComboBox" name="comboBox_9">
@@ -580,16 +554,6 @@ background-image: &quot;Assets/zoomin.png&quot;;</string>
        <string>Channel 1</string>
       </property>
      </item>
-     <item>
-      <property name="text">
-       <string>Channel 2</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Channel 3</string>
-      </property>
-     </item>
     </widget>
     <widget class="QCheckBox" name="checkBox_3">
      <property name="geometry">
@@ -607,8 +571,8 @@ background-image: &quot;Assets/zoomin.png&quot;;</string>
     <widget class="QPushButton" name="pushButton_12">
      <property name="geometry">
       <rect>
-       <x>80</x>
-       <y>90</y>
+       <x>130</x>
+       <y>110</y>
        <width>101</width>
        <height>31</height>
       </rect>
@@ -652,6 +616,22 @@ background-image: &quot;Assets/zoomin.png&quot;;</string>
       <string>Add Channel</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="pushButton_16">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>221</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:#3366ff;</string>
+     </property>
+     <property name="text">
+      <string>Load Signal</string>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -663,18 +643,11 @@ background-image: &quot;Assets/zoomin.png&quot;;</string>
      <height>26</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuFile">
-    <property name="title">
-     <string>File</string>
-    </property>
-    <addaction name="actionLoad_Signal"/>
-   </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
      <string>About</string>
     </property>
    </widget>
-   <addaction name="menuFile"/>
    <addaction name="menuAbout"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -689,6 +662,7 @@ background-image: &quot;Assets/zoomin.png&quot;;</string>
    <class>PlotWidget</class>
    <extends>QGraphicsView</extends>
    <header>pyqtgraph</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
