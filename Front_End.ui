@@ -505,8 +505,8 @@ background-image: &quot;Assets/zoomin.png&quot;;</string>
     <widget class="QCheckBox" name="checkBox">
      <property name="geometry">
       <rect>
-       <x>410</x>
-       <y>150</y>
+       <x>470</x>
+       <y>160</y>
        <width>81</width>
        <height>20</height>
       </rect>
@@ -594,8 +594,8 @@ background-image: &quot;Assets/zoomin.png&quot;;</string>
     <widget class="QCheckBox" name="checkBox_3">
      <property name="geometry">
       <rect>
-       <x>850</x>
-       <y>150</y>
+       <x>910</x>
+       <y>160</y>
        <width>81</width>
        <height>20</height>
       </rect>
@@ -618,6 +618,38 @@ background-image: &quot;Assets/zoomin.png&quot;;</string>
      </property>
      <property name="text">
       <string>Export</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_20">
+     <property name="geometry">
+      <rect>
+       <x>320</x>
+       <y>150</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:#3366ff;</string>
+     </property>
+     <property name="text">
+      <string>Add Channel</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_21">
+     <property name="geometry">
+      <rect>
+       <x>760</x>
+       <y>150</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:#3366ff;</string>
+     </property>
+     <property name="text">
+      <string>Add Channel</string>
      </property>
     </widget>
    </widget>
