@@ -1,14 +1,24 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QTimer
+from PyQt5.QtWidgets import QInputDialog, QPushButton, QMainWindow, QLabel, QFileDialog, QApplication
+import pyqtgraph as pg
+from pyqtgraph import PlotWidget
+import numpy as np 
 import sys
 
 
-
+  
 class Ui_MainWindow(object):
+   
+    def Browse_Signals(self):
+        File_Path, _ = QFileDialog.getOpenFileName(self.Load_Button, "Browse Signal", "D:\Education\Digital Signal Processing\Tasks\Task 1\Signal-Viewer\Signals", "All Files (*)")
+        self.Plot_Signal(File_Path)
+
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1088, 805)
-        MainWindow.setStyleSheet("background-color: #1e1e2f;\n"
-"color:white;")
+        MainWindow.setStyleSheet("background-color: #1e1e2f;\n" "color:white;")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
@@ -27,8 +37,7 @@ class Ui_MainWindow(object):
         self.graphicsView_2.setObjectName("graphicsView_2")
         self.pushButton = QtWidgets.QPushButton(self.groupBox)
         self.pushButton.setGeometry(QtCore.QRect(10, 200, 61, 31))
-        self.pushButton.setStyleSheet("background-color:#3366ff;\n"
-"background-image: \"Assets/zoomin.png\";")
+        self.pushButton.setStyleSheet("background-color:#3366ff;\n" "background-image: \"Assets/zoomin.png\";")
         self.pushButton.setText("")
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("Assets/zoomin.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -68,8 +77,7 @@ class Ui_MainWindow(object):
         self.label_2.setObjectName("label_2")
         self.pushButton_4 = QtWidgets.QPushButton(self.groupBox)
         self.pushButton_4.setGeometry(QtCore.QRect(10, 430, 61, 31))
-        self.pushButton_4.setStyleSheet("background-color:#3366ff;\n"
-"background-image: \"Assets/zoomin.png\";")
+        self.pushButton_4.setStyleSheet("background-color:#3366ff;\n" "background-image: \"Assets/zoomin.png\";")
         self.pushButton_4.setText("")
         self.pushButton_4.setIcon(icon)
         self.pushButton_4.setObjectName("pushButton_4")
@@ -174,10 +182,11 @@ class Ui_MainWindow(object):
         self.pushButton_21.setGeometry(QtCore.QRect(760, 150, 101, 31))
         self.pushButton_21.setStyleSheet("background-color:#3366ff;")
         self.pushButton_21.setObjectName("pushButton_21")
-        self.pushButton_16 = QtWidgets.QPushButton(self.groupBox_2)
-        self.pushButton_16.setGeometry(QtCore.QRect(10, 50, 221, 31))
-        self.pushButton_16.setStyleSheet("background-color:#3366ff;")
-        self.pushButton_16.setObjectName("pushButton_16")
+        self.Load_Button = QtWidgets.QPushButton(self.groupBox_2)
+        self.Load_Button.setGeometry(QtCore.QRect(10, 50, 221, 31))
+        self.Load_Button.setStyleSheet("background-color:#3366ff;")
+        self.Load_Button.setObjectName("pushButton_16")
+        self.Load_Button.clicked.connect(self.Browse_Signals)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1088, 26))
@@ -231,10 +240,12 @@ class Ui_MainWindow(object):
         self.pushButton_12.setText(_translate("MainWindow", "Export"))
         self.pushButton_20.setText(_translate("MainWindow", "Add Channel"))
         self.pushButton_21.setText(_translate("MainWindow", "Add Channel"))
-        self.pushButton_16.setText(_translate("MainWindow", "Load Signal"))
+        self.Load_Button.setText(_translate("MainWindow", "Load Signal"))
         self.menuAbout.setTitle(_translate("MainWindow", "About"))
         self.actionLoad_Signal.setText(_translate("MainWindow", "Load Signal"))
-from pyqtgraph import PlotWidget
+
+            
+
 
 
 if __name__ == "__main__":
