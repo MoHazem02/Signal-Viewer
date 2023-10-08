@@ -1,9 +1,23 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
+from pyqtgraph import PlotWidget
+import pyautogui
+from PIL import ImageGrab
+import time
+
 
 
 
 class Ui_MainWindow(object):
+
+    Snapshots_Count = 0
+    def take_snapshot(self):
+        pyautogui.hotkey("win", "shift", "s")
+        time.sleep(10)
+        snapshot = ImageGrab.grabclipboard()    
+		# Save the image to disk
+        snapshot.save(f'Snapshots/image{self.Snapshots_Count}.png', 'PNG')
+    
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1088, 805)
@@ -101,14 +115,14 @@ class Ui_MainWindow(object):
         self.horizontalScrollBar_2.setGeometry(QtCore.QRect(160, 440, 221, 16))
         self.horizontalScrollBar_2.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalScrollBar_2.setObjectName("horizontalScrollBar_2")
-        self.pushButton_14 = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton_14.setGeometry(QtCore.QRect(610, 200, 101, 31))
-        self.pushButton_14.setStyleSheet("background-color:#3366ff;")
-        self.pushButton_14.setObjectName("pushButton_14")
-        self.pushButton_15 = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton_15.setGeometry(QtCore.QRect(620, 430, 101, 31))
-        self.pushButton_15.setStyleSheet("background-color:#3366ff;")
-        self.pushButton_15.setObjectName("pushButton_15")
+        self.Graph_One_Snapshot_Button = QtWidgets.QPushButton(self.groupBox, clicked=lambda: self.take_snapshot())
+        self.Graph_One_Snapshot_Button.setGeometry(QtCore.QRect(610, 200, 101, 31))
+        self.Graph_One_Snapshot_Button.setStyleSheet("background-color:#3366ff;")
+        self.Graph_One_Snapshot_Button.setObjectName("Graph_One_Snapshot_Button")
+        self.Graph_Two_Snapshot_Button = QtWidgets.QPushButton(self.groupBox, clicked=lambda: self.take_snapshot())
+        self.Graph_Two_Snapshot_Button.setGeometry(QtCore.QRect(620, 430, 101, 31))
+        self.Graph_Two_Snapshot_Button.setStyleSheet("background-color:#3366ff;")
+        self.Graph_Two_Snapshot_Button.setObjectName("Graph_Two_Snapshot_Button")
         self.groupBox_2 = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_2.setGeometry(QtCore.QRect(10, 540, 1061, 211))
         self.groupBox_2.setObjectName("groupBox_2")
@@ -212,8 +226,8 @@ class Ui_MainWindow(object):
         self.pushButton_7.setText(_translate("MainWindow", "Play"))
         self.pushButton_8.setText(_translate("MainWindow", "Play"))
         self.pushButton_9.setText(_translate("MainWindow", "Rewind"))
-        self.pushButton_14.setText(_translate("MainWindow", "Snapshot"))
-        self.pushButton_15.setText(_translate("MainWindow", "Snapshot"))
+        self.Graph_One_Snapshot_Button.setText(_translate("MainWindow", "Snapshot"))
+        self.Graph_Two_Snapshot_Button.setText(_translate("MainWindow", "Snapshot"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Controls"))
         self.pushButton_11.setText(_translate("MainWindow", "Link Graphs"))
         self.comboBox_3.setItemText(0, _translate("MainWindow", "Channel 1"))
@@ -234,7 +248,7 @@ class Ui_MainWindow(object):
         self.pushButton_16.setText(_translate("MainWindow", "Load Signal"))
         self.menuAbout.setTitle(_translate("MainWindow", "About"))
         self.actionLoad_Signal.setText(_translate("MainWindow", "Load Signal"))
-from pyqtgraph import PlotWidget
+
 
 
 if __name__ == "__main__":
