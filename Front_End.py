@@ -24,9 +24,9 @@ class Ui_MainWindow(object):
 		# Save the image to Snapshots folder
         snapshot.save(f'Snapshots/image{self.Snapshots_Count}.png', 'PNG')
     
-   
+   #TODO Update the function based on having 2 buttons
     def Browse_Signals(self, number):
-        File_Path, _ = QFileDialog.getOpenFileName(self.Load_Button, "Browse Signal", "D:\Education\Digital Signal Processing\Tasks\Task 1\Signal-Viewer\Signals", "All Files (*)")
+        File_Path, _ = QFileDialog.getOpenFileName(self.Load1_Button, "Browse Signal", "D:\Education\Digital Signal Processing\Tasks\Task 1\Signal-Viewer\Signals", "All Files (*)")
         self.Plot_Signal(File_Path)
 
     def setupUi(self, MainWindow):
