@@ -9,6 +9,8 @@ from pyqtgraph import PlotWidget
 import pyautogui
 from PIL import ImageGrab
 import time
+import wfdb
+import Signal_Class
 
 
 
@@ -27,7 +29,23 @@ class Ui_MainWindow(object):
    #TODO Update the function based on having 2 buttons
     def Browse_Signals(self, number):
         File_Path, _ = QFileDialog.getOpenFileName(self.Load1_Button, "Browse Signal", "D:\Education\Digital Signal Processing\Tasks\Task 1\Signal-Viewer\Signals", "All Files (*)")
-        self.Plot_Signal(File_Path)
+        Record = wfdb.rdrecord(File_Path[:-4])
+        Y_Coordinates = list(Record.p_signal[:,0])
+        X_Coordinates = list(np.arange(len(Y_Coordinates)))
+        Sample_Signal = Signal_Class.Signal(col = "g", X_List=X_Coordinates, Y_list=Y_Coordinates, graph=number)
+        self.Graph_One.plot(x = Sample_Signal.X_Coordinates, y = Sample_Signal.Y_Coordinates, pen = Sample_Signal.color)
+        # self.graphicsView.plot(Record.p_signal)
+        # self.timer1 = QtCore.QTimer()
+        # self.timer1.timeout.connect(lambda: self.update_plot(1, X_Coordinates, Y_Coordinates))
+        # self.timer1.start(1000)  # update every second
+
+    
+
+    def update_plot(self, number, x, y):
+        # Code to get new data and update the plot
+        if number == 1:
+            for i in range(len(x)):
+                self.graphicsView.plot(x[i], y[i])
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -44,9 +62,9 @@ class Ui_MainWindow(object):
         self.groupBox.setGeometry(QtCore.QRect(40, 40, 1561, 641))
         self.groupBox.setStyleSheet("")
         self.groupBox.setObjectName("groupBox")
-        self.graphicsView = PlotWidget(self.groupBox)
-        self.graphicsView.setGeometry(QtCore.QRect(220, 30, 1031, 251))
-        self.graphicsView.setObjectName("graphicsView")
+        self.Graph_One = PlotWidget(self.groupBox)
+        self.Graph_One.setGeometry(QtCore.QRect(220, 30, 1031, 251))
+        self.Graph_One.setObjectName("Graph_One")
         self.comboBox_3 = QtWidgets.QComboBox(self.groupBox)
         self.comboBox_3.setGeometry(QtCore.QRect(1280, 60, 221, 31))
         self.comboBox_3.setStyleSheet("background-color:#3366ff;")
@@ -93,9 +111,9 @@ class Ui_MainWindow(object):
         self.horizontalSlider.setGeometry(QtCore.QRect(1270, 260, 201, 21))
         self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalSlider.setObjectName("horizontalSlider")
-        self.graphicsView_2 = PlotWidget(self.groupBox)
-        self.graphicsView_2.setGeometry(QtCore.QRect(220, 330, 1031, 251))
-        self.graphicsView_2.setObjectName("graphicsView_2")
+        self.Graph_One_2 = PlotWidget(self.groupBox)
+        self.Graph_One_2.setGeometry(QtCore.QRect(220, 330, 1031, 251))
+        self.Graph_One_2.setObjectName("Graph_One_2")
         self.horizontalScrollBar_2 = QtWidgets.QScrollBar(self.groupBox)
         self.horizontalScrollBar_2.setEnabled(False)
         self.horizontalScrollBar_2.setGeometry(QtCore.QRect(220, 590, 1041, 16))
