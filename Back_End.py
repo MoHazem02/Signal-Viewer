@@ -1,6 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QTimer
-from PyQt5.QtWidgets import QInputDialog, QPushButton, QMainWindow, QLabel, QFileDialog, QApplication
+from PyQt5.QtWidgets import QInputDialog, QPushButton, QMainWindow, QLabel, QFileDialog, QApplication, QVBoxLayout, QWidget
 import pyqtgraph as pg
 from pyqtgraph import PlotWidget
 import numpy as np 
@@ -9,11 +9,11 @@ from pyqtgraph import PlotWidget
 import pyautogui
 from PIL import ImageGrab
 import time
+import wfdb
 
-
-
-  
 class Ui_MainWindow(object):
+    
+
 
     Snapshots_Count = 0
     def take_snapshot(self):
@@ -23,12 +23,34 @@ class Ui_MainWindow(object):
         time.sleep(6)
         snapshot = ImageGrab.grabclipboard()    
 		# Save the image to Snapshots folder
-        snapshot.save(f'Snapshots/image{self.Snapshots_Count}.png', 'PNG')
-    
-   
+        snapshot.save(f'Snapshots/image{self.Snapshots_Count}.png', 'PNG')  
+
+    #Browsing Signals Function 
     def Browse_Signals(self):
         File_Path, _ = QFileDialog.getOpenFileName(self.Load_Button, "Browse Signal", "D:\Education\Digital Signal Processing\Tasks\Task 1\Signal-Viewer\Signals", "All Files (*)")
-        self.Plot_Signal(File_Path)
+        self.Open_Signal(File_Path)
+
+    #
+    def Open_Signal(self,File_Path):
+        if File_Path:
+         File_Extension = File_Path[-3:]
+         X_Axis_Data = None
+         Y_Axis_Data = None
+        
+         if File_Extension == "dat" or File_Extension == "hea" or File_Extension == "atr" :
+             Record = wfdb.rdrecord(File_Path[:-4])
+             Y_Axis_Data = Record.p_signal[:,0]
+             X_Axis_Data = np.arange(len(Y_Axis_Data))
+
+        if Y_Axis_Data is not None:
+            self.Start_Plotting(X_Axis_Data, Y_Axis_Data)
+
+
+             
+
+   
+
+
 
 
     def setupUi(self, MainWindow):
@@ -259,6 +281,8 @@ class Ui_MainWindow(object):
         self.Load_Button.setText(_translate("MainWindow", "Load Signal"))
         self.menuAbout.setTitle(_translate("MainWindow", "About"))
         self.actionLoad_Signal.setText(_translate("MainWindow", "Load Signal"))
+
+            
 
 
 
