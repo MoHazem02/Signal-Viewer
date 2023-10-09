@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1200</width>
-    <height>855</height>
+    <width>1635</width>
+    <height>853</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Signal Viewer</string>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: #1e1e2f;
@@ -21,8 +21,8 @@ color:white;</string>
    <widget class="QTextBrowser" name="textBrowser">
     <property name="geometry">
      <rect>
-      <x>380</x>
-      <y>0</y>
+      <x>610</x>
+      <y>-10</y>
       <width>381</width>
       <height>51</height>
      </rect>
@@ -34,17 +34,17 @@ color:white;</string>
      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;Live Signal Viewer&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>50</y>
-      <width>1061</width>
-      <height>481</height>
+      <x>40</x>
+      <y>40</y>
+      <width>1561</width>
+      <height>641</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -56,240 +56,30 @@ p, li { white-space: pre-wrap; }
     <widget class="PlotWidget" name="graphicsView">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>220</x>
        <y>30</y>
        <width>1031</width>
-       <height>151</height>
+       <height>251</height>
       </rect>
      </property>
     </widget>
-    <widget class="PlotWidget" name="graphicsView_2">
+    <widget class="QComboBox" name="comboBox_3">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>250</y>
-       <width>1031</width>
-       <height>151</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>200</y>
-       <width>61</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:#3366ff;
-background-image: &quot;Assets/zoomin.png&quot;;</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normaloff>Assets/zoomin.png</normaloff>Assets/zoomin.png</iconset>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_2">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>200</y>
-       <width>61</width>
+       <x>1280</x>
+       <y>60</y>
+       <width>221</width>
        <height>31</height>
       </rect>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color:#3366ff;</string>
      </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normaloff>Assets/zoom-out.png</normaloff>Assets/zoom-out.png</iconset>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_6">
-     <property name="geometry">
-      <rect>
-       <x>510</x>
-       <y>430</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:#3366ff;</string>
-     </property>
-     <property name="text">
-      <string>Rewind</string>
-     </property>
-    </widget>
-    <widget class="QSlider" name="horizontalSlider">
-     <property name="geometry">
-      <rect>
-       <x>770</x>
-       <y>210</y>
-       <width>201</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-    <widget class="QLCDNumber" name="lcdNumber">
-     <property name="geometry">
-      <rect>
-       <x>980</x>
-       <y>210</y>
-       <width>64</width>
-       <height>23</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QSlider" name="horizontalSlider_2">
-     <property name="geometry">
-      <rect>
-       <x>770</x>
-       <y>440</y>
-       <width>201</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-    <widget class="QLCDNumber" name="lcdNumber_2">
-     <property name="geometry">
-      <rect>
-       <x>980</x>
-       <y>440</y>
-       <width>64</width>
-       <height>23</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label">
-     <property name="geometry">
-      <rect>
-       <x>820</x>
-       <y>190</y>
-       <width>111</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Cine Speed</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_2">
-     <property name="geometry">
-      <rect>
-       <x>820</x>
-       <y>420</y>
-       <width>111</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Cine Speed</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_4">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>430</y>
-       <width>61</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:#3366ff;
-background-image: &quot;Assets/zoomin.png&quot;;</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normaloff>Assets/zoomin.png</normaloff>Assets/zoomin.png</iconset>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_5">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>430</y>
-       <width>61</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:#3366ff;</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normaloff>Assets/zoom-out.png</normaloff>Assets/zoom-out.png</iconset>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_7">
-     <property name="geometry">
-      <rect>
-       <x>400</x>
-       <y>430</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:#3366ff;</string>
-     </property>
-     <property name="text">
-      <string>Play</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_8">
-     <property name="geometry">
-      <rect>
-       <x>390</x>
-       <y>200</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:#3366ff;</string>
-     </property>
-     <property name="text">
-      <string>Play</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_9">
-     <property name="geometry">
-      <rect>
-       <x>500</x>
-       <y>200</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:#3366ff;</string>
-     </property>
-     <property name="text">
-      <string>Rewind</string>
-     </property>
+     <item>
+      <property name="text">
+       <string>Channel 1</string>
+      </property>
+     </item>
     </widget>
     <widget class="QScrollBar" name="horizontalScrollBar">
      <property name="enabled">
@@ -297,14 +87,148 @@ background-image: &quot;Assets/zoomin.png&quot;;</string>
      </property>
      <property name="geometry">
       <rect>
-       <x>160</x>
-       <y>210</y>
-       <width>221</width>
+       <x>220</x>
+       <y>290</y>
+       <width>1041</width>
        <height>16</height>
       </rect>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_8">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>130</y>
+       <width>191</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:#3366ff;</string>
+     </property>
+     <property name="text">
+      <string>   Play         </string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>Assets/pause-play.png</normaloff>Assets/pause-play.png</iconset>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_9">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>180</y>
+       <width>191</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:#3366ff;</string>
+     </property>
+     <property name="text">
+      <string>  Rewind     </string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>Assets/rewind.png</normaloff>Assets/rewind.png</iconset>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_13">
+     <property name="geometry">
+      <rect>
+       <x>1280</x>
+       <y>110</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:#3366ff;</string>
+     </property>
+     <property name="text">
+      <string>Edit Label</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_19">
+     <property name="geometry">
+      <rect>
+       <x>1390</x>
+       <y>110</y>
+       <width>111</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:#3366ff;</string>
+     </property>
+     <property name="text">
+      <string>Select Color</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_20">
+     <property name="geometry">
+      <rect>
+       <x>1390</x>
+       <y>160</y>
+       <width>111</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:#3366ff;</string>
+     </property>
+     <property name="text">
+      <string>Add Channel</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>1320</x>
+       <y>240</y>
+       <width>111</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Cine Speed</string>
+     </property>
+    </widget>
+    <widget class="QLCDNumber" name="lcdNumber">
+     <property name="geometry">
+      <rect>
+       <x>1480</x>
+       <y>260</y>
+       <width>64</width>
+       <height>23</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QSlider" name="horizontalSlider">
+     <property name="geometry">
+      <rect>
+       <x>1270</x>
+       <y>260</y>
+       <width>201</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="PlotWidget" name="graphicsView_2">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>330</y>
+       <width>1031</width>
+       <height>251</height>
+      </rect>
      </property>
     </widget>
     <widget class="QScrollBar" name="horizontalScrollBar_2">
@@ -313,9 +237,9 @@ background-image: &quot;Assets/zoomin.png&quot;;</string>
      </property>
      <property name="geometry">
       <rect>
-       <x>160</x>
-       <y>440</y>
-       <width>221</width>
+       <x>220</x>
+       <y>590</y>
+       <width>1041</width>
        <height>16</height>
       </rect>
      </property>
@@ -323,11 +247,58 @@ background-image: &quot;Assets/zoomin.png&quot;;</string>
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_14">
+    <widget class="QLabel" name="label_3">
      <property name="geometry">
       <rect>
-       <x>610</x>
-       <y>200</y>
+       <x>1340</x>
+       <y>30</y>
+       <width>111</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Graph 1</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_22">
+     <property name="geometry">
+      <rect>
+       <x>1390</x>
+       <y>420</y>
+       <width>111</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:#3366ff;</string>
+     </property>
+     <property name="text">
+      <string>Select Color</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBox_4">
+     <property name="geometry">
+      <rect>
+       <x>1280</x>
+       <y>370</y>
+       <width>221</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:#3366ff;</string>
+     </property>
+     <item>
+      <property name="text">
+       <string>Channel 1</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QPushButton" name="pushButton_29">
+     <property name="geometry">
+      <rect>
+       <x>1280</x>
+       <y>470</y>
        <width>101</width>
        <height>31</height>
       </rect>
@@ -336,15 +307,206 @@ background-image: &quot;Assets/zoomin.png&quot;;</string>
       <string notr="true">background-color:#3366ff;</string>
      </property>
      <property name="text">
-      <string>Snapshot</string>
+      <string>  Move</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>Assets/move-to.png</normaloff>Assets/move-to.png</iconset>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>1340</x>
+       <y>340</y>
+       <width>111</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Graph 2</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_14">
+     <property name="geometry">
+      <rect>
+       <x>1280</x>
+       <y>420</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:#3366ff;</string>
+     </property>
+     <property name="text">
+      <string>Edit Label</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_23">
+     <property name="geometry">
+      <rect>
+       <x>1390</x>
+       <y>470</y>
+       <width>111</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:#3366ff;</string>
+     </property>
+     <property name="text">
+      <string>Add Channel</string>
+     </property>
+    </widget>
+    <widget class="QLCDNumber" name="lcdNumber_2">
+     <property name="geometry">
+      <rect>
+       <x>1480</x>
+       <y>570</y>
+       <width>64</width>
+       <height>23</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QSlider" name="horizontalSlider_2">
+     <property name="geometry">
+      <rect>
+       <x>1270</x>
+       <y>570</y>
+       <width>201</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>1320</x>
+       <y>550</y>
+       <width>111</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Cine Speed</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_10">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>300</y>
+       <width>191</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:#3366ff;</string>
+     </property>
+     <property name="text">
+      <string>  Link Graphs</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>Assets/link1.png</normaloff>Assets/link1.png</iconset>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_2">
+     <property name="geometry">
+      <rect>
+       <x>1340</x>
+       <y>200</y>
+       <width>111</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Hide Signal</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_4">
+     <property name="geometry">
+      <rect>
+       <x>1350</x>
+       <y>510</y>
+       <width>111</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Hide Signal</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_16">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>80</y>
+       <width>191</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:#3366ff;</string>
+     </property>
+     <property name="text">
+      <string>  Load Signal</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>Assets/load1.png</normaloff>Assets/load1.png</iconset>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_30">
+     <property name="geometry">
+      <rect>
+       <x>1280</x>
+       <y>160</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:#3366ff;</string>
+     </property>
+     <property name="text">
+      <string>  Move</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>Assets/move-to.png</normaloff>Assets/move-to.png</iconset>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_25">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>520</y>
+       <width>191</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:#3366ff;</string>
+     </property>
+     <property name="text">
+      <string>  Rewind     </string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>Assets/rewind.png</normaloff>Assets/rewind.png</iconset>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_15">
      <property name="geometry">
       <rect>
-       <x>620</x>
-       <y>430</y>
-       <width>101</width>
+       <x>10</x>
+       <y>470</y>
+       <width>191</width>
        <height>31</height>
       </rect>
      </property>
@@ -352,17 +514,41 @@ background-image: &quot;Assets/zoomin.png&quot;;</string>
       <string notr="true">background-color:#3366ff;</string>
      </property>
      <property name="text">
-      <string>Snapshot</string>
+      <string>   Play         </string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>Assets/pause-play.png</normaloff>Assets/pause-play.png</iconset>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_18">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>420</y>
+       <width>191</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:#3366ff;</string>
+     </property>
+     <property name="text">
+      <string>  Load Signal</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>Assets/load1.png</normaloff>Assets/load1.png</iconset>
      </property>
     </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>540</y>
-      <width>1061</width>
-      <height>211</height>
+      <x>40</x>
+      <y>690</y>
+      <width>1561</width>
+      <height>101</height>
      </rect>
     </property>
     <property name="title">
@@ -384,98 +570,6 @@ background-image: &quot;Assets/zoomin.png&quot;;</string>
       <string>Link Graphs</string>
      </property>
     </widget>
-    <widget class="QComboBox" name="comboBox_3">
-     <property name="geometry">
-      <rect>
-       <x>320</x>
-       <y>50</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:#3366ff;</string>
-     </property>
-     <item>
-      <property name="text">
-       <string>Channel 1</string>
-      </property>
-     </item>
-    </widget>
-    <widget class="QPushButton" name="pushButton_13">
-     <property name="geometry">
-      <rect>
-       <x>440</x>
-       <y>50</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:#3366ff;</string>
-     </property>
-     <property name="text">
-      <string>Edit Label</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_3">
-     <property name="geometry">
-      <rect>
-       <x>420</x>
-       <y>20</y>
-       <width>111</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Graph 1</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_5">
-     <property name="geometry">
-      <rect>
-       <x>830</x>
-       <y>20</y>
-       <width>111</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Graph 2</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_19">
-     <property name="geometry">
-      <rect>
-       <x>320</x>
-       <y>100</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:#3366ff;</string>
-     </property>
-     <property name="text">
-      <string>Select Color</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_28">
-     <property name="geometry">
-      <rect>
-       <x>440</x>
-       <y>100</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:#3366ff;</string>
-     </property>
-     <property name="text">
-      <string>Move</string>
-     </property>
-    </widget>
     <widget class="QCheckBox" name="checkBox">
      <property name="geometry">
       <rect>
@@ -488,72 +582,6 @@ background-image: &quot;Assets/zoomin.png&quot;;</string>
      <property name="text">
       <string>Hide</string>
      </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_34">
-     <property name="geometry">
-      <rect>
-       <x>880</x>
-       <y>100</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:#3366ff;</string>
-     </property>
-     <property name="text">
-      <string>Move</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_35">
-     <property name="geometry">
-      <rect>
-       <x>880</x>
-       <y>50</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:#3366ff;</string>
-     </property>
-     <property name="text">
-      <string>Edit Label</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_36">
-     <property name="geometry">
-      <rect>
-       <x>760</x>
-       <y>100</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:#3366ff;</string>
-     </property>
-     <property name="text">
-      <string>Select Color</string>
-     </property>
-    </widget>
-    <widget class="QComboBox" name="comboBox_9">
-     <property name="geometry">
-      <rect>
-       <x>760</x>
-       <y>50</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:#3366ff;</string>
-     </property>
-     <item>
-      <property name="text">
-       <string>Channel 1</string>
-      </property>
-     </item>
     </widget>
     <widget class="QCheckBox" name="checkBox_3">
      <property name="geometry">
@@ -584,22 +612,6 @@ background-image: &quot;Assets/zoomin.png&quot;;</string>
       <string>Export</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_20">
-     <property name="geometry">
-      <rect>
-       <x>320</x>
-       <y>150</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:#3366ff;</string>
-     </property>
-     <property name="text">
-      <string>Add Channel</string>
-     </property>
-    </widget>
     <widget class="QPushButton" name="pushButton_21">
      <property name="geometry">
       <rect>
@@ -616,7 +628,47 @@ background-image: &quot;Assets/zoomin.png&quot;;</string>
       <string>Add Channel</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_16">
+    <widget class="QPushButton" name="pushButton_2">
+     <property name="geometry">
+      <rect>
+       <x>260</x>
+       <y>100</y>
+       <width>61</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:#3366ff;</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>Assets/zoom-out.png</normaloff>Assets/zoom-out.png</iconset>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_17">
+     <property name="geometry">
+      <rect>
+       <x>1310</x>
+       <y>50</y>
+       <width>221</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:#3366ff;</string>
+     </property>
+     <property name="text">
+      <string>  Export</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>Assets/export.png</normaloff>Assets/export.png</iconset>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_24">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -629,7 +681,11 @@ background-image: &quot;Assets/zoomin.png&quot;;</string>
       <string notr="true">background-color:#3366ff;</string>
      </property>
      <property name="text">
-      <string>Load Signal</string>
+      <string>   Snapshot</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>Assets/snap1.png</normaloff>Assets/snap1.png</iconset>
      </property>
     </widget>
    </widget>
@@ -639,8 +695,8 @@ background-image: &quot;Assets/zoomin.png&quot;;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1200</width>
-     <height>21</height>
+     <width>1635</width>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAbout">
@@ -674,28 +730,12 @@ background-image: &quot;Assets/zoomin.png&quot;;</string>
    <slot>display(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>709</x>
-     <y>269</y>
+     <x>1310</x>
+     <y>326</y>
     </hint>
     <hint type="destinationlabel">
-     <x>791</x>
-     <y>275</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>horizontalSlider_2</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lcdNumber_2</receiver>
-   <slot>display(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>736</x>
-     <y>464</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>787</x>
-     <y>468</y>
+     <x>1520</x>
+     <y>326</y>
     </hint>
    </hints>
   </connection>
