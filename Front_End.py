@@ -33,13 +33,12 @@ class Ui_MainWindow(object):
 		# Save the image to Snapshots folder
         snapshot.save(f'Snapshots/image{self.Snapshots_Count}.png', 'PNG')
     
-   #TODO Update the function based on having 2 buttons
     def Browse_Signals(self, Graph_Number):
         File_Path, _ = QFileDialog.getOpenFileName(self.Load1_Button, "Browse Signal", "" , "All Files (*)")
         Record = wfdb.rdrecord(File_Path[:-4])
         Y_Coordinates = list(Record.p_signal[:,0])
         X_Coordinates = list(np.arange(len(Y_Coordinates)))
-        Sample_Signal = Signal_Class.Signal(col = "g", X_List=X_Coordinates, Y_list=Y_Coordinates, graph = Graph_Number)
+        Sample_Signal = Signal_Class.Signal(col = "g", X_List = X_Coordinates, Y_list = Y_Coordinates, graph = Graph_Number)
         self.Graph_1.Graph_Window = self.Graph_One
         self.Graph_2.Graph_Window = self.Graph_Two
         if Graph_Number == 1:
@@ -60,17 +59,17 @@ class Ui_MainWindow(object):
         if number == 1:
             self.Graph_1.Update_Current_Channel()
             #First we grab the signal currently selected by the channel combo box
-            signal = self.Graph_1.Signals[self.Graph_1.Current_Channel - 1]
+            signal = self.Graph_1.Signals[self.Graph_1.signal_count - 1]
             # Secondly we remove the singal from its current graph
-            self.Graph_1.Remove_Signal()
+            self.Graph_1.Remove_Signal(signal)
             # Thirdly we add to the other graph a new daugher (our signal :)
             self.Graph_2.Add_Signal(signal)
         else:
             self.Graph_2.Update_Current_Channel()
             #First we grab the signal currently selected by the channel combo box
-            signal = self.Graph_2.Signals[self.Graph_2.Current_Channel - 1]
+            signal = self.Graph_2.Signals[self.Graph_2.signal_count - 1]
             # Secondly we remove the singal from its current graph
-            self.Graph_2.Remove_Signal()
+            self.Graph_2.Remove_Signal(signal)
             # Thirdly we add to the other graph a new daugher (our signal :)
             self.Graph_1.Add_Signal(signal)
 
@@ -131,6 +130,14 @@ class Ui_MainWindow(object):
         self.Select_Color_1.setGeometry(QtCore.QRect(1390, 110, 111, 31))
         self.Select_Color_1.setStyleSheet("background-color:#3366ff;")
         self.Select_Color_1.setObjectName("Select_Color_1")
+        self.Edit_Label_1 = QtWidgets.QPushButton(self.groupBox)
+        self.Edit_Label_1.setGeometry(QtCore.QRect(1280, 110, 101, 31))
+        self.Edit_Label_1.setStyleSheet("background-color:#3366ff;")
+        self.Edit_Label_1.setObjectName("Edit_Label_1")
+        self.pushButton_19 = QtWidgets.QPushButton(self.groupBox)
+        self.pushButton_19.setGeometry(QtCore.QRect(1390, 110, 111, 31))
+        self.pushButton_19.setStyleSheet("background-color:#3366ff;")
+        self.pushButton_19.setObjectName("pushButton_19")
         self.Add_Channel_of_Graph_1 = QtWidgets.QPushButton(self.groupBox, clicked=lambda: self.Graph_1.Add_Channel())
         self.Add_Channel_of_Graph_1.setGeometry(QtCore.QRect(1390, 160, 111, 31))
         self.Add_Channel_of_Graph_1.setStyleSheet("background-color:#3366ff;")
@@ -308,6 +315,8 @@ class Ui_MainWindow(object):
         self.pushButton_9.setText(_translate("MainWindow", "  Rewind     "))
         self.pushButton_13.setText(_translate("MainWindow", "Edit Label"))
         self.Select_Color_1.setText(_translate("MainWindow", "Select Color"))
+        self.Edit_Label_1.setText(_translate("MainWindow", "Edit Label"))
+        self.pushButton_19.setText(_translate("MainWindow", "Select Color"))
         self.Add_Channel_of_Graph_1.setText(_translate("MainWindow", "Add Channel"))
         self.label.setText(_translate("MainWindow", "Cine Speed"))
         self.label_3.setText(_translate("MainWindow", "Graph 1"))

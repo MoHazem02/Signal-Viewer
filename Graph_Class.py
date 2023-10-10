@@ -10,11 +10,6 @@ class Graph:
         self.Current_Channel = 1
         self.Signals = []
 
-    def Increase_Channels(self):
-            self.channel_count = (self.channel_count+1)
-
-    def Decrease_Channels(self):
-            self.channel_count = (self.channel_count-1)
 
     def Add_Channel(self):
         self.channel_count += 1
@@ -27,15 +22,15 @@ class Graph:
     def Plot_Signal(self, signal):
         self.Graph_Window.plot(x = signal.X_Coordinates, y = signal.Y_Coordinates, pen = signal.color)
 
-    def Update_Current_Channel(self):
+    def Update_Current_Channel(self): 
         if self.graph_number == 1:
             self.Current_Channel = int(str(self.UI_Window.Channels_of_Graph_1.currentText())[-1])
         else:
             self.Current_Channel = int(str(self.UI_Window.Channels_of_Graph_2.currentText())[-1])
 
-    def Remove_Signal(self):
-        signal = self.Signals[self.Current_Channel - 1]
-        self.Graph_Window.removeItem(signal)
+    def Remove_Signal(self, signal):
+        #self.Graph_Window.removeItem(signal)
+        self.Graph_Window.clear()
         self.Signals.remove(signal)
         self.Graph_Window.update()
         self.signal_count -= 1
@@ -58,6 +53,7 @@ class Graph:
             signal = self.Signals[self.Current_Channel - 1]
             signal.color = color
             self.Plot_Signal(signal)
+
 
 
     
