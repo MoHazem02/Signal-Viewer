@@ -57,7 +57,7 @@ class Ui_MainWindow(object):
         if number == 1:
             self.Graph_1.Update_Current_Channel()
             #First we grab the signal currently selected by the channel combo box
-            signal = self.Graph_1.Signals[self.Graph_1.Current_Channel - 1]
+            signal = self.Graph_1.Signals[self.Graph_1.signal_count - 1]
             # Secondly we remove the singal from its current graph
             self.Graph_1.Remove_Signal(signal)
             # Thirdly we add to the other graph a new daugher (our signal :)
@@ -65,7 +65,7 @@ class Ui_MainWindow(object):
         else:
             self.Graph_2.Update_Current_Channel()
             #First we grab the signal currently selected by the channel combo box
-            signal = self.Graph_2.Signals[self.Graph_2.Current_Channel - 1]
+            signal = self.Graph_2.Signals[self.Graph_2.signal_count - 1]
             # Secondly we remove the singal from its current graph
             self.Graph_2.Remove_Signal(signal)
             # Thirdly we add to the other graph a new daugher (our signal :)

@@ -27,7 +27,7 @@ class Graph:
             self.Current_Channel = int(str(self.UI_Window.Channels_of_Graph_2.currentText())[-1])
 
     def Remove_Signal(self, signal):
-        # self.Graph_Window.removeItem(signal)
+        #self.Graph_Window.removeItem(signal)
         self.Graph_Window.clear()
         self.Signals.remove(signal)
         self.Graph_Window.update()
