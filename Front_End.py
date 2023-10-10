@@ -18,9 +18,10 @@ import Graph_Class
 class Ui_MainWindow(object):
 
     def __init__(self): 
+        # Be careful there is a difference between Graph_1 and Graph_One. The first one is an object of the class we created, but the second one is the name
+        # of the plot widget of the Top Graph.
         self.Graph_1 = Graph_Class.Graph(1, self)
         self.Graph_2 = Graph_Class.Graph(2, self)
-        self.Signals_List=[]
         self.Snapshots_Count = 0
 
     def Take_Snapshot(self):
@@ -38,23 +39,39 @@ class Ui_MainWindow(object):
         Record = wfdb.rdrecord(File_Path[:-4])
         Y_Coordinates = list(Record.p_signal[:,0])
         X_Coordinates = list(np.arange(len(Y_Coordinates)))
-        Sample_Signal = Signal_Class.Signal(col = "g", X_List=X_Coordinates, Y_list=Y_Coordinates, graph=Graph_Number)
-        self.Signals_List.append(Sample_Signal)
-        self.Plot_Signal(Sample_Signal)
+        Sample_Signal = Signal_Class.Signal(col = "g", X_List=X_Coordinates, Y_list=Y_Coordinates, graph = Graph_Number)
+        self.Graph_1.Graph_Window = self.Graph_One
+        self.Graph_2.Graph_Window = self.Graph_Two
+        if Graph_Number == 1:
+            self.Graph_1.Signals.append(Sample_Signal)
+            self.Graph_1.Plot_Signal(Sample_Signal)
+        else:
+            self.Graph_2.Signals.append(Sample_Signal)
+            self.Graph_2.Plot_Signal(Sample_Signal)
         # self.graphicsView.plot(Record.p_signal)
         # self.timer1 = QtCore.QTimer()
         # self.timer1.timeout.connect(lambda: self.update_plot(1, X_Coordinates, Y_Coordinates))
         # self.timer1.start(1000)  # update every second
 
-    def Plot_Signal(self, Signal):
-        if Signal.graph_number == 1:
-                self.Graph_One.plot(x = Signal.X_Coordinates, y = Signal.Y_Coordinates, pen = Signal.color)
-        else:
-            self.Graph_Two.plot(x = Signal.X_Coordinates, y = Signal.Y_Coordinates, pen = Signal.color)
 
-    def Move_Signal(self,Signal):
-        Signal.change_graph_number()
-        self.Plot_Signal(Signal)  
+    def Move_Signal(self, number):
+        if number == 1:
+            self.Graph_1.Update_Current_Channel()
+            #First we grab the signal currently selected by the channel combo box
+            signal = self.Graph_1.Signals[self.Graph_1.Current_Channel - 1]
+            # Secondly we remove the singal from its current graph
+            self.Graph_1.Remove_Signal()
+            # Thirdly we add to the other graph a new daugher (our signal :)
+            self.Graph_2.Add_Signal(signal)
+        else:
+            self.Graph_2.Update_Current_Channel()
+            #First we grab the signal currently selected by the channel combo box
+            signal = self.Graph_2.Signals[self.Graph_2.Current_Channel - 1]
+            # Secondly we remove the singal from its current graph
+            self.Graph_2.Remove_Signal()
+            # Thirdly we add to the other graph a new daugher (our signal :)
+            self.Graph_1.Add_Signal(signal)
+
                
     def update_plot(self, number, x, y):
         # Code to get new data and update the plot
@@ -128,7 +145,7 @@ class Ui_MainWindow(object):
         self.horizontalSlider.setObjectName("horizontalSlider")
         self.Graph_Two = PlotWidget(self.groupBox)
         self.Graph_Two.setGeometry(QtCore.QRect(220, 330, 1031, 251))
-        self.Graph_Two.setObjectName("Graph_One_2")
+        self.Graph_Two.setObjectName("Graph_2")
         self.horizontalScrollBar_2 = QtWidgets.QScrollBar(self.groupBox)
         self.horizontalScrollBar_2.setEnabled(False)
         self.horizontalScrollBar_2.setGeometry(QtCore.QRect(220, 590, 1041, 16))
@@ -146,13 +163,13 @@ class Ui_MainWindow(object):
         self.Channels_of_Graph_2.setStyleSheet("background-color:#3366ff;")
         self.Channels_of_Graph_2.setObjectName("comboBox_4")
         self.Channels_of_Graph_2.addItem("")
-        self.Move_of_Graph_1 = QtWidgets.QPushButton(self.groupBox, clicked=lambda: self.Move_Signal(self.Signals_List[0]))
-        self.Move_of_Graph_1.setGeometry(QtCore.QRect(1280, 470, 101, 31))
-        self.Move_of_Graph_1.setStyleSheet("background-color:#3366ff;")
+        self.Move_of_Graph_2 = QtWidgets.QPushButton(self.groupBox, clicked=lambda: self.Move_Signal(2))
+        self.Move_of_Graph_2.setGeometry(QtCore.QRect(1280, 470, 101, 31))
+        self.Move_of_Graph_2.setStyleSheet("background-color:#3366ff;")
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap("Assets/move-to.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.Move_of_Graph_1.setIcon(icon2)
-        self.Move_of_Graph_1.setObjectName("pushButton_29")
+        self.Move_of_Graph_2.setIcon(icon2)
+        self.Move_of_Graph_2.setObjectName("Graph2_Move")
         self.label_4 = QtWidgets.QLabel(self.groupBox)
         self.label_4.setGeometry(QtCore.QRect(1340, 340, 111, 16))
         self.label_4.setObjectName("label_4")
@@ -194,11 +211,11 @@ class Ui_MainWindow(object):
         icon4.addPixmap(QtGui.QPixmap("Assets/load1.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.Load1_Button.setIcon(icon4)
         self.Load1_Button.setObjectName("Load1_Button")
-        self.Move_of_Graph_2 = QtWidgets.QPushButton(self.groupBox, clicked=lambda: self.Move_Signal(self.Signals_List[0]))
-        self.Move_of_Graph_2.setGeometry(QtCore.QRect(1280, 160, 101, 31))
-        self.Move_of_Graph_2.setStyleSheet("background-color:#3366ff;")
-        self.Move_of_Graph_2.setIcon(icon2)
-        self.Move_of_Graph_2.setObjectName("pushButton_30")
+        self.Move_of_Graph_1 = QtWidgets.QPushButton(self.groupBox, clicked=lambda: self.Move_Signal(1))
+        self.Move_of_Graph_1.setGeometry(QtCore.QRect(1280, 160, 101, 31))
+        self.Move_of_Graph_1.setStyleSheet("background-color:#3366ff;")
+        self.Move_of_Graph_1.setIcon(icon2)
+        self.Move_of_Graph_1.setObjectName("Graph1_Move")
         self.pushButton_25 = QtWidgets.QPushButton(self.groupBox)
         self.pushButton_25.setGeometry(QtCore.QRect(10, 520, 191, 31))
         self.pushButton_25.setStyleSheet("background-color:#3366ff;")
