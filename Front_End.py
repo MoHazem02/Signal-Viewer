@@ -34,7 +34,7 @@ class Ui_MainWindow(object):
     
    #TODO Update the function based on having 2 buttons
     def Browse_Signals(self, Graph_Number):
-        File_Path, _ = QFileDialog.getOpenFileName(self.Load1_Button, "Browse Signal", "D:\Education\Digital Signal Processing\Tasks\Task 1\Signal-Viewer\Signals", "All Files (*)")
+        File_Path, _ = QFileDialog.getOpenFileName(self.Load1_Button, "Browse Signal", "" , "All Files (*)")
         Record = wfdb.rdrecord(File_Path[:-4])
         Y_Coordinates = list(Record.p_signal[:,0])
         X_Coordinates = list(np.arange(len(Y_Coordinates)))
