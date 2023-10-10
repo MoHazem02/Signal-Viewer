@@ -9,9 +9,6 @@ class Signal:
         self.Old_Color = col
         self.graph_number = graph
         #Each signal corresponds to a channel, initially channel 1
-    
-    def change_color(self, color):
-        pass
 
     def hide_signal(self):
         self.color = "black"

@@ -1,3 +1,5 @@
+from PyQt5 import QtWidgets
+
 class Graph:
     def __init__(self, Graph_Number, ui_mainwindow, graph_window = None):
         self.channel_count = 1
@@ -45,6 +47,17 @@ class Graph:
             self.Add_Channel()
         self.Plot_Signal(signal)
         self.signal_count += 1
+
+    
+    def change_color(self):
+        
+        color = QtWidgets.QColorDialog.getColor()
+
+        if color.isValid():
+            # Set the selected color to the line
+            signal = self.Signals[self.Current_Channel - 1]
+            signal.color = color
+            self.Plot_Signal(signal)
 
 
     
