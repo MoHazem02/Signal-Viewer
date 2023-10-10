@@ -50,6 +50,7 @@ class Graph:
 
         if color.isValid():
             # Set the selected color to the line
+            self.Update_Current_Channel()
             signal = self.Signals[self.Current_Channel - 1]
             signal.color = color
             self.Plot_Signal(signal)

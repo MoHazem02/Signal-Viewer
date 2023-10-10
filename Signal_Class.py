@@ -1,4 +1,4 @@
-import pyqtgraph as pg
+
 class Signal:
     def __init__(self, col, X_List, Y_list, graph):
         self.X_Coordinates = X_List
