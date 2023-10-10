@@ -21,7 +21,7 @@ class Signal:
         self.color = self.Old_Color
         self.hide = True
 
-    def move_signal(self):
+    def change_graph_number(self):
         if self.graph_number == 1:
             self.graph_number = 2
         else:

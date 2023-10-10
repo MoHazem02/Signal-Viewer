@@ -11,10 +11,14 @@ from PIL import ImageGrab
 import time
 import wfdb
 import Signal_Class
+import Graph_Class
 
 
 
 class Ui_MainWindow(object):
+    Signals_List=[]
+    Graph_1 = Graph_Class.Graph(1)
+    Graph_2 = Graph_Class.Graph(2)
 
     Snapshots_Count = 0
     def Take_Snapshot(self):
@@ -27,18 +31,45 @@ class Ui_MainWindow(object):
         snapshot.save(f'Snapshots/image{self.Snapshots_Count}.png', 'PNG')
     
    #TODO Update the function based on having 2 buttons
-    def Browse_Signals(self, number):
+    def Browse_Signals(self, Graph_Number):
         File_Path, _ = QFileDialog.getOpenFileName(self.Load1_Button, "Browse Signal", "D:\Education\Digital Signal Processing\Tasks\Task 1\Signal-Viewer\Signals", "All Files (*)")
         Record = wfdb.rdrecord(File_Path[:-4])
         Y_Coordinates = list(Record.p_signal[:,0])
         X_Coordinates = list(np.arange(len(Y_Coordinates)))
-        Sample_Signal = Signal_Class.Signal(col = "g", X_List=X_Coordinates, Y_list=Y_Coordinates, graph=number)
-        self.Graph_One.plot(x = Sample_Signal.X_Coordinates, y = Sample_Signal.Y_Coordinates, pen = Sample_Signal.color)
+        Sample_Signal = Signal_Class.Signal(col = "g", X_List=X_Coordinates, Y_list=Y_Coordinates, graph=Graph_Number)
+        self.Signals_List.append(Sample_Signal)
+        self.Plot_Signal(Sample_Signal)
         # self.graphicsView.plot(Record.p_signal)
         # self.timer1 = QtCore.QTimer()
         # self.timer1.timeout.connect(lambda: self.update_plot(1, X_Coordinates, Y_Coordinates))
         # self.timer1.start(1000)  # update every second
 
+    def Plot_Signal(self,Signal):
+            if Signal.graph_number == 1:
+                    self.Graph_One.plot(x = Signal.X_Coordinates, y = Signal.Y_Coordinates, pen = Signal.color)
+            else:
+                self.Graph_Two.plot(x = Signal.X_Coordinates, y = Signal.Y_Coordinates, pen = Signal.color)
+
+    def Move_Signal(self,Signal):
+         Signal.change_graph_number()
+         self.Plot_Signal(Signal)  
+
+    def Add_Channel(self,Graph_Number):
+         Temporary_String = "Channel {}"
+         if Graph_Number == 1:
+              i= (self.Graph_1.channel_count - 1)
+              while i < self.Graph_1.channel_count :
+               i = i + 2
+               self.Channels_of_Graph_1.addItem(Temporary_String.format(i))
+               self.Graph_1.Increase_Channels()
+               
+         else:   
+              i= (self.Graph_2.channel_count - 1)
+              while i < self.Graph_2.channel_count :
+               i = i + 2
+               self.Channels_of_Graph_2.addItem(Temporary_String.format(i))
+               self.Graph_2.Increase_Channels()
+               
     
 
     def update_plot(self, number, x, y):
@@ -65,11 +96,11 @@ class Ui_MainWindow(object):
         self.Graph_One = PlotWidget(self.groupBox)
         self.Graph_One.setGeometry(QtCore.QRect(220, 30, 1031, 251))
         self.Graph_One.setObjectName("Graph_One")
-        self.comboBox_3 = QtWidgets.QComboBox(self.groupBox)
-        self.comboBox_3.setGeometry(QtCore.QRect(1280, 60, 221, 31))
-        self.comboBox_3.setStyleSheet("background-color:#3366ff;")
-        self.comboBox_3.setObjectName("comboBox_3")
-        self.comboBox_3.addItem("")
+        self.Channels_of_Graph_1 = QtWidgets.QComboBox(self.groupBox)
+        self.Channels_of_Graph_1.setGeometry(QtCore.QRect(1280, 60, 221, 31))
+        self.Channels_of_Graph_1.setStyleSheet("background-color:#3366ff;")
+        self.Channels_of_Graph_1.setObjectName("comboBox_3")
+        self.Channels_of_Graph_1.addItem("")
         self.horizontalScrollBar = QtWidgets.QScrollBar(self.groupBox)
         self.horizontalScrollBar.setEnabled(False)
         self.horizontalScrollBar.setGeometry(QtCore.QRect(220, 290, 1041, 16))
@@ -97,10 +128,10 @@ class Ui_MainWindow(object):
         self.pushButton_19.setGeometry(QtCore.QRect(1390, 110, 111, 31))
         self.pushButton_19.setStyleSheet("background-color:#3366ff;")
         self.pushButton_19.setObjectName("pushButton_19")
-        self.pushButton_20 = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton_20.setGeometry(QtCore.QRect(1390, 160, 111, 31))
-        self.pushButton_20.setStyleSheet("background-color:#3366ff;")
-        self.pushButton_20.setObjectName("pushButton_20")
+        self.Add_Channel_of_Graph_1 = QtWidgets.QPushButton(self.groupBox, clicked=lambda: self.Add_Channel(1))
+        self.Add_Channel_of_Graph_1.setGeometry(QtCore.QRect(1390, 160, 111, 31))
+        self.Add_Channel_of_Graph_1.setStyleSheet("background-color:#3366ff;")
+        self.Add_Channel_of_Graph_1.setObjectName("pushButton_20")
         self.label = QtWidgets.QLabel(self.groupBox)
         self.label.setGeometry(QtCore.QRect(1320, 240, 111, 21))
         self.label.setObjectName("label")
@@ -111,9 +142,9 @@ class Ui_MainWindow(object):
         self.horizontalSlider.setGeometry(QtCore.QRect(1270, 260, 201, 21))
         self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalSlider.setObjectName("horizontalSlider")
-        self.Graph_One_2 = PlotWidget(self.groupBox)
-        self.Graph_One_2.setGeometry(QtCore.QRect(220, 330, 1031, 251))
-        self.Graph_One_2.setObjectName("Graph_One_2")
+        self.Graph_Two = PlotWidget(self.groupBox)
+        self.Graph_Two.setGeometry(QtCore.QRect(220, 330, 1031, 251))
+        self.Graph_Two.setObjectName("Graph_One_2")
         self.horizontalScrollBar_2 = QtWidgets.QScrollBar(self.groupBox)
         self.horizontalScrollBar_2.setEnabled(False)
         self.horizontalScrollBar_2.setGeometry(QtCore.QRect(220, 590, 1041, 16))
@@ -126,18 +157,18 @@ class Ui_MainWindow(object):
         self.pushButton_22.setGeometry(QtCore.QRect(1390, 420, 111, 31))
         self.pushButton_22.setStyleSheet("background-color:#3366ff;")
         self.pushButton_22.setObjectName("pushButton_22")
-        self.comboBox_4 = QtWidgets.QComboBox(self.groupBox)
-        self.comboBox_4.setGeometry(QtCore.QRect(1280, 370, 221, 31))
-        self.comboBox_4.setStyleSheet("background-color:#3366ff;")
-        self.comboBox_4.setObjectName("comboBox_4")
-        self.comboBox_4.addItem("")
-        self.pushButton_29 = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton_29.setGeometry(QtCore.QRect(1280, 470, 101, 31))
-        self.pushButton_29.setStyleSheet("background-color:#3366ff;")
+        self.Channels_of_Graph_2 = QtWidgets.QComboBox(self.groupBox)
+        self.Channels_of_Graph_2.setGeometry(QtCore.QRect(1280, 370, 221, 31))
+        self.Channels_of_Graph_2.setStyleSheet("background-color:#3366ff;")
+        self.Channels_of_Graph_2.setObjectName("comboBox_4")
+        self.Channels_of_Graph_2.addItem("")
+        self.Move_of_Graph_1 = QtWidgets.QPushButton(self.groupBox, clicked=lambda: self.Move_Signal(self.Signals_List[0]))
+        self.Move_of_Graph_1.setGeometry(QtCore.QRect(1280, 470, 101, 31))
+        self.Move_of_Graph_1.setStyleSheet("background-color:#3366ff;")
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap("Assets/move-to.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_29.setIcon(icon2)
-        self.pushButton_29.setObjectName("pushButton_29")
+        self.Move_of_Graph_1.setIcon(icon2)
+        self.Move_of_Graph_1.setObjectName("pushButton_29")
         self.label_4 = QtWidgets.QLabel(self.groupBox)
         self.label_4.setGeometry(QtCore.QRect(1340, 340, 111, 16))
         self.label_4.setObjectName("label_4")
@@ -145,10 +176,10 @@ class Ui_MainWindow(object):
         self.pushButton_14.setGeometry(QtCore.QRect(1280, 420, 101, 31))
         self.pushButton_14.setStyleSheet("background-color:#3366ff;")
         self.pushButton_14.setObjectName("pushButton_14")
-        self.pushButton_23 = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton_23.setGeometry(QtCore.QRect(1390, 470, 111, 31))
-        self.pushButton_23.setStyleSheet("background-color:#3366ff;")
-        self.pushButton_23.setObjectName("pushButton_23")
+        self.Add_Channel_of_Graph_2 = QtWidgets.QPushButton(self.groupBox, clicked=lambda: self.Add_Channel(2))
+        self.Add_Channel_of_Graph_2.setGeometry(QtCore.QRect(1390, 470, 111, 31))
+        self.Add_Channel_of_Graph_2.setStyleSheet("background-color:#3366ff;")
+        self.Add_Channel_of_Graph_2.setObjectName("pushButton_23")
         self.lcdNumber_2 = QtWidgets.QLCDNumber(self.groupBox)
         self.lcdNumber_2.setGeometry(QtCore.QRect(1480, 570, 64, 23))
         self.lcdNumber_2.setObjectName("lcdNumber_2")
@@ -179,11 +210,11 @@ class Ui_MainWindow(object):
         icon4.addPixmap(QtGui.QPixmap("Assets/load1.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.Load1_Button.setIcon(icon4)
         self.Load1_Button.setObjectName("Load1_Button")
-        self.pushButton_30 = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton_30.setGeometry(QtCore.QRect(1280, 160, 101, 31))
-        self.pushButton_30.setStyleSheet("background-color:#3366ff;")
-        self.pushButton_30.setIcon(icon2)
-        self.pushButton_30.setObjectName("pushButton_30")
+        self.Move_of_Graph_2 = QtWidgets.QPushButton(self.groupBox, clicked=lambda: self.Move_Signal(self.Signals_List[0]))
+        self.Move_of_Graph_2.setGeometry(QtCore.QRect(1280, 160, 101, 31))
+        self.Move_of_Graph_2.setStyleSheet("background-color:#3366ff;")
+        self.Move_of_Graph_2.setIcon(icon2)
+        self.Move_of_Graph_2.setObjectName("pushButton_30")
         self.pushButton_25 = QtWidgets.QPushButton(self.groupBox)
         self.pushButton_25.setGeometry(QtCore.QRect(10, 520, 191, 31))
         self.pushButton_25.setStyleSheet("background-color:#3366ff;")
@@ -269,26 +300,26 @@ class Ui_MainWindow(object):
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt; font-weight:600;\">Live Signal Viewer</span></p></body></html>"))
         self.groupBox.setTitle(_translate("MainWindow", "Channels"))
-        self.comboBox_3.setItemText(0, _translate("MainWindow", "Channel 1"))
+        self.Channels_of_Graph_1.setItemText(0, _translate("MainWindow", "Channel 1"))
         self.pushButton_8.setText(_translate("MainWindow", "   Play         "))
         self.pushButton_9.setText(_translate("MainWindow", "  Rewind     "))
         self.pushButton_13.setText(_translate("MainWindow", "Edit Label"))
         self.pushButton_19.setText(_translate("MainWindow", "Select Color"))
-        self.pushButton_20.setText(_translate("MainWindow", "Add Channel"))
+        self.Add_Channel_of_Graph_1.setText(_translate("MainWindow", "Add Channel"))
         self.label.setText(_translate("MainWindow", "Cine Speed"))
         self.label_3.setText(_translate("MainWindow", "Graph 1"))
         self.pushButton_22.setText(_translate("MainWindow", "Select Color"))
-        self.comboBox_4.setItemText(0, _translate("MainWindow", "Channel 1"))
-        self.pushButton_29.setText(_translate("MainWindow", "  Move"))
+        self.Channels_of_Graph_2.setItemText(0, _translate("MainWindow", "Channel 1"))
+        self.Move_of_Graph_1.setText(_translate("MainWindow", "  Move"))
         self.label_4.setText(_translate("MainWindow", "Graph 2"))
         self.pushButton_14.setText(_translate("MainWindow", "Edit Label"))
-        self.pushButton_23.setText(_translate("MainWindow", "Add Channel"))
+        self.Add_Channel_of_Graph_2.setText(_translate("MainWindow", "Add Channel"))
         self.label_2.setText(_translate("MainWindow", "Cine Speed"))
         self.pushButton_10.setText(_translate("MainWindow", "  Link Graphs"))
         self.checkBox_2.setText(_translate("MainWindow", "Hide Signal"))
         self.checkBox_4.setText(_translate("MainWindow", "Hide Signal"))
         self.Load1_Button.setText(_translate("MainWindow", "  Load Signal"))
-        self.pushButton_30.setText(_translate("MainWindow", "  Move"))
+        self.Move_of_Graph_2.setText(_translate("MainWindow", "  Move"))
         self.pushButton_25.setText(_translate("MainWindow", "  Rewind     "))
         self.pushButton_15.setText(_translate("MainWindow", "   Play         "))
         self.Load2_Button.setText(_translate("MainWindow", "  Load Signal"))
