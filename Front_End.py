@@ -16,11 +16,13 @@ import Graph_Class
 
 
 class Ui_MainWindow(object):
-    Signals_List=[]
-    Graph_1 = Graph_Class.Graph(1)
-    Graph_2 = Graph_Class.Graph(2)
 
-    Snapshots_Count = 0
+    def __init__(self): 
+        self.Graph_1 = Graph_Class.Graph(1, self)
+        self.Graph_2 = Graph_Class.Graph(2, self)
+        self.Signals_List=[]
+        self.Snapshots_Count = 0
+
     def Take_Snapshot(self):
         #Shortcut to take screenshot
         pyautogui.hotkey("win", "shift", "s")
@@ -44,34 +46,16 @@ class Ui_MainWindow(object):
         # self.timer1.timeout.connect(lambda: self.update_plot(1, X_Coordinates, Y_Coordinates))
         # self.timer1.start(1000)  # update every second
 
-    def Plot_Signal(self,Signal):
-            if Signal.graph_number == 1:
-                    self.Graph_One.plot(x = Signal.X_Coordinates, y = Signal.Y_Coordinates, pen = Signal.color)
-            else:
-                self.Graph_Two.plot(x = Signal.X_Coordinates, y = Signal.Y_Coordinates, pen = Signal.color)
+    def Plot_Signal(self, Signal):
+        if Signal.graph_number == 1:
+                self.Graph_One.plot(x = Signal.X_Coordinates, y = Signal.Y_Coordinates, pen = Signal.color)
+        else:
+            self.Graph_Two.plot(x = Signal.X_Coordinates, y = Signal.Y_Coordinates, pen = Signal.color)
 
     def Move_Signal(self,Signal):
-         Signal.change_graph_number()
-         self.Plot_Signal(Signal)  
-
-    def Add_Channel(self,Graph_Number):
-         Temporary_String = "Channel {}"
-         if Graph_Number == 1:
-              i= (self.Graph_1.channel_count - 1)
-              while i < self.Graph_1.channel_count :
-               i = i + 2
-               self.Channels_of_Graph_1.addItem(Temporary_String.format(i))
-               self.Graph_1.Increase_Channels()
+        Signal.change_graph_number()
+        self.Plot_Signal(Signal)  
                
-         else:   
-              i= (self.Graph_2.channel_count - 1)
-              while i < self.Graph_2.channel_count :
-               i = i + 2
-               self.Channels_of_Graph_2.addItem(Temporary_String.format(i))
-               self.Graph_2.Increase_Channels()
-               
-    
-
     def update_plot(self, number, x, y):
         # Code to get new data and update the plot
         if number == 1:
@@ -100,7 +84,7 @@ class Ui_MainWindow(object):
         self.Channels_of_Graph_1.setGeometry(QtCore.QRect(1280, 60, 221, 31))
         self.Channels_of_Graph_1.setStyleSheet("background-color:#3366ff;")
         self.Channels_of_Graph_1.setObjectName("comboBox_3")
-        self.Channels_of_Graph_1.addItem("")
+        self.Channels_of_Graph_1.addItem("") 
         self.horizontalScrollBar = QtWidgets.QScrollBar(self.groupBox)
         self.horizontalScrollBar.setEnabled(False)
         self.horizontalScrollBar.setGeometry(QtCore.QRect(220, 290, 1041, 16))
@@ -128,7 +112,7 @@ class Ui_MainWindow(object):
         self.pushButton_19.setGeometry(QtCore.QRect(1390, 110, 111, 31))
         self.pushButton_19.setStyleSheet("background-color:#3366ff;")
         self.pushButton_19.setObjectName("pushButton_19")
-        self.Add_Channel_of_Graph_1 = QtWidgets.QPushButton(self.groupBox, clicked=lambda: self.Add_Channel(1))
+        self.Add_Channel_of_Graph_1 = QtWidgets.QPushButton(self.groupBox, clicked=lambda: self.Graph_1.Add_Channel())
         self.Add_Channel_of_Graph_1.setGeometry(QtCore.QRect(1390, 160, 111, 31))
         self.Add_Channel_of_Graph_1.setStyleSheet("background-color:#3366ff;")
         self.Add_Channel_of_Graph_1.setObjectName("pushButton_20")
@@ -176,7 +160,7 @@ class Ui_MainWindow(object):
         self.pushButton_14.setGeometry(QtCore.QRect(1280, 420, 101, 31))
         self.pushButton_14.setStyleSheet("background-color:#3366ff;")
         self.pushButton_14.setObjectName("pushButton_14")
-        self.Add_Channel_of_Graph_2 = QtWidgets.QPushButton(self.groupBox, clicked=lambda: self.Add_Channel(2))
+        self.Add_Channel_of_Graph_2 = QtWidgets.QPushButton(self.groupBox, clicked=lambda: self.Graph_2.Add_Channel())
         self.Add_Channel_of_Graph_2.setGeometry(QtCore.QRect(1390, 470, 111, 31))
         self.Add_Channel_of_Graph_2.setStyleSheet("background-color:#3366ff;")
         self.Add_Channel_of_Graph_2.setObjectName("pushButton_23")
