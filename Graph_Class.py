@@ -1,9 +1,9 @@
-from PyQt5 import QtWidgets
-from pyqtgraph import PlotDataItem
+from PyQt5 import QtWidgets,QtCore
 from PyQt5.QtWidgets import QFileDialog
 import wfdb, Signal_Class
 import numpy as np
 from Channel_Class import Channel
+from random import randint
 
 
 
@@ -19,10 +19,10 @@ class Graph:
         self.Signal_Plotter = None
         self.First_Channel = Channel(1)
         self.CHANNELS.append(self.First_Channel)
-
-    def Plot_Signal(self, signal):
-        self.Graph_Window.plot(x = signal.X_Coordinates, y = signal.Y_Coordinates, pen = signal.color, name="temp_Signal")
         
+
+    
+
 
     def Update_Current_Channel(self): 
         if self.graph_number == 1:
@@ -85,9 +85,9 @@ class Graph:
         Record = wfdb.rdrecord(File_Path[:-4])
         Y_Coordinates = list(Record.p_signal[:,0])
         X_Coordinates = list(np.arange(len(Y_Coordinates)))
-        Sample_Signal = Signal_Class.Signal(col = "g", X_List = X_Coordinates, Y_list = Y_Coordinates, graph = self.graph_number)
+        Sample_Signal = Signal_Class.Signal(col = "g", X_List = X_Coordinates, Y_list = Y_Coordinates, graphNum = self.graph_number, graph = self.Graph_Window)
         self.Add_Signal(Sample_Signal)
-        self.Plot_Signal(Sample_Signal)   
+        Sample_Signal.Plot_Signal() 
      
 
     def ZoomIn(self):
