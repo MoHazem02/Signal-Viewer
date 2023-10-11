@@ -50,7 +50,10 @@ class Graph:
                     channel.Signal = signal     
                     break
         self.signal_count += 1
-        
+        if self.graph_number == 1:
+            self.UI_Window.horizontalScrollBar.setEnabled(True)
+        else:
+            self.UI_Window.horizontalScrollBar_2.setEnabled(True)
 
                 
     def Add_Channel(self):
@@ -86,3 +89,10 @@ class Graph:
         self.Add_Signal(Sample_Signal)
         self.Plot_Signal(Sample_Signal)   
      
+
+    def ZoomIn(self):
+        pass
+
+
+    def ZoomOut(self):
+        pass
