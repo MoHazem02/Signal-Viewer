@@ -91,8 +91,9 @@ class Graph:
      
 
     def ZoomIn(self):
-        pass
+        self.Graph_Window.getViewBox().scaleBy((0.9, 0.9))
 
 
     def ZoomOut(self):
-        pass
+        self.Graph_Window.getViewBox().scaleBy((1.1, 1.1))
+
