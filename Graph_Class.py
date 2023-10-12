@@ -1,14 +1,13 @@
-from PyQt5 import QtWidgets,QtCore
+from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QFileDialog
 import wfdb, Signal_Class
 import numpy as np
 from Channel_Class import Channel
-from random import randint
 from pyqtgraph import LegendItem
 import pyqtgraph as pg
 
 class Graph:
-    def __init__(self, Graph_Number, ui_mainwindow, graph_window = None):
+    def __init__(self, Graph_Number, ui_mainwindow, other_graph, graph_window = None ):
         self.textbox = None
         self.channel_count = 1
         self.signal_count = 0
@@ -17,24 +16,23 @@ class Graph:
         self.Graph_Window = graph_window
         self.Current_Channel = 1
         self.CHANNELS = []
-        self.Signal_Plotter = None
         self.First_Channel = Channel(1)
         self.CHANNELS.append(self.First_Channel)
+        self.Linked = False # Whether the 2 graphs are linked or not
+        self.Other_Graph = other_graph # Reference to the other graph
+        self.Current_Frame = 0
         
+
     def Update_Current_Channel(self): 
         if self.graph_number == 1:
             self.Current_Channel = int(str(self.UI_Window.Channels_of_Graph_1.currentText())[-1])
         else:
             self.Current_Channel = int(str(self.UI_Window.Channels_of_Graph_2.currentText())[-1])
 
+
     def Remove_Signal(self, signal):
-        #self.Graph_Window.removeItem(signal)
-        #self.Graph_Window.clear()
-        PlotDataItem = self.Signal_Plotter.getPlotItem()
-        self.Signal_Plotter.removeItem(PlotDataItem)
-        self.Signals.remove(signal)
-        self.Graph_Window.update()
-        self.signal_count -= 1
+        # TODO
+        pass
 
 
     def Add_Signal(self, signal):
@@ -90,11 +88,16 @@ class Graph:
 
     def ZoomIn(self):
         self.Graph_Window.getViewBox().scaleBy((0.9, 0.9))
+        if self.Linked:
+            self.Other_Graph.Graph_Window.getViewBox().scaleBy((0.9, 0.9))
 
 
     def ZoomOut(self):
         self.Graph_Window.getViewBox().scaleBy((1.1, 1.1))
+        if self.Linked:
+            self.Other_Graph.Graph_Window.getViewBox().scaleBy((1.1, 1.1))
         
+
     def Toggle_Hide_Unhide(self):
         # Get the current channel
         self.current_channel = self.CHANNELS[self.Current_Channel - 1]
@@ -105,7 +108,8 @@ class Graph:
                 self.current_channel.Signal.unhide_signal()
             else:
                 self.current_channel.Signal.hide_signal()
-                
+
+
     def Add_Legend(self):
         text = self.textbox.text()
         current_signal = None
@@ -133,8 +137,7 @@ class Graph:
             current_signal.legend = self.Legend
         else:
             print("No signal found in the current channel.")
-            
-            
+              
         
     def Enable_Line_Edit(self):
         if self.textbox is not None:
@@ -142,3 +145,10 @@ class Graph:
             self.textbox.show()  # Make the lineEdit widget visible
         else:
             print("lineEdit widget does not exist")
+
+
+    def Link_Unlink(self):
+        # We basically toggle what is already there
+        self.Other_Graph.Linked = not self.Linked
+        self.Linked = not self.Linked
+

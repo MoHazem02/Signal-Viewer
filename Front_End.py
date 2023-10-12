@@ -19,8 +19,11 @@ class Ui_MainWindow(object):
     def __init__(self): 
         # Be careful there is a difference between Graph_1 and Graph_One. The first one is an object of the class we created, but the second one is the name
         # of the plot widget of the Top Graph.
-        self.Graph_1 = Graph_Class.Graph(1, self)
-        self.Graph_2 = Graph_Class.Graph(2, self)
+        self.Graph_1 = Graph_Class.Graph(1, self, None)
+        self.Graph_2 = Graph_Class.Graph(2, self, None)
+        # Every graph has to be able to access the other one as they can be Linked
+        self.Graph_1.Other_Graph = self.Graph_2
+        self.Graph_2.Other_Graph = self.Graph_1
         self.Snapshots_Count = 0
 
     def Take_Snapshot(self):
@@ -165,13 +168,13 @@ class Ui_MainWindow(object):
         self.label_2 = QtWidgets.QLabel(self.groupBox)
         self.label_2.setGeometry(QtCore.QRect(1320, 550, 111, 21))
         self.label_2.setObjectName("label_2")
-        self.pushButton_10 = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton_10.setGeometry(QtCore.QRect(10, 300, 191, 31))
-        self.pushButton_10.setStyleSheet("background-color:#3366ff;")
+        self.Link_Button = QtWidgets.QPushButton(self.groupBox, clicked = lambda: self.Graph_1.Link_Unlink())
+        self.Link_Button.setGeometry(QtCore.QRect(10, 300, 191, 31))
+        self.Link_Button.setStyleSheet("background-color:#3366ff;")
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap("Assets/link1.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_10.setIcon(icon3)
-        self.pushButton_10.setObjectName("pushButton_10")
+        self.Link_Button.setIcon(icon3)
+        self.Link_Button.setObjectName("Link_Button")
         self.Hide_Signal_1 = QtWidgets.QCheckBox(self.groupBox)
         self.Hide_Signal_1.clicked.connect(lambda: self.Graph_1.Toggle_Hide_Unhide())
         self.Hide_Signal_1.setGeometry(QtCore.QRect(1400, 200, 111, 20))
@@ -349,7 +352,7 @@ class Ui_MainWindow(object):
         self.Edit_Button_2.setText(_translate("MainWindow", "Edit Label"))
         self.Add_Channel_of_Graph_2.setText(_translate("MainWindow", "Add Channel"))
         self.label_2.setText(_translate("MainWindow", "Cine Speed"))
-        self.pushButton_10.setText(_translate("MainWindow", "    Link / Unlink Graphs"))
+        self.Link_Button.setText(_translate("MainWindow", "    Link / Unlink Graphs"))
         self.Hide_Signal_1.setText(_translate("MainWindow", "Hide Signal"))
         self.Hide_Signal_2.setText(_translate("MainWindow", "Hide Signal"))
         self.Load1_Button.setText(_translate("MainWindow", "  Load Signal"))
