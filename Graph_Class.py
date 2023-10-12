@@ -4,11 +4,12 @@ import wfdb, Signal_Class
 import numpy as np
 from Channel_Class import Channel
 from random import randint
-
-
+from pyqtgraph import LegendItem
+import pyqtgraph as pg
 
 class Graph:
     def __init__(self, Graph_Number, ui_mainwindow, graph_window = None):
+        self.textbox = None
         self.channel_count = 1
         self.signal_count = 0
         self.graph_number = Graph_Number
@@ -20,10 +21,6 @@ class Graph:
         self.First_Channel = Channel(1)
         self.CHANNELS.append(self.First_Channel)
         
-
-    
-
-
     def Update_Current_Channel(self): 
         if self.graph_number == 1:
             self.Current_Channel = int(str(self.UI_Window.Channels_of_Graph_1.currentText())[-1])
@@ -52,6 +49,7 @@ class Graph:
         self.signal_count += 1
         if self.graph_number == 1:
             self.UI_Window.horizontalScrollBar.setEnabled(True)
+            self.enable_line_edit()
         else:
             self.UI_Window.horizontalScrollBar_2.setEnabled(True)
 
@@ -77,7 +75,7 @@ class Graph:
             self.Update_Current_Channel()
             signal = self.CHANNELS[self.Current_Channel - 1].Signal
             signal.color = color
-            self.Plot_Signal(signal)
+            signal.Plot_Signal()
 
 
     def Browse_Signals(self):
@@ -96,4 +94,52 @@ class Graph:
 
     def ZoomOut(self):
         self.Graph_Window.getViewBox().scaleBy((1.1, 1.1))
+        
+    def toggle_hide_unhide(self):
+        # Get the current channel
+        self.current_channel = self.CHANNELS[self.Current_Channel - 1]
+        # Check if the channel has a signal
+        if self.current_channel.Signal is not None:
+            # Toggle the visibility of the signal
+            if self.current_channel.Signal.hide:
+                self.current_channel.Signal.unhide_signal()
+            else:
+                self.current_channel.Signal.hide_signal()
+                
+    def add_legend(self):
+        text = self.textbox.text()
+        current_signal = None
+        # Get the current signal
+        if self.Current_Channel:
+            current_signal = self.CHANNELS[self.Current_Channel - 1].Signal
+        else:
+            print("No current channel selected.")
+            return
 
+        # Check if a current signal was found
+        if current_signal is not None:
+            # Create a name for the legend
+            legend_name = text + str(self.Current_Channel)
+
+            # Add the signal to the plot with the legend name
+            current_signal.data_line = self.Graph_Window.plot(
+                pen=current_signal.color, 
+                name=legend_name
+                )
+
+            # Add a legend to the plot
+            self.Legend = self.Graph_Window.addLegend()
+
+            # Store the legend in the signal
+            current_signal.legend = self.Legend
+        else:
+            print("No signal found in the current channel.")
+            
+            
+        
+    def enable_line_edit(self):
+        if self.textbox is not None:
+            self.textbox.setReadOnly(False)  # Make the QLineEdit widget editable
+            self.textbox.show()  # Make the lineEdit widget visible
+        else:
+            print("lineEdit widget does not exist")

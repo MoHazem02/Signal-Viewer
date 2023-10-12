@@ -173,6 +173,7 @@ class Ui_MainWindow(object):
         self.pushButton_10.setIcon(icon3)
         self.pushButton_10.setObjectName("pushButton_10")
         self.Hide_Signal_1 = QtWidgets.QCheckBox(self.groupBox)
+        self.Hide_Signal_1.clicked.connect(lambda: self.Graph_1.toggle_hide_unhide())
         self.Hide_Signal_1.setGeometry(QtCore.QRect(1400, 200, 111, 20))
         self.Hide_Signal_1.setObjectName("Hide_Signal_1")
         self.Hide_Signal_2 = QtWidgets.QCheckBox(self.groupBox)
@@ -230,11 +231,26 @@ class Ui_MainWindow(object):
         self.pushButton_2.setGeometry(QtCore.QRect(260, 100, 61, 31))
         self.pushButton_2.setStyleSheet("background-color:#3366ff;")
         self.pushButton_2.setText("")
+        # Create the QLineEdit widget for the legend name
         self.lineEdit = QtWidgets.QLineEdit(self.groupBox)
-        self.lineEdit.setGeometry(QtCore.QRect(1390, 110, 113, 31))
+        self.lineEdit.setGeometry(QtCore.QRect(1390, 110, 113, 31))  # Adjust the position and size as needed
         self.lineEdit.setStyleSheet("border: 1px solid blue\n"";")
-        self.lineEdit.setText("")
         self.lineEdit.setObjectName("lineEdit")
+        self.lineEdit.setReadOnly(True)  # Make the QLineEdit widget read-only initially
+        self.Graph_1.textbox = self.lineEdit
+
+        # Create the "Edit Label" button
+        self.Edit_Label_1 = QtWidgets.QPushButton(self.groupBox, clicked = lambda: self.Graph_1.add_legend())
+        self.Edit_Label_1.setGeometry(QtCore.QRect(1280, 110, 101, 31))  # Adjust the position and size as needed
+        self.Edit_Label_1.setStyleSheet("background-color:#3366ff;")
+        self.Edit_Label_1.setObjectName("Edit_Label_1")
+
+        # Connect the clicked signal of the "Edit Label" button to the enable_line_edit function
+        self.Edit_Label_1.clicked.connect(self.Graph_1.enable_line_edit)
+
+        # Connect the returnPressed signal of the QLineEdit to the add_legend function
+        self.lineEdit.returnPressed.connect(self.Graph_1.add_legend)
+
         self.lineEdit_2 = QtWidgets.QLineEdit(self.groupBox)
         self.lineEdit_2.setGeometry(QtCore.QRect(1390, 420, 113, 31))
         self.lineEdit_2.setStyleSheet("border: 1px solid blue\n"";")
