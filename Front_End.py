@@ -91,10 +91,10 @@ class Ui_MainWindow(object):
         icon1.addPixmap(QtGui.QPixmap("Assets/rewind.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.Rewind_1.setIcon(icon1)
         self.Rewind_1.setObjectName("Rewind_1")
-        self.pushButton_13 = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton_13.setGeometry(QtCore.QRect(1280, 110, 101, 31))
-        self.pushButton_13.setStyleSheet("background-color:#3366ff;")
-        self.pushButton_13.setObjectName("pushButton_13")
+        # self.Edit_Button_1 = QtWidgets.QPushButton(self.groupBox)
+        # self.Edit_Button_1.setGeometry(QtCore.QRect(1280, 110, 101, 31))
+        # self.Edit_Button_1.setStyleSheet("background-color:#3366ff;")
+        # self.Edit_Button_1.setObjectName("Edit_Button_1")
         self.Edit_Label_1 = QtWidgets.QPushButton(self.groupBox, clicked = lambda: self.Show_Line_Edit(self.groupBox, 1))
         self.Edit_Label_1.setGeometry(QtCore.QRect(1280, 110, 101, 31))
         self.Edit_Label_1.setStyleSheet("background-color:#3366ff;")
@@ -147,10 +147,10 @@ class Ui_MainWindow(object):
         self.label_4 = QtWidgets.QLabel(self.groupBox)
         self.label_4.setGeometry(QtCore.QRect(1340, 340, 111, 16))
         self.label_4.setObjectName("label_4")
-        self.pushButton_14 = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton_14.setGeometry(QtCore.QRect(1280, 420, 101, 31))
-        self.pushButton_14.setStyleSheet("background-color:#3366ff;")
-        self.pushButton_14.setObjectName("pushButton_14")
+        self.Edit_Button_2 = QtWidgets.QPushButton(self.groupBox)
+        self.Edit_Button_2.setGeometry(QtCore.QRect(1280, 420, 101, 31))
+        self.Edit_Button_2.setStyleSheet("background-color:#3366ff;")
+        self.Edit_Button_2.setObjectName("Edit_Button_2")
         self.Add_Channel_of_Graph_2 = QtWidgets.QPushButton(self.groupBox, clicked=lambda: self.Graph_2.Add_Channel())
         self.Add_Channel_of_Graph_2.setGeometry(QtCore.QRect(1390, 470, 111, 31))
         self.Add_Channel_of_Graph_2.setStyleSheet("background-color:#3366ff;")
@@ -173,7 +173,7 @@ class Ui_MainWindow(object):
         self.pushButton_10.setIcon(icon3)
         self.pushButton_10.setObjectName("pushButton_10")
         self.Hide_Signal_1 = QtWidgets.QCheckBox(self.groupBox)
-        self.Hide_Signal_1.clicked.connect(lambda: self.Graph_1.toggle_hide_unhide())
+        self.Hide_Signal_1.clicked.connect(lambda: self.Graph_1.Toggle_Hide_Unhide())
         self.Hide_Signal_1.setGeometry(QtCore.QRect(1400, 200, 111, 20))
         self.Hide_Signal_1.setObjectName("Hide_Signal_1")
         self.Hide_Signal_2 = QtWidgets.QCheckBox(self.groupBox)
@@ -240,16 +240,16 @@ class Ui_MainWindow(object):
         self.Graph_1.textbox = self.lineEdit
 
         # Create the "Edit Label" button
-        self.Edit_Label_1 = QtWidgets.QPushButton(self.groupBox, clicked = lambda: self.Graph_1.add_legend())
+        self.Edit_Label_1 = QtWidgets.QPushButton(self.groupBox, clicked = lambda: self.Graph_1.Add_Legend())
         self.Edit_Label_1.setGeometry(QtCore.QRect(1280, 110, 101, 31))  # Adjust the position and size as needed
         self.Edit_Label_1.setStyleSheet("background-color:#3366ff;")
         self.Edit_Label_1.setObjectName("Edit_Label_1")
 
-        # Connect the clicked signal of the "Edit Label" button to the enable_line_edit function
-        self.Edit_Label_1.clicked.connect(self.Graph_1.enable_line_edit)
+        # Connect the clicked signal of the "Edit Label" button to the Enable_Line_Edit function
+        self.Edit_Label_1.clicked.connect(self.Graph_1.Enable_Line_Edit)
 
         # Connect the returnPressed signal of the QLineEdit to the add_legend function
-        self.lineEdit.returnPressed.connect(self.Graph_1.add_legend)
+        self.lineEdit.returnPressed.connect(self.Graph_1.Add_Legend)
 
         self.lineEdit_2 = QtWidgets.QLineEdit(self.groupBox)
         self.lineEdit_2.setGeometry(QtCore.QRect(1390, 420, 113, 31))
@@ -335,7 +335,7 @@ class Ui_MainWindow(object):
         self.Channels_of_Graph_1.setItemText(0, _translate("MainWindow", "Channel 1"))
         self.pushButton_8.setText(_translate("MainWindow", "   Play/Pause "))
         self.Rewind_1.setText(_translate("MainWindow", "  Rewind     "))
-        self.pushButton_13.setText(_translate("MainWindow", "Edit Label"))
+        # self.Edit_Button_1.setText(_translate("MainWindow", "Edit Label"))
         self.Select_Color_1.setText(_translate("MainWindow", "Select Color"))
         self.Edit_Label_1.setText(_translate("MainWindow", "Edit Label"))
         self.Select_Color_1.setText(_translate("MainWindow", "Select Color"))
@@ -346,7 +346,7 @@ class Ui_MainWindow(object):
         self.Channels_of_Graph_2.setItemText(0, _translate("MainWindow", "Channel 1"))
         self.Move_of_Graph_1.setText(_translate("MainWindow", "  Move"))
         self.label_4.setText(_translate("MainWindow", "Graph 2"))
-        self.pushButton_14.setText(_translate("MainWindow", "Edit Label"))
+        self.Edit_Button_2.setText(_translate("MainWindow", "Edit Label"))
         self.Add_Channel_of_Graph_2.setText(_translate("MainWindow", "Add Channel"))
         self.label_2.setText(_translate("MainWindow", "Cine Speed"))
         self.pushButton_10.setText(_translate("MainWindow", "    Link / Unlink Graphs"))

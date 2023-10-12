@@ -49,7 +49,7 @@ class Graph:
         self.signal_count += 1
         if self.graph_number == 1:
             self.UI_Window.horizontalScrollBar.setEnabled(True)
-            self.enable_line_edit()
+            self.Enable_Line_Edit()
         else:
             self.UI_Window.horizontalScrollBar_2.setEnabled(True)
 
@@ -95,7 +95,7 @@ class Graph:
     def ZoomOut(self):
         self.Graph_Window.getViewBox().scaleBy((1.1, 1.1))
         
-    def toggle_hide_unhide(self):
+    def Toggle_Hide_Unhide(self):
         # Get the current channel
         self.current_channel = self.CHANNELS[self.Current_Channel - 1]
         # Check if the channel has a signal
@@ -106,11 +106,12 @@ class Graph:
             else:
                 self.current_channel.Signal.hide_signal()
                 
-    def add_legend(self):
+    def Add_Legend(self):
         text = self.textbox.text()
         current_signal = None
         # Get the current signal
         if self.Current_Channel:
+            # TODO Each Channel has a signal, don't HASH  
             current_signal = self.CHANNELS[self.Current_Channel - 1].Signal
         else:
             print("No current channel selected.")
@@ -119,13 +120,11 @@ class Graph:
         # Check if a current signal was found
         if current_signal is not None:
             # Create a name for the legend
+            # TODO Legend should not include Channel Numbers
             legend_name = text + str(self.Current_Channel)
 
             # Add the signal to the plot with the legend name
-            current_signal.data_line = self.Graph_Window.plot(
-                pen=current_signal.color, 
-                name=legend_name
-                )
+            current_signal.data_line = self.Graph_Window.plot(pen=current_signal.color, name=legend_name)
 
             # Add a legend to the plot
             self.Legend = self.Graph_Window.addLegend()
@@ -137,7 +136,7 @@ class Graph:
             
             
         
-    def enable_line_edit(self):
+    def Enable_Line_Edit(self):
         if self.textbox is not None:
             self.textbox.setReadOnly(False)  # Make the QLineEdit widget editable
             self.textbox.show()  # Make the lineEdit widget visible
