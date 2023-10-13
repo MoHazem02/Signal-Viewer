@@ -49,13 +49,19 @@ class Signal:
 
 
     def Update_Plot_Data(self):
+        
+
         if not self.pause:
             self.i += self.speed
             self.data_line.setData(self.X_Coordinates[0 : self.i + 1], self.Y_Coordinates[0 : self.i + 1])  # Update the data.
             if not self.hide:
                 self.graph.getViewBox().setXRange(max(self.X_Coordinates[0 : self.i + 1])-100, max(self.X_Coordinates[0 : self.i + 1]))
 
+    
+    
     def toggle_play_pause(self):
         self.pause = not self.pause
+    
+    
     def Update_Cine_Speed(self, speed_value):
         self.speed = speed_value
