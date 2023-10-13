@@ -333,7 +333,8 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuAbout.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.horizontalSlider.valueChanged['int'].connect(self.lcdNumber.display) # type: ignore
+        self.horizontalSlider.valueChanged['int'].connect(self.lcdNumber.display)
+        self.horizontalSlider_2.valueChanged['int'].connect(self.lcdNumber_2.display)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         self.Graph_1.Graph_Window = self.Graph_One
         self.Graph_2.Graph_Window = self.Graph_Two
