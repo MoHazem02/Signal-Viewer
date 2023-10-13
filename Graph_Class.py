@@ -1,11 +1,8 @@
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 import wfdb, Signal_Class
 import numpy as np
 from Channel_Class import Channel
-from random import randint
-from pyqtgraph import LegendItem
-import pyqtgraph as pg
 
 class Graph:
     def __init__(self, Graph_Number, ui_mainwindow, other_graph, graph_window = None ):
@@ -69,7 +66,7 @@ class Graph:
         return new_Channel
 
     
-    def change_color(self):
+    def Change_Color(self):
         
         color = QtWidgets.QColorDialog.getColor()
 
@@ -111,10 +108,10 @@ class Graph:
         if self.current_channel.Signal is not None:
             # Toggle the visibility of the signal
             if self.current_channel.Signal.hide:
-                self.current_channel.Signal.unhide_signal()
+                self.current_channel.Signal.Unhide_Signal()
             else:
                 self.hidden_lines.append(self.current_channel.Signal.data_line)  # Store the data_line
-                self.current_channel.Signal.hide_signal()
+                self.current_channel.Signal.Hide_Signal()
         else:
             pass
 
@@ -161,8 +158,13 @@ class Graph:
         self.Other_Graph.Linked = not self.Linked
         self.Linked = not self.Linked
         
-    def reset(self):
+    def Reset(self):
         self.textbox.setReadOnly(True) #reset the textbox until user add a signal
         #self.Toggle_Hide_Unhide()
+
+    def Cine_Speed(self, value):
+        for channel in self.CHANNELS:
+            channel.Signal.Update_Cine_Speed(value)
+
         
 

@@ -1,15 +1,9 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import QTimer
-from PyQt5.QtWidgets import QInputDialog, QPushButton, QMainWindow, QLabel, QFileDialog, QApplication
-import pyqtgraph as pg
 from pyqtgraph import PlotWidget
-import numpy as np 
 import sys
-from pyqtgraph import PlotWidget
 import pyautogui
 from PIL import ImageGrab
 import time
-import wfdb
 import Graph_Class
 
 
@@ -80,7 +74,7 @@ class Ui_MainWindow(object):
         self.Channels_of_Graph_1.addItem("") 
         
         # Connect the currentIndexChanged signal to a function
-        self.Channels_of_Graph_1.currentIndexChanged.connect(self.Graph_1.reset)
+        self.Channels_of_Graph_1.currentIndexChanged.connect(self.Graph_1.Reset)
         self.Channels_of_Graph_1.currentIndexChanged.connect(self.reset_checkbox)
         
         self.horizontalScrollBar = QtWidgets.QScrollBar(self.groupBox)
@@ -110,7 +104,7 @@ class Ui_MainWindow(object):
         self.Edit_Label_1.setGeometry(QtCore.QRect(1280, 110, 101, 31))
         self.Edit_Label_1.setStyleSheet("background-color:#3366ff;")
         self.Edit_Label_1.setObjectName("Edit_Label_1")
-        self.Select_Color_1 = QtWidgets.QPushButton(self.groupBox, clicked = lambda : self.Graph_1.change_color())
+        self.Select_Color_1 = QtWidgets.QPushButton(self.groupBox, clicked = lambda : self.Graph_1.Change_Color())
         self.Select_Color_1.setGeometry(QtCore.QRect(1280, 150, 101, 31))
         self.Select_Color_1.setStyleSheet("background-color:#3366ff;")
         self.Select_Color_1.setObjectName("Select_Color_1")
@@ -125,6 +119,7 @@ class Ui_MainWindow(object):
         self.lcdNumber.setGeometry(QtCore.QRect(1480, 260, 64, 23))
         self.lcdNumber.setObjectName("lcdNumber")
         self.horizontalSlider = QtWidgets.QSlider(self.groupBox)
+        self.horizontalSlider.valueChanged.connect(lambda: self.Graph_1.Cine_Speed(self.horizontalSlider.value()))
         self.horizontalSlider.setGeometry(QtCore.QRect(1270, 260, 201, 21))
         self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalSlider.setObjectName("horizontalSlider")
@@ -139,7 +134,7 @@ class Ui_MainWindow(object):
         self.label_3 = QtWidgets.QLabel(self.groupBox)
         self.label_3.setGeometry(QtCore.QRect(1340, 30, 111, 16))
         self.label_3.setObjectName("label_3")
-        self.Select_Color_2 = QtWidgets.QPushButton(self.groupBox, clicked = lambda : self.Graph_2.change_color())
+        self.Select_Color_2 = QtWidgets.QPushButton(self.groupBox, clicked = lambda : self.Graph_2.Change_Color())
         self.Select_Color_2.setGeometry(QtCore.QRect(1280, 460, 101, 31))
         self.Select_Color_2.setStyleSheet("background-color:#3366ff;")
         self.Select_Color_2.setObjectName("Select_Color_2")
@@ -170,6 +165,7 @@ class Ui_MainWindow(object):
         self.lcdNumber_2.setGeometry(QtCore.QRect(1480, 570, 64, 23))
         self.lcdNumber_2.setObjectName("lcdNumber_2")
         self.horizontalSlider_2 = QtWidgets.QSlider(self.groupBox)
+        self.horizontalSlider_2.valueChanged.connect(lambda: self.Graph_2.Cine_Speed(self.horizontalSlider.value()))
         self.horizontalSlider_2.setGeometry(QtCore.QRect(1270, 570, 201, 21))
         self.horizontalSlider_2.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalSlider_2.setObjectName("horizontalSlider_2")

@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets,QtCore
+from PyQt5 import QtCore
 
 class Signal:
     def __init__(self, col, X_List, Y_list, graphNum, graph):
@@ -15,15 +15,16 @@ class Signal:
         self.X = []
         self.Y = []
         self.i = 0
+        self.speed = 1
         #Each signal corresponds to a channel, initially channel 1
 
-    def hide_signal(self):
+    def Hide_Signal(self):
         self.graph.removeItem(self.data_line)
         self.hide = True
         #self.data_line.setVisible(False)
         #self.hide = True
 
-    def unhide_signal(self):
+    def Unhide_Signal(self):
         if self.data_line in self.hidden_lines:
             self.graph.addItem(self.data_line)  # Add the data_line back to the graph
             self.hidden_lines.remove(self.data_line)  # Remove the data_line from the list
@@ -31,7 +32,7 @@ class Signal:
         #self.data_line.setVisible(True)
         #self.hide = False
         
-    def change_graph_number(self):
+    def Change_Graph_Number(self):
         if self.graph_number == 1:
             self.graph_number = 2
         else:
@@ -42,12 +43,15 @@ class Signal:
         self.data_line = self.graph.plot(self.X_Coordinates[:1], self.Y_Coordinates[:1], self.legend , pen = self.color )
         self.timer = QtCore.QTimer()
         self.timer.setInterval(100)
-        self.timer.timeout.connect(self.update_plot_data)
+        self.timer.timeout.connect(self.Update_Plot_Data)
         self.timer.start()
 
 
-    def update_plot_data(self):
+    def Update_Plot_Data(self):
 
-        self.i += 1
+        self.i += self.speed
         self.data_line.setData(self.X_Coordinates[0 : self.i + 1], self.Y_Coordinates[0 : self.i + 1])  # Update the data.
         self.graph.getViewBox().setXRange(max(self.X_Coordinates[0 : self.i + 1])-100, max(self.X_Coordinates[0 : self.i + 1]))
+
+    def Update_Cine_Speed(self, speed_value):
+        self.speed = speed_value
