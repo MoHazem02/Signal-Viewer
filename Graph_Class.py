@@ -3,11 +3,13 @@ from PyQt5.QtWidgets import QFileDialog
 import wfdb, Signal_Class
 import numpy as np
 from Channel_Class import Channel
+from random import randint
 from pyqtgraph import LegendItem
 import pyqtgraph as pg
 
 class Graph:
     def __init__(self, Graph_Number, ui_mainwindow, other_graph, graph_window = None ):
+        self.hidden_lines = []  # Add this line to initialize the list
         self.textbox = None
         self.channel_count = 1
         self.signal_count = 0
@@ -16,11 +18,14 @@ class Graph:
         self.Graph_Window = graph_window
         self.Current_Channel = 1
         self.CHANNELS = []
+        self.Signal_Plotter = None
         self.First_Channel = Channel(1)
         self.CHANNELS.append(self.First_Channel)
         self.Linked = False # Whether the 2 graphs are linked or not
         self.Other_Graph = other_graph # Reference to the other graph
         self.Current_Frame = 0
+        
+    
         
 
     def Update_Current_Channel(self): 
@@ -100,6 +105,7 @@ class Graph:
 
     def Toggle_Hide_Unhide(self):
         # Get the current channel
+        self.Update_Current_Channel()
         self.current_channel = self.CHANNELS[self.Current_Channel - 1]
         # Check if the channel has a signal
         if self.current_channel.Signal is not None:
@@ -107,7 +113,10 @@ class Graph:
             if self.current_channel.Signal.hide:
                 self.current_channel.Signal.unhide_signal()
             else:
+                self.hidden_lines.append(self.current_channel.Signal.data_line)  # Store the data_line
                 self.current_channel.Signal.hide_signal()
+        else:
+            pass
 
 
     def Add_Legend(self):
@@ -124,8 +133,7 @@ class Graph:
         # Check if a current signal was found
         if current_signal is not None:
             # Create a name for the legend
-            # TODO Legend should not include Channel Numbers
-            legend_name = text + str(self.Current_Channel)
+            legend_name = text 
 
             # Add the signal to the plot with the legend name
             current_signal.data_line = self.Graph_Window.plot(pen=current_signal.color, name=legend_name)
@@ -138,6 +146,7 @@ class Graph:
         else:
             print("No signal found in the current channel.")
               
+            
         
     def Enable_Line_Edit(self):
         if self.textbox is not None:
@@ -151,4 +160,9 @@ class Graph:
         # We basically toggle what is already there
         self.Other_Graph.Linked = not self.Linked
         self.Linked = not self.Linked
+        
+    def reset(self):
+        self.textbox.setReadOnly(True) #reset the textbox until user add a signal
+        #self.Toggle_Hide_Unhide()
+        
 

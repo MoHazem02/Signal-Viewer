@@ -18,12 +18,18 @@ class Signal:
         #Each signal corresponds to a channel, initially channel 1
 
     def hide_signal(self):
-        self.data_line.setVisible(False)
+        self.graph.removeItem(self.data_line)
         self.hide = True
+        #self.data_line.setVisible(False)
+        #self.hide = True
 
     def unhide_signal(self):
-        self.data_line.setVisible(True)
-        self.hide = False
+        if self.data_line in self.hidden_lines:
+            self.graph.addItem(self.data_line)  # Add the data_line back to the graph
+            self.hidden_lines.remove(self.data_line)  # Remove the data_line from the list
+            self.hide = False
+        #self.data_line.setVisible(True)
+        #self.hide = False
         
     def change_graph_number(self):
         if self.graph_number == 1:
@@ -44,4 +50,4 @@ class Signal:
 
         self.i += 1
         self.data_line.setData(self.X_Coordinates[0 : self.i + 1], self.Y_Coordinates[0 : self.i + 1])  # Update the data.
-
+        self.graph.getViewBox().setXRange(max(self.X_Coordinates[0 : self.i + 1])-100, max(self.X_Coordinates[0 : self.i + 1]))

@@ -52,6 +52,9 @@ class Ui_MainWindow(object):
             self.Graph_2.Remove_Signal(signal)
             # Thirdly we add to the other graph a new daugher (our signal :)
             self.Graph_1.Add_Signal(signal)
+            
+    def reset_checkbox(self):
+            self.Hide_Signal_1.setChecked(False)  # Reset the checkbox to an unchecked state
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -75,6 +78,11 @@ class Ui_MainWindow(object):
         self.Channels_of_Graph_1.setStyleSheet("background-color:#3366ff;")
         self.Channels_of_Graph_1.setObjectName("comboBox_3")
         self.Channels_of_Graph_1.addItem("") 
+        
+        # Connect the currentIndexChanged signal to a function
+        self.Channels_of_Graph_1.currentIndexChanged.connect(self.Graph_1.reset)
+        self.Channels_of_Graph_1.currentIndexChanged.connect(self.reset_checkbox)
+        
         self.horizontalScrollBar = QtWidgets.QScrollBar(self.groupBox)
         self.horizontalScrollBar.setEnabled(False)
         self.horizontalScrollBar.setGeometry(QtCore.QRect(220, 290, 1041, 16))
@@ -179,6 +187,9 @@ class Ui_MainWindow(object):
         self.Hide_Signal_1.clicked.connect(lambda: self.Graph_1.Toggle_Hide_Unhide())
         self.Hide_Signal_1.setGeometry(QtCore.QRect(1400, 200, 111, 20))
         self.Hide_Signal_1.setObjectName("Hide_Signal_1")
+        
+       
+            
         self.Hide_Signal_2 = QtWidgets.QCheckBox(self.groupBox)
         self.Hide_Signal_2.setGeometry(QtCore.QRect(1400, 510, 111, 20))
         self.Hide_Signal_2.setObjectName("Hide_Signal_2")
