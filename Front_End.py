@@ -32,28 +32,47 @@ class Ui_MainWindow(object):
     def Move_Signal(self, number):
         if number == 1:
             self.Graph_1.Update_Current_Channel()
-            #First we grab the signal currently selected by the channel combo box
-            signal = self.Graph_1.Signals[self.Graph_1.signal_count - 1]
-            # Secondly we remove the singal from its current graph
-            self.Graph_1.Remove_Signal(signal)
-            # Thirdly we add to the other graph a new daugher (our signal :)
+            signal = self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal
             self.Graph_2.Add_Signal(signal)
+            signal.Plot_Signal()  # Start plotting the signal in the new graph
+            self.Graph_1.Remove_Signal(self.Graph_1.Current_Channel)
         else:
             self.Graph_2.Update_Current_Channel()
-            #First we grab the signal currently selected by the channel combo box
-            signal = self.Graph_2.Signals[self.Graph_2.signal_count - 1]
-            # Secondly we remove the singal from its current graph
-            self.Graph_2.Remove_Signal(signal)
-            # Thirdly we add to the other graph a new daugher (our signal :)
+            signal = self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal
+            self.Graph_2.Remove_Signal(self.Graph_2.Current_Channel)
             self.Graph_1.Add_Signal(signal)
+            signal.Plot_Signal()  # Start plotting the signal in the new graph
+            
             
     def reset_checkbox(self):
         self.Graph_1.Update_Current_Channel()
         signal = self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal
-        if signal and not signal.hide:
-            self.Hide_Signal_1.setChecked(False)
-        else:
+        if signal and signal.hide:
             self.Hide_Signal_1.setChecked(True)
+        else:
+            self.Hide_Signal_1.setChecked(False)
+        self.Hide_Signal_1.setEnabled(signal is not None)
+        
+        
+    def rewind_signal(self):
+        # Rewind the signal
+        self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.i = 0
+        self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Update_Plot_Data()
+        # Disable the Rewind button
+        self.Rewind_1.setEnabled(False)
+
+        
+    def scroll_signal(self, value):
+        # Calculate the corresponding index based on the scrollbar's value
+        index = min(int(value / self.horizontalScrollBar.maximum() * len(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates)), len(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates) - 1)
+
+        # Update the plot data
+        self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.i = index
+        self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Update_Plot_Data()
+
+        # Update the X range of the plot
+        self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Graph_Widget.getViewBox().setXRange(max(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]) - 100, max(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]))
+
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -81,12 +100,15 @@ class Ui_MainWindow(object):
         # Connect the currentIndexChanged signal to a function
         self.Channels_of_Graph_1.currentIndexChanged.connect(self.Graph_1.Reset)
         self.Channels_of_Graph_1.currentIndexChanged.connect(self.reset_checkbox)
-        
         self.horizontalScrollBar = QtWidgets.QScrollBar(self.groupBox)
         self.horizontalScrollBar.setEnabled(False)
         self.horizontalScrollBar.setGeometry(QtCore.QRect(220, 290, 1041, 16))
         self.horizontalScrollBar.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalScrollBar.setObjectName("horizontalScrollBar")
+        #self.horizontalScrollBar.valueChanged.disconnect(self.scroll_signal)
+        # Connect the scroll bar's valueChanged signal to a function
+        self.horizontalScrollBar.valueChanged.connect(self.scroll_signal)
+        
         self.pushButton_8 = QtWidgets.QPushButton(self.groupBox, clicked = lambda : self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.toggle_play_pause())
         self.pushButton_8.setGeometry(QtCore.QRect(10, 130, 191, 31))
         self.pushButton_8.setStyleSheet("background-color:#3366ff;")
@@ -97,6 +119,12 @@ class Ui_MainWindow(object):
         self.Rewind_1 = QtWidgets.QPushButton(self.groupBox)
         self.Rewind_1.setGeometry(QtCore.QRect(10, 180, 191, 31))
         self.Rewind_1.setStyleSheet("background-color:#3366ff;")
+        
+        # Connect the Rewind button's clicked signal to a function
+        self.Rewind_1.clicked.connect(self.rewind_signal)
+        # Disable the Rewind button initially
+        self.Rewind_1.setEnabled(False)
+        
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap("Assets/rewind.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.Rewind_1.setIcon(icon1)
@@ -246,6 +274,7 @@ class Ui_MainWindow(object):
         self.pushButton_2.setGeometry(QtCore.QRect(260, 100, 61, 31))
         self.pushButton_2.setStyleSheet("background-color:#3366ff;")
         self.pushButton_2.setText("")
+        
         # Create the QLineEdit widget for the legend name
         self.lineEdit = QtWidgets.QLineEdit(self.groupBox)
         self.lineEdit.setGeometry(QtCore.QRect(1390, 110, 113, 31))  # Adjust the position and size as needed
