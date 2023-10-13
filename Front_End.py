@@ -54,7 +54,12 @@ class Ui_MainWindow(object):
             self.Graph_1.Add_Signal(signal)
             
     def reset_checkbox(self):
-            self.Hide_Signal_1.setChecked(False)  # Reset the checkbox to an unchecked state
+        self.Graph_1.Update_Current_Channel()
+        signal = self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal
+        if signal and not signal.hide:
+            self.Hide_Signal_1.setChecked(False)
+        else:
+            self.Hide_Signal_1.setChecked(True)
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -88,7 +93,7 @@ class Ui_MainWindow(object):
         self.horizontalScrollBar.setGeometry(QtCore.QRect(220, 290, 1041, 16))
         self.horizontalScrollBar.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalScrollBar.setObjectName("horizontalScrollBar")
-        self.pushButton_8 = QtWidgets.QPushButton(self.groupBox)
+        self.pushButton_8 = QtWidgets.QPushButton(self.groupBox, clicked = lambda : self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.toggle_play_pause())
         self.pushButton_8.setGeometry(QtCore.QRect(10, 130, 191, 31))
         self.pushButton_8.setStyleSheet("background-color:#3366ff;")
         icon = QtGui.QIcon()
