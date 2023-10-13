@@ -6,6 +6,7 @@ from Channel_Class import Channel
 
 class Graph:
     def __init__(self, Graph_Number, ui_mainwindow, other_graph, graph_window = None ):
+        #self.Signal = Signal 
         self.hidden_lines = []  # Add this line to initialize the list
         self.textbox = None
         self.channel_count = 1
@@ -109,9 +110,16 @@ class Graph:
             # Toggle the visibility of the signal
             if self.current_channel.Signal.hide:
                 self.current_channel.Signal.Unhide_Signal()
+                if self.graph_number == 1:
+                    self.UI_Window.Hide_Signal_1.setChecked(True)
+                else:
+                    self.UI_Window.Hide_Signal_2.setChecked(True)
             else:
-                self.hidden_lines.append(self.current_channel.Signal.data_line)  # Store the data_line
                 self.current_channel.Signal.Hide_Signal()
+                if self.graph_number == 1:
+                    self.UI_Window.Hide_Signal_1.setChecked(False)
+                else:
+                    self.UI_Window.Hide_Signal_2.setChecked(False)
         else:
             pass
 
