@@ -43,6 +43,10 @@ class Ui_MainWindow(object):
             self.Graph_1.Add_Signal(signal)
             signal.Plot_Signal()  # Start plotting the signal in the new graph
             
+    def Link_Unlink(self):
+        # We basically toggle what is already there
+        self.Graph_1.Linked = not self.Graph_1.Linked
+        self.Graph_2.Linked = not self.Graph_2.Linked
             
     def reset_checkbox(self):
         self.Graph_1.Update_Current_Channel()
@@ -198,14 +202,14 @@ class Ui_MainWindow(object):
         self.lcdNumber_2.setGeometry(QtCore.QRect(1480, 570, 64, 23))
         self.lcdNumber_2.setObjectName("lcdNumber_2")
         self.horizontalSlider_2 = QtWidgets.QSlider(self.groupBox)
-        self.horizontalSlider_2.valueChanged.connect(lambda: self.Graph_2.Cine_Speed(self.horizontalSlider.value()))
+        self.horizontalSlider_2.valueChanged.connect(lambda: self.Graph_2.Cine_Speed(self.horizontalSlider_2.value()))
         self.horizontalSlider_2.setGeometry(QtCore.QRect(1270, 570, 201, 21))
         self.horizontalSlider_2.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalSlider_2.setObjectName("horizontalSlider_2")
         self.label_2 = QtWidgets.QLabel(self.groupBox)
         self.label_2.setGeometry(QtCore.QRect(1320, 550, 111, 21))
         self.label_2.setObjectName("label_2")
-        self.Link_Button = QtWidgets.QPushButton(self.groupBox, clicked = lambda: self.Graph_1.Link_Unlink())
+        self.Link_Button = QtWidgets.QPushButton(self.groupBox, clicked = lambda: self.Link_Unlink())
         self.Link_Button.setGeometry(QtCore.QRect(10, 300, 191, 31))
         self.Link_Button.setStyleSheet("background-color:#3366ff;")
         icon3 = QtGui.QIcon()

@@ -184,13 +184,7 @@ class Graph:
             self.textbox.show()  # Make the lineEdit widget visible
         else:
             print("lineEdit widget does not exist")
-
-
-    def Link_Unlink(self):
-        # We basically toggle what is already there
-        self.Other_Graph.Linked = not self.Linked
-        self.Linked = not self.Linked
-        
+  
     def Reset(self):
         self.textbox.setReadOnly(True) #reset the textbox until user add a signal
         #self.Toggle_Hide_Unhide()
@@ -198,6 +192,13 @@ class Graph:
     def Cine_Speed(self, value):
         for channel in self.CHANNELS:
             channel.Signal.Update_Cine_Speed(value)
+        
+        if self.Linked:
+            for channel in self.Other_Graph.CHANNELS:
+                channel.Signal.Update_Cine_Speed(value)
+                
+
+        
 
         
 
