@@ -44,15 +44,18 @@ class Signal:
 
 
     def Update_Plot_Data(self):
+        
         if not self.pause and self.data_line:
             self.i += self.speed
             self.data_line.setData(self.X_Coordinates[0 : self.i + 1], self.Y_Coordinates[0 : self.i + 1])  # Update the data.
             if not self.hide:
                 self.Graph_Widget.getViewBox().setXRange(max(self.X_Coordinates[0 : self.i + 1]) - 100, max(self.X_Coordinates[0 : self.i + 1]))
+            
             # Check if the signal has ended
             if self.i >= len(self.X_Coordinates):
                 # Enable the Rewind button
                 self.Graph_Object.UI_Window.Rewind_1.setEnabled(True)
+            
             # Update the scrollbar's maximum value and position
             self.Graph_Object.UI_Window.horizontalScrollBar.valueChanged.disconnect(self.Graph_Object.UI_Window.scroll_signal)
             self.Graph_Object.UI_Window.horizontalScrollBar.setMaximum(len(self.X_Coordinates))
@@ -67,6 +70,6 @@ class Signal:
     
     def Update_Cine_Speed(self, speed_value):
         self.speed = speed_value
-        if speed_value == 0:
-            self.speed = 1
+        #if speed_value == 0:
+            #self.speed = 1
             

@@ -6,7 +6,7 @@ from Channel_Class import Channel
 
 class Graph:
     def __init__(self, Graph_Number, ui_mainwindow, other_graph, graph_window = None ):
-        #self.Signal = Signal 
+        self.signals = []  # Add this line to initialize the list
         self.hidden_lines = []  # Add this line to initialize the list
         self.textbox = None
         self.channel_count = 1
@@ -24,14 +24,11 @@ class Graph:
         self.Current_Frame = 0
         
     
-        
-
     def Update_Current_Channel(self): 
         if self.graph_number == 1:
             self.Current_Channel = int(str(self.UI_Window.Channels_of_Graph_1.currentText())[-1])
         else:
             self.Current_Channel = int(str(self.UI_Window.Channels_of_Graph_2.currentText())[-1])
-
 
     def Remove_Signal(self, channel_number):
         # Get the channel
@@ -57,8 +54,11 @@ class Graph:
             # Set the channel's signal to None
             channel.Signal = None
 
-
     def Add_Signal(self, signal):
+        # Reset the current signal and clear the plot window
+        self.reset_signal()
+        # Add the new signal to the list of signals
+        self.signals.append(signal)
         if self.channel_count == self.signal_count:
             new_Channel = self.Add_Channel()
             new_Channel.Signal = signal
@@ -74,7 +74,6 @@ class Graph:
         else:
             self.UI_Window.horizontalScrollBar_2.setEnabled(True)
             self.Enable_Line_Edit()
-
                 
     def Add_Channel(self):
         self.channel_count += 1
@@ -87,7 +86,6 @@ class Graph:
         self.CHANNELS.append(new_Channel)
         return new_Channel
 
-    
     def Change_Color(self):
         
         color = QtWidgets.QColorDialog.getColor()
@@ -98,11 +96,8 @@ class Graph:
             signal = self.CHANNELS[self.Current_Channel - 1].Signal
             signal.color = color
             signal.data_line.setPen(color)  # Change the color of the line directly
-            #signal.data_line.legend_color.setPen(color)
+            #signal.data_line.legend_color.setPen(color)      
             
-            
-
-
     def Browse_Signals(self):
         File_Path, _ = QFileDialog.getOpenFileName(None, "Browse Signal", "" , "All Files (*)")
         Record = wfdb.rdrecord(File_Path[:-4])
@@ -110,20 +105,20 @@ class Graph:
         X_Coordinates = list(np.arange(len(Y_Coordinates)))
         Sample_Signal = Signal_Class.Signal(col = "g", X_List = X_Coordinates, Y_list = Y_Coordinates, graphWdg = self.Graph_Window, graphObj = self)
         self.Add_Signal(Sample_Signal)
-        Sample_Signal.Plot_Signal() 
+        #Sample_Signal.Plot_Signal() 
+        # Plot all signals
+        for sig in self.signals:
+            sig.Plot_Signal()
      
-
     def ZoomIn(self):
         self.Graph_Window.getViewBox().scaleBy((0.9, 0.9))
         if self.Linked:
             self.Other_Graph.Graph_Window.getViewBox().scaleBy((0.9, 0.9))
 
-
     def ZoomOut(self):
         self.Graph_Window.getViewBox().scaleBy((1.1, 1.1))
         if self.Linked:
-            self.Other_Graph.Graph_Window.getViewBox().scaleBy((1.1, 1.1))
-        
+            self.Other_Graph.Graph_Window.getViewBox().scaleBy((1.1, 1.1))     
 
     def Toggle_Hide_Unhide(self):
         # Get the current channel
@@ -146,7 +141,6 @@ class Graph:
                     self.UI_Window.Hide_Signal_2.setChecked(True)
         else:
             pass
-
 
     def Add_Legend(self):
         text = self.textbox.text()
@@ -174,9 +168,7 @@ class Graph:
             current_signal.legend = self.Legend
             current_signal.legend_color = current_signal.color
         else:
-            print("No signal found in the current channel.")
-              
-            
+            print("No signal found in the current channel.")      
         
     def Enable_Line_Edit(self):
         if self.textbox is not None:
@@ -184,13 +176,7 @@ class Graph:
             self.textbox.show()  # Make the lineEdit widget visible
         else:
             print("lineEdit widget does not exist")
-
-
-    def Link_Unlink(self):
-        # We basically toggle what is already there
-        self.Other_Graph.Linked = not self.Linked
-        self.Linked = not self.Linked
-        
+  
     def Reset(self):
         self.textbox.setReadOnly(True) #reset the textbox until user add a signal
         #self.Toggle_Hide_Unhide()
@@ -198,6 +184,33 @@ class Graph:
     def Cine_Speed(self, value):
         for channel in self.CHANNELS:
             channel.Signal.Update_Cine_Speed(value)
+        
+        if self.Linked:
+            for channel in self.Other_Graph.CHANNELS:
+                channel.Signal.Update_Cine_Speed(value)
+            
+            if self.graph_number == 1:
+                self.UI_Window.horizontalSlider_2.setValue(value)
+            else:
+                self.UI_Window.horizontalSlider.setValue(value)
+            
+                
+    def reset_signal(self):
+        # Reset the current signal
+        self.Update_Current_Channel()
+        current_signal = self.CHANNELS[self.Current_Channel - 1].Signal
+        if current_signal is not None:
+            current_signal.i = 0
+
+        # Clear the plot window
+        self.Graph_Window.clear()
+        
+    def toggle_play_pause(self):
+        for sig in self.signals:
+            sig.pause = not sig.pause
+                
+
+        
 
         
 
