@@ -5,6 +5,7 @@ class Signal:
         self.pause = False #to control movement of the signal
         self.hidden_lines = []  # Add this line to initialize the list
         self.legend = None
+        self.legend_text = None
         self.legend_color = None
         self.X_Coordinates = X_List
         self.Y_Coordinates = Y_list

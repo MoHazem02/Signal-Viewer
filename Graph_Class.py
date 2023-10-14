@@ -54,11 +54,8 @@ class Graph:
             # Set the channel's signal to None
             channel.Signal = None
 
-    def Add_Signal(self, signal):
-        # Reset the current signal and clear the plot window
-        self.reset_signal()
-        # Add the new signal to the list of signals
-        self.signals.append(signal)
+    def Add_Signal(self, signal): # add the signal to a channel 
+       
         if self.channel_count == self.signal_count:
             new_Channel = self.Add_Channel()
             new_Channel.Signal = signal
@@ -74,6 +71,8 @@ class Graph:
         else:
             self.UI_Window.horizontalScrollBar_2.setEnabled(True)
             self.Enable_Line_Edit()
+         # Reset the current signal and clear the plot window
+        self.reset_signal()
                 
     def Add_Channel(self):
         self.channel_count += 1
@@ -104,11 +103,16 @@ class Graph:
         Y_Coordinates = list(Record.p_signal[:,0])
         X_Coordinates = list(np.arange(len(Y_Coordinates)))
         Sample_Signal = Signal_Class.Signal(col = "g", X_List = X_Coordinates, Y_list = Y_Coordinates, graphWdg = self.Graph_Window, graphObj = self)
+        
+         # Add the new signal to the list of signals
+        self.signals.append(Sample_Signal)
+    
         self.Add_Signal(Sample_Signal)
         #Sample_Signal.Plot_Signal() 
         # Plot all signals
         for sig in self.signals:
             sig.Plot_Signal()
+            self.update_legend(sig)
      
     def ZoomIn(self):
         self.Graph_Window.getViewBox().scaleBy((0.9, 0.9))
@@ -141,34 +145,44 @@ class Graph:
                     self.UI_Window.Hide_Signal_2.setChecked(True)
         else:
             pass
+        
+    def update_legend(self, current_signal):
+         # Add the signal to the plot with the legend name
+            current_signal.data_line = self.Graph_Window.plot(pen=current_signal.color, name=current_signal.legend_text)
+
+            # Add a legend to the plot
+            current_signal.legend = self.Graph_Window.addLegend()
+            # Store the legend color in the signal
+            current_signal.legend_color = current_signal.color
+        
 
     def Add_Legend(self):
         text = self.textbox.text()
         current_signal = None
+        self.Update_Current_Channel()
         # Get the current signal
         if self.Current_Channel:
-            # TODO Each Channel has a signal, don't HASH  #mafrod done, bs hazem recheck
             current_signal = self.CHANNELS[self.Current_Channel - 1].Signal
         else:
-            print("No current channel selected.")
             return
-
         # Check if a current signal was found
-        if current_signal is not None:
+        if current_signal is not None and current_signal.legend is None:
             # Create a name for the legend
-            legend_name = text 
-
-            # Add the signal to the plot with the legend name
-            current_signal.data_line = self.Graph_Window.plot(pen=current_signal.color, name=legend_name)
-
-            # Add a legend to the plot
-            self.Legend = self.Graph_Window.addLegend()
-
-            # Store the legend in the signal
-            current_signal.legend = self.Legend
-            current_signal.legend_color = current_signal.color
+            current_signal.legend_text = text 
+            self.update_legend(current_signal)
         else:
-            print("No signal found in the current channel.")      
+            # Update the text of the legend
+                # Check if a current signal was found
+            if current_signal is not None:
+                current_signal.legend_text = text
+                # Remove the old legend
+                if current_signal.legend:
+                    self.Graph_Window.removeItem(current_signal.legend)
+                    # Clear the plot window
+                    self.Graph_Window.clear()
+                    current_signal.Update_Plot_Data()
+                    self.update_legend(current_signal)
+                  
         
     def Enable_Line_Edit(self):
         if self.textbox is not None:
@@ -196,7 +210,7 @@ class Graph:
             
                 
     def reset_signal(self):
-        # Reset the current signal
+        # Reset the current signal if another signal is add
         self.Update_Current_Channel()
         current_signal = self.CHANNELS[self.Current_Channel - 1].Signal
         if current_signal is not None:
@@ -204,10 +218,27 @@ class Graph:
 
         # Clear the plot window
         self.Graph_Window.clear()
+
+        # If the graphs are linked, reset all signals in both graphs
+        if self.UI_Window.Graph_1.Linked:
+            for channel in self.UI_Window.Graph_1.CHANNELS:
+                if channel.Signal is not None:
+                    channel.Signal.i = 0
+                    channel.Signal.Plot_Signal()  # Replot the signal from the beginning
+
+            for channel in self.UI_Window.Graph_2.CHANNELS:
+                if channel.Signal is not None:
+                    channel.Signal.i = 0
+                    channel.Signal.Plot_Signal()  # Replot the signal from the beginning
         
     def toggle_play_pause(self):
         for sig in self.signals:
             sig.pause = not sig.pause
+        
+        if self.Linked:
+            for channel in self.Other_Graph.CHANNELS:
+                channel.Signal.pause = not channel.Signal.pause
+        
                 
 
         
