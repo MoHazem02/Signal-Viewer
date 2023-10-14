@@ -196,7 +196,7 @@ class Graph:
             
                 
     def reset_signal(self):
-        # Reset the current signal
+        # Reset the current signal if another signal is add
         self.Update_Current_Channel()
         current_signal = self.CHANNELS[self.Current_Channel - 1].Signal
         if current_signal is not None:
@@ -204,6 +204,18 @@ class Graph:
 
         # Clear the plot window
         self.Graph_Window.clear()
+
+        # If the graphs are linked, reset all signals in both graphs
+        if self.UI_Window.Graph_1.Linked:
+            for channel in self.UI_Window.Graph_1.CHANNELS:
+                if channel.Signal is not None:
+                    channel.Signal.i = 0
+                    channel.Signal.Plot_Signal()  # Replot the signal from the beginning
+
+            for channel in self.UI_Window.Graph_2.CHANNELS:
+                if channel.Signal is not None:
+                    channel.Signal.i = 0
+                    channel.Signal.Plot_Signal()  # Replot the signal from the beginning
         
     def toggle_play_pause(self):
         for sig in self.signals:

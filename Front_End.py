@@ -51,8 +51,10 @@ class Ui_MainWindow(object):
         plot_item_1 = self.Graph_1.Graph_Window.getPlotItem()
         plot_item_2 = self.Graph_2.Graph_Window.getPlotItem()
 
-        if self.Graph_1.Linked:
+        if self.Graph_1.Linked: # to link and unlink from 1 and 2
             plot_item_2.setXLink(plot_item_1)
+            self.Graph_1.reset_signal()
+            self.Graph_2.reset_signal()
         else:
             plot_item_2.setXLink(None)
             
