@@ -6,7 +6,7 @@ from Channel_Class import Channel
 
 class Graph:
     def __init__(self, Graph_Number, ui_mainwindow, other_graph, graph_window = None ):
-        #self.Signal = Signal 
+        self.signals = []  # Add this line to initialize the list
         self.hidden_lines = []  # Add this line to initialize the list
         self.textbox = None
         self.channel_count = 1
@@ -55,6 +55,10 @@ class Graph:
             channel.Signal = None
 
     def Add_Signal(self, signal):
+        # Reset the current signal and clear the plot window
+        self.reset_signal()
+        # Add the new signal to the list of signals
+        self.signals.append(signal)
         if self.channel_count == self.signal_count:
             new_Channel = self.Add_Channel()
             new_Channel.Signal = signal
@@ -101,7 +105,10 @@ class Graph:
         X_Coordinates = list(np.arange(len(Y_Coordinates)))
         Sample_Signal = Signal_Class.Signal(col = "g", X_List = X_Coordinates, Y_list = Y_Coordinates, graphWdg = self.Graph_Window, graphObj = self)
         self.Add_Signal(Sample_Signal)
-        Sample_Signal.Plot_Signal() 
+        #Sample_Signal.Plot_Signal() 
+        # Plot all signals
+        for sig in self.signals:
+            sig.Plot_Signal()
      
     def ZoomIn(self):
         self.Graph_Window.getViewBox().scaleBy((0.9, 0.9))
@@ -181,6 +188,16 @@ class Graph:
         if self.Linked:
             for channel in self.Other_Graph.CHANNELS:
                 channel.Signal.Update_Cine_Speed(value)
+                
+    def reset_signal(self):
+        # Reset the current signal
+        self.Update_Current_Channel()
+        current_signal = self.CHANNELS[self.Current_Channel - 1].Signal
+        if current_signal is not None:
+            current_signal.i = 0
+
+        # Clear the plot window
+        self.Graph_Window.clear()
                 
 
         
