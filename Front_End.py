@@ -66,12 +66,20 @@ class Ui_MainWindow(object):
         self.Hide_Signal_1.setEnabled(signal is not None)
         
         
-    def rewind_signal(self):
+    def rewind_signal_1(self):
         # Rewind the signal
         self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.i = 0
         self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Update_Plot_Data()
         # Disable the Rewind button
         self.Rewind_1.setEnabled(False)
+    
+    def rewind_signal_2(self):
+        # Rewind the signal
+        self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.i = 0
+        self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.Update_Plot_Data()
+        # Disable the Rewind button
+        self.Rewind_2.setEnabled(False)
+
 
         
     def scroll_signal(self, value):
@@ -121,19 +129,19 @@ class Ui_MainWindow(object):
         # Connect the scroll bar's valueChanged signal to a function
         self.horizontalScrollBar.valueChanged.connect(self.scroll_signal)
         
-        self.pushButton_8 = QtWidgets.QPushButton(self.groupBox, clicked = lambda : self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.toggle_play_pause())
-        self.pushButton_8.setGeometry(QtCore.QRect(10, 130, 191, 31))
-        self.pushButton_8.setStyleSheet("background-color:#3366ff;")
+        self.Play_Pause_1 = QtWidgets.QPushButton(self.groupBox, clicked = lambda : self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.toggle_play_pause())
+        self.Play_Pause_1.setGeometry(QtCore.QRect(10, 130, 191, 31))
+        self.Play_Pause_1.setStyleSheet("background-color:#3366ff;")
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("Assets/pause-play.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_8.setIcon(icon)
-        self.pushButton_8.setObjectName("pushButton_8")
+        self.Play_Pause_1.setIcon(icon)
+        self.Play_Pause_1.setObjectName("Play_Pause_1")
         self.Rewind_1 = QtWidgets.QPushButton(self.groupBox)
         self.Rewind_1.setGeometry(QtCore.QRect(10, 180, 191, 31))
         self.Rewind_1.setStyleSheet("background-color:#3366ff;")
         
         # Connect the Rewind button's clicked signal to a function
-        self.Rewind_1.clicked.connect(self.rewind_signal)
+        self.Rewind_1.clicked.connect(self.rewind_signal_1)
         # Disable the Rewind button initially
         self.Rewind_1.setEnabled(False)
         
@@ -249,13 +257,15 @@ class Ui_MainWindow(object):
         self.Rewind_2 = QtWidgets.QPushButton(self.groupBox)
         self.Rewind_2.setGeometry(QtCore.QRect(10, 490, 191, 31))
         self.Rewind_2.setStyleSheet("background-color:#3366ff;")
+        self.Rewind_2.clicked.connect(self.rewind_signal_2)
+        self.Rewind_2.setEnabled(False)
         self.Rewind_2.setIcon(icon1)
         self.Rewind_2.setObjectName("Rewind_2")
-        self.pushButton_15 = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton_15.setGeometry(QtCore.QRect(10, 440, 191, 31))
-        self.pushButton_15.setStyleSheet("background-color:#3366ff;")
-        self.pushButton_15.setIcon(icon)
-        self.pushButton_15.setObjectName("pushButton_15")
+        self.Play_Pause_2 = QtWidgets.QPushButton(self.groupBox, clicked = lambda : self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.toggle_play_pause())
+        self.Play_Pause_2.setGeometry(QtCore.QRect(10, 440, 191, 31))
+        self.Play_Pause_2.setStyleSheet("background-color:#3366ff;")
+        self.Play_Pause_2.setIcon(icon)
+        self.Play_Pause_2.setObjectName("Play_Pause_2")
         self.Load2_Button = QtWidgets.QPushButton(self.groupBox, clicked=lambda: self.Graph_2.Browse_Signals())
         self.Load2_Button.setGeometry(QtCore.QRect(10, 390, 191, 31))
         self.Load2_Button.setStyleSheet("background-color:#3366ff;")
@@ -390,7 +400,7 @@ class Ui_MainWindow(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt; font-weight:600;\">Live Signal Viewer</span></p></body></html>"))
         self.groupBox.setTitle(_translate("MainWindow", "Channels"))
         self.Channels_of_Graph_1.setItemText(0, _translate("MainWindow", "Channel 1"))
-        self.pushButton_8.setText(_translate("MainWindow", "   Play/Pause "))
+        self.Play_Pause_1.setText(_translate("MainWindow", "   Play/Pause "))
         self.Rewind_1.setText(_translate("MainWindow", "  Rewind     "))
         # self.Edit_Button_1.setText(_translate("MainWindow", "Edit Label"))
         self.Select_Color_1.setText(_translate("MainWindow", "Select Color"))
@@ -412,7 +422,7 @@ class Ui_MainWindow(object):
         self.Load1_Button.setText(_translate("MainWindow", "  Load Signal"))
         self.Move_of_Graph_2.setText(_translate("MainWindow", "  Move"))
         self.Rewind_2.setText(_translate("MainWindow", "  Rewind     "))
-        self.pushButton_15.setText(_translate("MainWindow", "   Play/Pause "))
+        self.Play_Pause_2.setText(_translate("MainWindow", "   Play/Pause "))
         self.Load2_Button.setText(_translate("MainWindow", "  Load Signal"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Controls"))
         self.pushButton_11.setText(_translate("MainWindow", "Link Graphs"))
