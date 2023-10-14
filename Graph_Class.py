@@ -208,6 +208,11 @@ class Graph:
     def toggle_play_pause(self):
         for sig in self.signals:
             sig.pause = not sig.pause
+        
+        if self.Linked:
+            for channel in self.Other_Graph.CHANNELS:
+                channel.Signal.pause = not channel.Signal.pause
+        
                 
 
         
