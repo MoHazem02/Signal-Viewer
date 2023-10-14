@@ -24,14 +24,11 @@ class Graph:
         self.Current_Frame = 0
         
     
-        
-
     def Update_Current_Channel(self): 
         if self.graph_number == 1:
             self.Current_Channel = int(str(self.UI_Window.Channels_of_Graph_1.currentText())[-1])
         else:
             self.Current_Channel = int(str(self.UI_Window.Channels_of_Graph_2.currentText())[-1])
-
 
     def Remove_Signal(self, channel_number):
         # Get the channel
@@ -57,7 +54,6 @@ class Graph:
             # Set the channel's signal to None
             channel.Signal = None
 
-
     def Add_Signal(self, signal):
         if self.channel_count == self.signal_count:
             new_Channel = self.Add_Channel()
@@ -74,7 +70,6 @@ class Graph:
         else:
             self.UI_Window.horizontalScrollBar_2.setEnabled(True)
             self.Enable_Line_Edit()
-
                 
     def Add_Channel(self):
         self.channel_count += 1
@@ -87,7 +82,6 @@ class Graph:
         self.CHANNELS.append(new_Channel)
         return new_Channel
 
-    
     def Change_Color(self):
         
         color = QtWidgets.QColorDialog.getColor()
@@ -98,11 +92,8 @@ class Graph:
             signal = self.CHANNELS[self.Current_Channel - 1].Signal
             signal.color = color
             signal.data_line.setPen(color)  # Change the color of the line directly
-            #signal.data_line.legend_color.setPen(color)
+            #signal.data_line.legend_color.setPen(color)      
             
-            
-
-
     def Browse_Signals(self):
         File_Path, _ = QFileDialog.getOpenFileName(None, "Browse Signal", "" , "All Files (*)")
         Record = wfdb.rdrecord(File_Path[:-4])
@@ -112,18 +103,15 @@ class Graph:
         self.Add_Signal(Sample_Signal)
         Sample_Signal.Plot_Signal() 
      
-
     def ZoomIn(self):
         self.Graph_Window.getViewBox().scaleBy((0.9, 0.9))
         if self.Linked:
             self.Other_Graph.Graph_Window.getViewBox().scaleBy((0.9, 0.9))
 
-
     def ZoomOut(self):
         self.Graph_Window.getViewBox().scaleBy((1.1, 1.1))
         if self.Linked:
-            self.Other_Graph.Graph_Window.getViewBox().scaleBy((1.1, 1.1))
-        
+            self.Other_Graph.Graph_Window.getViewBox().scaleBy((1.1, 1.1))     
 
     def Toggle_Hide_Unhide(self):
         # Get the current channel
@@ -146,7 +134,6 @@ class Graph:
                     self.UI_Window.Hide_Signal_2.setChecked(True)
         else:
             pass
-
 
     def Add_Legend(self):
         text = self.textbox.text()
@@ -174,9 +161,7 @@ class Graph:
             current_signal.legend = self.Legend
             current_signal.legend_color = current_signal.color
         else:
-            print("No signal found in the current channel.")
-              
-            
+            print("No signal found in the current channel.")      
         
     def Enable_Line_Edit(self):
         if self.textbox is not None:

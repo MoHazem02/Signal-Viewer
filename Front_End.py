@@ -47,6 +47,14 @@ class Ui_MainWindow(object):
         # We basically toggle what is already there
         self.Graph_1.Linked = not self.Graph_1.Linked
         self.Graph_2.Linked = not self.Graph_2.Linked
+
+        plot_item_1 = self.Graph_1.Graph_Window.getPlotItem()
+        plot_item_2 = self.Graph_2.Graph_Window.getPlotItem()
+
+        if self.Graph_1.Linked:
+            plot_item_2.setXLink(plot_item_1)
+        else:
+            plot_item_2.setXLink(None)
             
     def reset_checkbox(self):
         self.Graph_1.Update_Current_Channel()
