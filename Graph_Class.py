@@ -181,6 +181,12 @@ class Graph:
         if self.Linked:
             for channel in self.Other_Graph.CHANNELS:
                 channel.Signal.Update_Cine_Speed(value)
+            
+            if self.graph_number == 1:
+                self.UI_Window.horizontalSlider_2.setValue(value)
+            else:
+                self.UI_Window.horizontalSlider.setValue(value)
+            
                 
 
         
