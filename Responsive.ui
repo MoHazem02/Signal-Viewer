@@ -31,10 +31,42 @@ color:white;</string>
     </size>
    </property>
    <layout class="QGridLayout" name="gridLayout">
+    <item row="1" column="0" alignment="Qt::AlignHCenter">
+     <widget class="QTextBrowser" name="textBrowser">
+      <property name="minimumSize">
+       <size>
+        <width>200</width>
+        <height>51</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>341</width>
+        <height>51</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border:none;</string>
+      </property>
+      <property name="html">
+       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;Live Signal Viewer&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+    </item>
     <item row="2" column="0">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QFrame" name="frame">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>1</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -44,7 +76,7 @@ color:white;</string>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>800</height>
+          <height>1400</height>
          </size>
         </property>
         <property name="frameShape">
@@ -56,6 +88,12 @@ color:white;</string>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
           <widget class="QFrame" name="frame_4">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>1</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="maximumSize">
             <size>
              <width>200</width>
@@ -72,7 +110,7 @@ color:white;</string>
             <property name="geometry">
              <rect>
               <x>140</x>
-              <y>160</y>
+              <y>170</y>
               <width>51</width>
               <height>31</height>
              </rect>
@@ -92,7 +130,7 @@ color:white;</string>
             <property name="geometry">
              <rect>
               <x>0</x>
-              <y>50</y>
+              <y>60</y>
               <width>191</width>
               <height>31</height>
              </rect>
@@ -112,7 +150,7 @@ color:white;</string>
             <property name="geometry">
              <rect>
               <x>0</x>
-              <y>160</y>
+              <y>170</y>
               <width>51</width>
               <height>31</height>
              </rect>
@@ -132,7 +170,7 @@ color:white;</string>
             <property name="geometry">
              <rect>
               <x>0</x>
-              <y>100</y>
+              <y>110</y>
               <width>191</width>
               <height>31</height>
              </rect>
@@ -152,7 +190,7 @@ color:white;</string>
             <property name="geometry">
              <rect>
               <x>0</x>
-              <y>0</y>
+              <y>10</y>
               <width>191</width>
               <height>31</height>
              </rect>
@@ -172,7 +210,7 @@ color:white;</string>
             <property name="geometry">
              <rect>
               <x>0</x>
-              <y>220</y>
+              <y>230</y>
               <width>191</width>
               <height>31</height>
              </rect>
@@ -192,10 +230,22 @@ color:white;</string>
          </item>
          <item>
           <widget class="QFrame" name="frame_5">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>1</horstretch>
+             <verstretch>1</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
              <width>0</width>
              <height>231</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>1021</width>
+             <height>401</height>
             </size>
            </property>
            <property name="frameShape">
@@ -212,6 +262,12 @@ color:white;</string>
               <width>1001</width>
               <height>231</height>
              </rect>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>1</horstretch>
+              <verstretch>1</verstretch>
+             </sizepolicy>
             </property>
             <property name="minimumSize">
              <size>
@@ -232,6 +288,12 @@ color:white;</string>
               <height>16</height>
              </rect>
             </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>1</horstretch>
+              <verstretch>1</verstretch>
+             </sizepolicy>
+            </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -242,8 +304,8 @@ color:white;</string>
           <widget class="QFrame" name="frame_6">
            <property name="maximumSize">
             <size>
-             <width>271</width>
-             <height>261</height>
+             <width>301</width>
+             <height>371</height>
             </size>
            </property>
            <property name="frameShape">
@@ -424,6 +486,12 @@ color:white;</string>
       </item>
       <item>
        <widget class="QFrame" name="frame_2">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>1</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -433,7 +501,7 @@ color:white;</string>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>800</height>
+          <height>1200</height>
          </size>
         </property>
         <property name="frameShape">
@@ -561,6 +629,18 @@ color:white;</string>
          </item>
          <item>
           <widget class="QFrame" name="frame_17">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>1</horstretch>
+             <verstretch>1</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>1021</width>
+             <height>361</height>
+            </size>
+           </property>
            <property name="frameShape">
             <enum>QFrame::StyledPanel</enum>
            </property>
@@ -575,6 +655,12 @@ color:white;</string>
               <width>1001</width>
               <height>231</height>
              </rect>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
             </property>
             <property name="minimumSize">
              <size>
@@ -605,8 +691,8 @@ color:white;</string>
           <widget class="QFrame" name="frame_18">
            <property name="maximumSize">
             <size>
-             <width>271</width>
-             <height>261</height>
+             <width>301</width>
+             <height>371</height>
             </size>
            </property>
            <property name="frameShape">
@@ -796,7 +882,7 @@ color:white;</string>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>120</height>
+          <height>220</height>
          </size>
         </property>
         <property name="frameShape">
@@ -808,6 +894,12 @@ color:white;</string>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
           <widget class="QGroupBox" name="groupBox_2">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>1</verstretch>
+            </sizepolicy>
+           </property>
            <property name="title">
             <string>Controls</string>
            </property>
@@ -884,32 +976,6 @@ color:white;</string>
        </widget>
       </item>
      </layout>
-    </item>
-    <item row="1" column="0" alignment="Qt::AlignHCenter">
-     <widget class="QTextBrowser" name="textBrowser">
-      <property name="minimumSize">
-       <size>
-        <width>200</width>
-        <height>51</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>341</width>
-        <height>51</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">border:none;</string>
-      </property>
-      <property name="html">
-       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;Live Signal Viewer&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-     </widget>
     </item>
    </layout>
   </widget>
