@@ -204,6 +204,10 @@ class Graph:
 
         # Clear the plot window
         self.Graph_Window.clear()
+        
+    def toggle_play_pause(self):
+        for sig in self.signals:
+            sig.pause = not sig.pause
                 
 
         

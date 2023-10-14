@@ -129,7 +129,7 @@ class Ui_MainWindow(object):
         # Connect the scroll bar's valueChanged signal to a function
         self.horizontalScrollBar.valueChanged.connect(self.scroll_signal)
         
-        self.Play_Pause_1 = QtWidgets.QPushButton(self.groupBox, clicked = lambda : self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.toggle_play_pause())
+        self.Play_Pause_1 = QtWidgets.QPushButton(self.groupBox, clicked = lambda : self.Graph_1.toggle_play_pause())
         self.Play_Pause_1.setGeometry(QtCore.QRect(10, 130, 191, 31))
         self.Play_Pause_1.setStyleSheet("background-color:#3366ff;")
         icon = QtGui.QIcon()
@@ -261,7 +261,7 @@ class Ui_MainWindow(object):
         self.Rewind_2.setEnabled(False)
         self.Rewind_2.setIcon(icon1)
         self.Rewind_2.setObjectName("Rewind_2")
-        self.Play_Pause_2 = QtWidgets.QPushButton(self.groupBox, clicked = lambda : self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.toggle_play_pause())
+        self.Play_Pause_2 = QtWidgets.QPushButton(self.groupBox, clicked = lambda : self.Graph_2.toggle_play_pause())
         self.Play_Pause_2.setGeometry(QtCore.QRect(10, 440, 191, 31))
         self.Play_Pause_2.setStyleSheet("background-color:#3366ff;")
         self.Play_Pause_2.setIcon(icon)
