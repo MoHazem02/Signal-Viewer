@@ -67,28 +67,29 @@ class Graph:
         if self.graph_number == 1:
                 self.Update_Current_Channel()
                 Temporary_Signal=self.CHANNELS[self.Current_Channel - 1].Signal
+                self.Other_Graph.Add_Signal(Temporary_Signal)            
+                # Start plotting the signal in the new graph
+                Temporary_Signal.Plot_Signal()
+                Temporary_Signal.data_line = self.Other_Graph.Graph_Window.plot(pen=Temporary_Signal.color, name=Temporary_Signal.legend_text) 
                 self.Remove_Signal() 
                 self.Graph_Window.clear()
                 for channel in self.CHANNELS:
                     channel.Signal.Plot_Signal()
                     channel.Signal.data_line = self.Graph_Window.plot(pen=channel.Signal.color, name=channel.Signal.legend_text) 
-                self.Other_Graph.Add_Signal(Temporary_Signal)            
-                # Start plotting the signal in the new graph
-                Temporary_Signal.Plot_Signal()
-                Temporary_Signal.data_line = self.Other_Graph.Graph_Window.plot(pen=Temporary_Signal.color, name=Temporary_Signal.legend_text) 
+                
         else:
             self.Update_Current_Channel()
             Temporary_Signal=self.CHANNELS[self.Current_Channel - 1].Signal
+            self.Other_Graph.Add_Signal(Temporary_Signal)
+            #Start plotting the signal in the new graph
+            Temporary_Signal.Plot_Signal() 
+            Temporary_Signal.data_line = self.Other_Graph.Graph_Window.plot(pen=Temporary_Signal.color, name=Temporary_Signal.legend_text)
             self.Remove_Signal()
             self.Graph_Window.clear()
             for channel in self.CHANNELS:
                     channel.Signal.Plot_Signal()
                     channel.Signal.data_line = self.Graph_Window.plot(pen=channel.Signal.color, name=channel.Signal.legend_text) 
-            self.Other_Graph.Add_Signal(Temporary_Signal)
-            self.Other_Graph.Add_Signal(Temporary_Signal)
-            #Start plotting the signal in the new graph
-            Temporary_Signal.Plot_Signal() 
-            Temporary_Signal.data_line = self.Other_Graph.Graph_Window.plot(pen=Temporary_Signal.color, name=Temporary_Signal.legend_text)
+            
 
     def Add_Signal(self, signal): # add the signal to a channel 
        if signal:
@@ -322,6 +323,7 @@ class Graph:
     def toggle_play_pause(self):
         for sig in self.signals:
             sig.pause = not sig.pause
+            self.Graph_Window.getViewBox().setXRange(max(sig.X_Coordinates[0 : sig.i + 1]) - 100, max(sig.X_Coordinates[0 : sig.i + 1]))
         
         if self.Linked:
             for channel in self.Other_Graph.CHANNELS:
