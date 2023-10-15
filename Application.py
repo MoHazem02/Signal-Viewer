@@ -44,6 +44,7 @@ class Ui_MainWindow(object):
 
         if self.Graph_1.Linked: # to link and unlink from 1 and 2
             plot_item_2.setXLink(plot_item_1)
+            plot_item_2.setYLink(plot_item_1)
             self.Graph_1.Reset_Signal()
             self.Graph_2.Reset_Signal()
         else:
