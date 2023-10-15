@@ -24,6 +24,7 @@ class Ui_MainWindow(object):
         self.Snapshots_Count = 0
 
     def Take_Snapshot(self):
+        self.Export_Button.setEnabled(True)
         #Shortcut to take screenshot
         pyautogui.hotkey("win", "shift", "s")
         #wait till user takes screenshot
@@ -78,12 +79,14 @@ class Ui_MainWindow(object):
         # Disable the Rewind button
         self.Rewind_1.setEnabled(False)
     
+
     def Rewind_Signal_2(self):
         # Rewind the signal
         self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.i = 0
         self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.Update_Plot_Data()
         # Disable the Rewind button
         self.Rewind_2.setEnabled(False)
+
 
     def Scroll_Top_Signal(self,Scrolling_Coordinates_Value):
           # Calculate the corresponding index based on the scrollbar's value
@@ -95,9 +98,7 @@ class Ui_MainWindow(object):
 
             # Update the X range of the plot
             self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Graph_Widget.getViewBox().setXRange(max(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]) - 100, max(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]))
-        
-
-    
+           
     
     def Scroll_Bottom_Signal(self,Scrolling_Coordinates_Value):
           # Calculate the corresponding index based on the scrollbar's value
@@ -109,6 +110,7 @@ class Ui_MainWindow(object):
 
             # Update the X range of the plot
             self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.Graph_Widget.getViewBox().setXRange(max(self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]) - 100, max(self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]))
+    
     
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -171,7 +173,7 @@ class Ui_MainWindow(object):
         self.Rewind1_Button.setEnabled(False)
         self.Rewind1_Button.setStyleSheet("background-color:#3366ff;")
         # Connect the Rewind button's clicked signal to a function
-        self.Rewind1_Button.clicked.connect(self.rewind_signal_1)
+        self.Rewind1_Button.clicked.connect(self.Rewind_Signal_1)
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap("Assets/rewind.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.Rewind1_Button.setIcon(icon2)
@@ -275,7 +277,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.addItem(spacerItem6)
         self.horizontalLayout_7 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_7.setObjectName("horizontalLayout_7")
-        self.Edit1_Label_Button = QtWidgets.QPushButton(self.frame_6)
+        self.Edit1_Label_Button = QtWidgets.QPushButton(self.frame_6, clicked = lambda: self.Graph_1.Add_Legend())
         self.Edit1_Label_Button.setEnabled(False)
         self.Edit1_Label_Button.setMinimumSize(QtCore.QSize(101, 31))
         self.Edit1_Label_Button.setToolTip("")
@@ -295,13 +297,13 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.addItem(spacerItem7)
         self.horizontalLayout_8 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_8.setObjectName("horizontalLayout_8")
-        self.Color_Top_Button = QtWidgets.QPushButton(self.frame_6)
+        self.Color_Top_Button = QtWidgets.QPushButton(self.frame_6, clicked = lambda : self.Graph_1.Change_Color())
         self.Color_Top_Button.setEnabled(False)
         self.Color_Top_Button.setMinimumSize(QtCore.QSize(101, 31))
         self.Color_Top_Button.setStyleSheet("background-color:#3366ff;")
         self.Color_Top_Button.setObjectName("Color_Top_Button")
         self.horizontalLayout_8.addWidget(self.Color_Top_Button)
-        self.AddChannel_Top_Button = QtWidgets.QPushButton(self.frame_6)
+        self.AddChannel_Top_Button = QtWidgets.QPushButton(self.frame_6, clicked = lambda: self.Graph_1.Add_Channel())
         self.AddChannel_Top_Button.setMinimumSize(QtCore.QSize(0, 31))
         self.AddChannel_Top_Button.setStyleSheet("background-color:#3366ff;")
         self.AddChannel_Top_Button.setObjectName("AddChannel_Top_Button")
@@ -386,12 +388,11 @@ class Ui_MainWindow(object):
         self.Play2_Button.setIcon(icon1)
         self.Play2_Button.setObjectName("Play2_Button")
         self.verticalLayout_3.addWidget(self.Play2_Button)
-        self.Rewind2_Button = QtWidgets.QPushButton(self.frame_16)
+        self.Rewind2_Button = QtWidgets.QPushButton(self.frame_16, clicked = lambda : self.Rewind_Signal_2)
         self.Rewind2_Button.setEnabled(False)
         self.Rewind2_Button.setStyleSheet("background-color:#3366ff;")
         self.Rewind2_Button.setIcon(icon2)
         self.Rewind2_Button.setObjectName("Rewind2_Button")
-        self.Rewind2_Button.clicked.connect(self.rewind_signal_2)
         self.verticalLayout_3.addWidget(self.Rewind2_Button)
         spacerItem13 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_3.addItem(spacerItem13)
@@ -474,7 +475,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_5.addItem(spacerItem17)
         self.horizontalLayout_11 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_11.setObjectName("horizontalLayout_11")
-        self.Edit2_Label_Button = QtWidgets.QPushButton(self.frame_18)
+        self.Edit2_Label_Button = QtWidgets.QPushButton(self.frame_18, clicked = lambda: self.Graph_2.Add_Legend())
         self.Edit2_Label_Button.setEnabled(False)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(1)
@@ -499,13 +500,13 @@ class Ui_MainWindow(object):
         self.verticalLayout_5.addItem(spacerItem18)
         self.horizontalLayout_12 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_12.setObjectName("horizontalLayout_12")
-        self.Color_Bottom_Button_2 = QtWidgets.QPushButton(self.frame_18)
+        self.Color_Bottom_Button_2 = QtWidgets.QPushButton(self.frame_18, clicked = lambda : self.Graph_2.Change_Color())
         self.Color_Bottom_Button_2.setEnabled(False)
         self.Color_Bottom_Button_2.setMinimumSize(QtCore.QSize(0, 31))
         self.Color_Bottom_Button_2.setStyleSheet("background-color:#3366ff;")
         self.Color_Bottom_Button_2.setObjectName("Color_Bottom_Button_2")
         self.horizontalLayout_12.addWidget(self.Color_Bottom_Button_2)
-        self.AddChannel_Bottom_Button = QtWidgets.QPushButton(self.frame_18)
+        self.AddChannel_Bottom_Button = QtWidgets.QPushButton(self.frame_18, clicked = lambda: self.Graph_2.Add_Channel())
         self.AddChannel_Bottom_Button.setMinimumSize(QtCore.QSize(0, 31))
         self.AddChannel_Bottom_Button.setStyleSheet("background-color:#3366ff;")
         self.AddChannel_Bottom_Button.setObjectName("AddChannel_Bottom_Button")
@@ -580,7 +581,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.Snapshot_Button)
         spacerItem22 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem22)
-        self.Export_Button = QtWidgets.QPushButton(self.groupBox_2)
+        self.Export_Button = QtWidgets.QPushButton(self.groupBox_2, clicked = lambda : self.Export_PDF())
         self.Export_Button.setEnabled(False)
         self.Export_Button.setMinimumSize(QtCore.QSize(221, 0))
         self.Export_Button.setMaximumSize(QtCore.QSize(221, 16777215))
@@ -622,6 +623,13 @@ class Ui_MainWindow(object):
         self.menuAbout.addAction(self.actionOmar_Khaled)
         self.menuAbout.addAction(self.actionYoussef_Hassanein)
         self.menubar.addAction(self.menuAbout.menuAction())
+
+        self.Graph_1.Graph_Window = self.GraphWidget_Top
+        self.Graph_2.Graph_Window = self.GraphWidget_Bottom
+        self.Graph_1.textbox = self.Label_Top_LineEdit
+        self.Graph_2.textbox = self.Label_Bottom_LineEdit
+        self.Label_Top_LineEdit.returnPressed.connect(self.Graph_1.Add_Legend)
+        self.Label_Bottom_LineEdit.returnPressed.connect(self.Graph_2.Add_Legend)
 
         self.retranslateUi(MainWindow)
         self.CineSpeed_Top_Slider.valueChanged['int'].connect(self.LCD_Top.display) # type: ignore

@@ -30,9 +30,9 @@ class Graph:
     
     def Update_Current_Channel(self): 
         if self.graph_number == 1:
-            self.Current_Channel = int(str(self.UI_Window.Channels_of_Graph_1.currentText())[-1])
+            self.Current_Channel = int(str(self.UI_Window.Channels_Top_ComboBox.currentText())[-1])
         else:
-            self.Current_Channel = int(str(self.UI_Window.Channels_of_Graph_2.currentText())[-1])
+            self.Current_Channel = int(str(self.UI_Window.Channels_Bottom_ComboBox.currentText())[-1])
 
     def Remove_Signal(self):
         
@@ -60,7 +60,7 @@ class Graph:
             #Set the channel's signal to None
             self.CHANNELS[self.Current_Channel-1].Signal = None
             self.signal_count -= 1
-            #self.reset_signal
+            #self.Reset_Signal
             
 
 
@@ -84,28 +84,37 @@ class Graph:
                         break
         
             self.signal_count += 1
-
+            
 
             if self.graph_number == 1:
-                self.UI_Window.horizontalScrollBar.setEnabled(True)
-                self.Enable_Line_Edit()
+                self.UI_Window.ScrollBar_Top.setEnabled(True)
+                self.UI_Window.Color_Top_Button.setEnabled(True)
+                self.UI_Window.Edit1_Label_Button.setEnabled(True)
+                self.UI_Window.Play1_Button.setEnabled(True)
+                # self.Enable_Line_Edit()
             else:
-                self.UI_Window.horizontalScrollBar_2.setEnabled(True)
-                self.Enable_Line_Edit()
+                self.UI_Window.ScrollBar_Bottom.setEnabled(True)
+                self.UI_Window.Color_Bottom_Button.setEnabled(True)
+                self.UI_Window.Edit2_Label_Button.setEnabled(True)
+                self.UI_Window.Play2_Button.setEnabled(True)
+
+
+                # self.Enable_Line_Edit()
             
 
             # Add the new signal to the list of signals
             # self.signals.append(signal)
             # Reset the current signal and clear the plot window
-            self.reset_signal()
+            if self.signal_count > 1:
+                self.Reset_Signal()
                 
     def Add_Channel(self):
         self.channel_count += 1
         Temporary_String = f"Channel {self.channel_count}"
         if self.graph_number == 1:
-            self.UI_Window.Channels_of_Graph_1.addItem(Temporary_String)
+            self.UI_Window.Channels_Top_ComboBox.addItem(Temporary_String)
         else:
-            self.UI_Window.Channels_of_Graph_2.addItem(Temporary_String) 
+            self.UI_Window.Channels_Bottom_ComboBox.addItem(Temporary_String) 
         new_Channel = Channel(self.channel_count)
         self.CHANNELS.append(new_Channel)
         return new_Channel
@@ -191,8 +200,12 @@ class Graph:
         
 
     def Add_Legend(self):
+        if self.graph_number == 1:
+            self.UI_Window.Label_Top_LineEdit.setEnabled(True)
+        else:
+            self.UI_Window.Label_Bottom_LineEdit.setEnabled(True)
+
         text = self.textbox.text()
-        current_signal = None
         self.Update_Current_Channel()
         # Get the current signal
         if self.Current_Channel:
@@ -257,7 +270,7 @@ class Graph:
                 self.UI_Window.horizontalSlider.setValue(value)
             
                 
-    def reset_signal(self):
+    def Reset_Signal(self):
         # Reset the current signal if another signal is add
         # self.Update_Current_Channel()
         # current_signal = self.CHANNELS[self.Current_Channel - 1].Signal

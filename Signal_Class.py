@@ -64,17 +64,17 @@ class Signal:
             
         if self.Graph_Object.graph_number == 1:
             # Update the scrollbar's maximum value and position
-            self.Graph_Object.UI_Window.horizontalScrollBar.valueChanged.disconnect(self.Graph_Object.UI_Window.Scroll_Top_Signal)
-            self.Graph_Object.UI_Window.horizontalScrollBar.setMaximum(len(self.X_Coordinates))
-            self.Graph_Object.UI_Window.horizontalScrollBar.setValue(self.i)
-            self.Graph_Object.UI_Window.horizontalScrollBar.valueChanged.connect(self.Graph_Object.UI_Window.Scroll_Top_Signal)
+            self.Graph_Object.UI_Window.ScrollBar_Top.valueChanged.disconnect(self.Graph_Object.UI_Window.Scroll_Top_Signal)
+            self.Graph_Object.UI_Window.ScrollBar_Top.setMaximum(len(self.X_Coordinates))
+            self.Graph_Object.UI_Window.ScrollBar_Top.setValue(self.i)
+            self.Graph_Object.UI_Window.ScrollBar_Top.valueChanged.connect(self.Graph_Object.UI_Window.Scroll_Top_Signal)
         
         else:
 
-            self.Graph_Object.UI_Window.horizontalScrollBar_2.valueChanged.disconnect(self.Graph_Object.UI_Window.Scroll_Bottom_Signal)
-            self.Graph_Object.UI_Window.horizontalScrollBar_2.setMaximum(len(self.X_Coordinates))
-            self.Graph_Object.UI_Window.horizontalScrollBar_2.setValue(self.i)
-            self.Graph_Object.UI_Window.horizontalScrollBar_2.valueChanged.connect(self.Graph_Object.UI_Window.Scroll_Bottom_Signal)
+            self.Graph_Object.UI_Window.ScrollBar_Bottom.valueChanged.disconnect(self.Graph_Object.UI_Window.Scroll_Bottom_Signal)
+            self.Graph_Object.UI_Window.ScrollBar_Bottom.setMaximum(len(self.X_Coordinates))
+            self.Graph_Object.UI_Window.ScrollBar_Bottom.setValue(self.i)
+            self.Graph_Object.UI_Window.ScrollBar_Bottom.valueChanged.connect(self.Graph_Object.UI_Window.Scroll_Bottom_Signal)
     
     
     def toggle_play_pause(self):
@@ -83,9 +83,7 @@ class Signal:
     
     def Update_Cine_Speed(self, speed_value):
         self.speed = speed_value
-        #if speed_value == 0:
-            #self.speed = 1
-            
+        
     
     def Creating_Signal_Statistics(self):
         if self.Y_Coordinates:
