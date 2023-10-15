@@ -78,7 +78,7 @@ class Ui_MainWindow(object):
 
     def Scroll_Top_Signal(self,Scrolling_Coordinates_Value):
           # Calculate the corresponding index based on the scrollbar's value
-            index = min(int(Scrolling_Coordinates_Value / self.ScrollBar_Top.maximum() * len(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates)), len(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates) - 1)
+            index = min(int(Scrolling_Coordinates_Value / self.Horiz_ScrollBar_Top.maximum() * len(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates)), len(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates) - 1)
 
             # Update the plot data
             self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.i = index
@@ -90,7 +90,7 @@ class Ui_MainWindow(object):
     
     def Scroll_Bottom_Signal(self,Scrolling_Coordinates_Value):
           # Calculate the corresponding index based on the scrollbar's value
-            index = min(int(Scrolling_Coordinates_Value / self.ScrollBar_Bottom.maximum() * len(self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.X_Coordinates)), len(self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.X_Coordinates) - 1)
+            index = min(int(Scrolling_Coordinates_Value / self.Horiz_ScrollBar_Bottom.maximum() * len(self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.X_Coordinates)), len(self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.X_Coordinates) - 1)
 
             # Update the plot data
             self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.i = index
@@ -217,6 +217,11 @@ class Ui_MainWindow(object):
         self.frame_5.setObjectName("frame_5")
         self.horizontalLayout_15 = QtWidgets.QHBoxLayout(self.frame_5)
         self.horizontalLayout_15.setObjectName("horizontalLayout_15")
+        self.Vert_Horiz_ScrollBar_Top = QtWidgets.QScrollBar(self.frame_5)
+        self.Vert_Horiz_ScrollBar_Top.setEnabled(False)
+        self.Vert_Horiz_ScrollBar_Top.setOrientation(QtCore.Qt.Vertical)
+        self.Vert_Horiz_ScrollBar_Top.setObjectName("Vert_Horiz_ScrollBar_Top")
+        self.horizontalLayout_15.addWidget(self.Vert_Horiz_ScrollBar_Top)
         self.verticalLayout_7 = QtWidgets.QVBoxLayout()
         self.verticalLayout_7.setObjectName("verticalLayout_7")
         self.GraphWidget_Top = PlotWidget(self.frame_5)
@@ -228,19 +233,19 @@ class Ui_MainWindow(object):
         self.GraphWidget_Top.setMinimumSize(QtCore.QSize(501, 231))
         self.GraphWidget_Top.setObjectName("GraphWidget_Top")
         self.verticalLayout_7.addWidget(self.GraphWidget_Top)
-        self.ScrollBar_Top = QtWidgets.QScrollBar(self.frame_5)
-        self.ScrollBar_Top.setEnabled(False)
+        self.Horiz_ScrollBar_Top = QtWidgets.QScrollBar(self.frame_5)
+        self.Horiz_ScrollBar_Top.setEnabled(False)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(1)
         sizePolicy.setVerticalStretch(1)
-        sizePolicy.setHeightForWidth(self.ScrollBar_Top.sizePolicy().hasHeightForWidth())
-        self.ScrollBar_Top.setSizePolicy(sizePolicy)
-        self.ScrollBar_Top.setOrientation(QtCore.Qt.Horizontal)
-        self.ScrollBar_Top.setObjectName("ScrollBar_Top")
-        # self.Graph_1.Scroll_Bar = self.ScrollBar_Top
-        # self.Scrolling_Coordinates_value = self.ScrollBar_Top.valueChanged
-        self.ScrollBar_Top.valueChanged.connect(self.Scroll_Top_Signal)
-        self.verticalLayout_7.addWidget(self.ScrollBar_Top)
+        sizePolicy.setHeightForWidth(self.Horiz_ScrollBar_Top.sizePolicy().hasHeightForWidth())
+        self.Horiz_ScrollBar_Top.setSizePolicy(sizePolicy)
+        self.Horiz_ScrollBar_Top.setOrientation(QtCore.Qt.Horizontal)
+        self.Horiz_ScrollBar_Top.setObjectName("Horiz_ScrollBar_Top")
+        # self.Graph_1.Scroll_Bar = self.Horiz_ScrollBar_Top
+        # self.Scrolling_Coordinates_value = self.Horiz_ScrollBar_Top.valueChanged
+        self.Horiz_ScrollBar_Top.valueChanged.connect(self.Scroll_Top_Signal)
+        self.verticalLayout_7.addWidget(self.Horiz_ScrollBar_Top)
         self.horizontalLayout_15.addLayout(self.verticalLayout_7)
         self.horizontalLayout_2.addWidget(self.frame_5)
         self.frame_6 = QtWidgets.QFrame(self.frame)
@@ -422,6 +427,11 @@ class Ui_MainWindow(object):
         self.frame_17.setObjectName("frame_17")
         self.horizontalLayout_16 = QtWidgets.QHBoxLayout(self.frame_17)
         self.horizontalLayout_16.setObjectName("horizontalLayout_16")
+        self.Vert_Horiz_ScrollBar_Bottom = QtWidgets.QScrollBar(self.frame_17)
+        self.Vert_Horiz_ScrollBar_Bottom.setEnabled(False)
+        self.Vert_Horiz_ScrollBar_Bottom.setOrientation(QtCore.Qt.Vertical)
+        self.Vert_Horiz_ScrollBar_Bottom.setObjectName("Vert_Horiz_ScrollBar_Bottom")
+        self.horizontalLayout_16.addWidget(self.Vert_Horiz_ScrollBar_Bottom)
         self.verticalLayout_6 = QtWidgets.QVBoxLayout()
         self.verticalLayout_6.setObjectName("verticalLayout_6")
         self.GraphWidget_Bottom = PlotWidget(self.frame_17)
@@ -433,14 +443,14 @@ class Ui_MainWindow(object):
         self.GraphWidget_Bottom.setMinimumSize(QtCore.QSize(501, 231))
         self.GraphWidget_Bottom.setObjectName("GraphWidget_Bottom")
         self.verticalLayout_6.addWidget(self.GraphWidget_Bottom)
-        self.ScrollBar_Bottom = QtWidgets.QScrollBar(self.frame_17)
-        self.ScrollBar_Bottom.setEnabled(False)
-        self.ScrollBar_Bottom.setOrientation(QtCore.Qt.Horizontal)
-        self.ScrollBar_Bottom.setObjectName("ScrollBar_Bottom")
-        # self.Graph_2.Scroll_Bar = self.ScrollBar_Bottom
-        # self.Bottom_Scrolling_Coordinates_value = self.ScrollBar_Bottom.valueChanged
-        self.ScrollBar_Bottom.valueChanged.connect(self.Scroll_Bottom_Signal)
-        self.verticalLayout_6.addWidget(self.ScrollBar_Bottom)
+        self.Horiz_ScrollBar_Bottom = QtWidgets.QScrollBar(self.frame_17)
+        self.Horiz_ScrollBar_Bottom.setEnabled(False)
+        self.Horiz_ScrollBar_Bottom.setOrientation(QtCore.Qt.Horizontal)
+        self.Horiz_ScrollBar_Bottom.setObjectName("Horiz_ScrollBar_Bottom")
+        # self.Graph_2.Scroll_Bar = self.Horiz_ScrollBar_Bottom
+        # self.Bottom_Scrolling_Coordinates_value = self.Horiz_ScrollBar_Bottom.valueChanged
+        self.Horiz_ScrollBar_Bottom.valueChanged.connect(self.Scroll_Bottom_Signal)
+        self.verticalLayout_6.addWidget(self.Horiz_ScrollBar_Bottom)
         self.horizontalLayout_16.addLayout(self.verticalLayout_6)
         self.horizontalLayout_6.addWidget(self.frame_17)
         self.frame_18 = QtWidgets.QFrame(self.frame_2)

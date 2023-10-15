@@ -303,6 +303,16 @@ color:white;
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_15">
             <item>
+             <widget class="QScrollBar" name="Vert_ScrollBar_Top">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
              <layout class="QVBoxLayout" name="verticalLayout_7">
               <item>
                <widget class="PlotWidget" name="GraphWidget_Top">
@@ -321,7 +331,7 @@ color:white;
                </widget>
               </item>
               <item>
-               <widget class="QScrollBar" name="ScrollBar_Top">
+               <widget class="QScrollBar" name="Horiz_ScrollBar_Top">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
@@ -881,6 +891,16 @@ color:white;
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_16">
             <item>
+             <widget class="QScrollBar" name="Vert_ScrollBar_Bottom">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
              <layout class="QVBoxLayout" name="verticalLayout_6">
               <item>
                <widget class="PlotWidget" name="GraphWidget_Bottom">
@@ -899,7 +919,7 @@ color:white;
                </widget>
               </item>
               <item>
-               <widget class="QScrollBar" name="ScrollBar_Bottom">
+               <widget class="QScrollBar" name="Horiz_ScrollBar_Bottom">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
