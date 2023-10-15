@@ -63,6 +63,25 @@ class Graph:
             #self.Reset_Signal
             
 
+    def Move_Signal(self):
+        if self.graph_number == 1:
+                self.Update_Current_Channel()
+                Temporary_Signal=self.CHANNELS[self.Current_Channel - 1].Signal
+                self.Remove_Signal() 
+                self.Graph_Window.clear()
+                self.Other_Graph.Add_Signal(Temporary_Signal)            
+                # Start plotting the signal in the new graph
+                Temporary_Signal.Plot_Signal()
+                Temporary_Signal.data_line = self.Other_Graph.Graph_Window.plot(pen=Temporary_Signal.color, name=Temporary_Signal.legend_text) 
+        else:
+            self.Update_Current_Channel()
+            Temporary_Signal=self.CHANNELS[self.Current_Channel - 1].Signal
+            self.Remove_Signal()
+            self.Graph_Window.clear()
+            self.Other_Graph.Add_Signal(Temporary_Signal)
+            #Start plotting the signal in the new graph
+            Temporary_Signal.Plot_Signal() 
+            Temporary_Signal.data_line = self.Other_Graph.Graph_Window.plot(pen=Temporary_Signal.color, name=Temporary_Signal.legend_text)
 
     def Add_Signal(self, signal): # add the signal to a channel 
        if signal:
@@ -91,12 +110,14 @@ class Graph:
                 self.UI_Window.Color_Top_Button.setEnabled(True)
                 self.UI_Window.Edit1_Label_Button.setEnabled(True)
                 self.UI_Window.Play1_Button.setEnabled(True)
+                self.UI_Window.Move_Top_Button.setEnabled(True)
                 # self.Enable_Line_Edit()
             else:
                 self.UI_Window.ScrollBar_Bottom.setEnabled(True)
                 self.UI_Window.Color_Bottom_Button.setEnabled(True)
                 self.UI_Window.Edit2_Label_Button.setEnabled(True)
                 self.UI_Window.Play2_Button.setEnabled(True)
+                self.UI_Window.Move_Bottom_Button.setEnabled(True)
 
 
                 # self.Enable_Line_Edit()
@@ -244,13 +265,7 @@ class Graph:
                     #current_signal.Update_Plot_Data()
                     #self.update_legend(current_signal)
                   
-        
-    def Enable_Line_Edit(self):
-        if self.textbox is not None:
-            self.textbox.setReadOnly(False)  # Make the QLineEdit widget editable
-            self.textbox.show()  # Make the lineEdit widget visible
-        else:
-            print("lineEdit widget does not exist")
+    
   
     def Reset(self):
         self.textbox.setReadOnly(True) #reset the textbox until user add a signal

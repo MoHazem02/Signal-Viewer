@@ -33,19 +33,6 @@ class Ui_MainWindow(object):
 		# Save the image to Snapshots folder
         snapshot.save(f'Snapshots/image{self.Snapshots_Count}.png', 'PNG')
 
-    def Move_Signal(self, number):
-        if number == 1:
-            self.Graph_1.Update_Current_Channel()
-            signal = self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal
-            self.Graph_2.Add_Signal(signal)
-            signal.Plot_Signal()  # Start plotting the signal in the new graph
-            self.Graph_1.Remove_Signal(self.Graph_1.Current_Channel)
-        else:
-            self.Graph_2.Update_Current_Channel()
-            signal = self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal
-            self.Graph_2.Remove_Signal(self.Graph_2.Current_Channel)
-            self.Graph_1.Add_Signal(signal)
-            signal.Plot_Signal()  # Start plotting the signal in the new graph
             
     def Link_Unlink(self):
         # We basically toggle what is already there
@@ -313,7 +300,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.addItem(spacerItem8)
         self.horizontalLayout_9 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_9.setObjectName("horizontalLayout_9")
-        self.Move_Top_Button = QtWidgets.QPushButton(self.frame_6)
+        self.Move_Top_Button = QtWidgets.QPushButton(self.frame_6, clicked = lambda : self.Graph_1.Move_Signal())
         self.Move_Top_Button.setEnabled(False)
         self.Move_Top_Button.setMinimumSize(QtCore.QSize(134, 31))
         self.Move_Top_Button.setStyleSheet("background-color:#3366ff;")
@@ -516,7 +503,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_5.addItem(spacerItem19)
         self.horizontalLayout_13 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_13.setObjectName("horizontalLayout_13")
-        self.Move_Bottom_Button = QtWidgets.QPushButton(self.frame_18)
+        self.Move_Bottom_Button = QtWidgets.QPushButton(self.frame_18, clicked = lambda : self.Graph_2.Move_Signal())
         self.Move_Bottom_Button.setEnabled(False)
         self.Move_Bottom_Button.setMinimumSize(QtCore.QSize(134, 31))
         self.Move_Bottom_Button.setStyleSheet("background-color:#3366ff;")
@@ -570,7 +557,7 @@ class Ui_MainWindow(object):
         self.groupBox_2.setObjectName("groupBox_2")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.groupBox_2)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.Snapshot_Button = QtWidgets.QPushButton(self.groupBox_2)
+        self.Snapshot_Button = QtWidgets.QPushButton(self.groupBox_2, clicked = lambda: self.Take_Snapshot())
         self.Snapshot_Button.setMinimumSize(QtCore.QSize(221, 0))
         self.Snapshot_Button.setMaximumSize(QtCore.QSize(221, 16777215))
         self.Snapshot_Button.setStyleSheet("background-color:#3366ff;")
