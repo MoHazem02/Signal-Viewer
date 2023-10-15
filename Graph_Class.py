@@ -94,7 +94,7 @@ class Graph:
                 # self.Enable_Line_Edit()
             else:
                 self.UI_Window.ScrollBar_Bottom.setEnabled(True)
-                self.UI_Window.Color_Bottom_Button.setEnabled(True)
+                self.UI_Window.Color_Bottom_Button_2.setEnabled(True)
                 self.UI_Window.Edit2_Label_Button.setEnabled(True)
                 self.UI_Window.Play2_Button.setEnabled(True)
 
@@ -265,9 +265,9 @@ class Graph:
                 channel.Signal.Update_Cine_Speed(value)
             
             if self.graph_number == 1:
-                self.UI_Window.horizontalSlider_2.setValue(value)
+                self.UI_Window.CineSpeed_Bottom_Slider.setValue(value)
             else:
-                self.UI_Window.horizontalSlider.setValue(value)
+                self.UI_Window.CineSpeed_Top_Slider.setValue(value)
             
                 
     def Reset_Signal(self):

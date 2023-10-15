@@ -57,8 +57,8 @@ class Ui_MainWindow(object):
 
         if self.Graph_1.Linked: # to link and unlink from 1 and 2
             plot_item_2.setXLink(plot_item_1)
-            self.Graph_1.reset_signal()
-            self.Graph_2.reset_signal()
+            self.Graph_1.Reset_Signal()
+            self.Graph_2.Reset_Signal()
         else:
             plot_item_2.setXLink(None)
             
@@ -336,6 +336,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_10 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_10.setObjectName("horizontalLayout_10")
         self.CineSpeed_Top_Slider = QtWidgets.QSlider(self.frame_6)
+        self.CineSpeed_Top_Slider.valueChanged.connect(lambda: self.Graph_1.Cine_Speed(self.CineSpeed_Top_Slider.value()))
         self.CineSpeed_Top_Slider.setMinimum(1)
         self.CineSpeed_Top_Slider.setMaximum(10)
         self.CineSpeed_Top_Slider.setOrientation(QtCore.Qt.Horizontal)
@@ -537,6 +538,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_14 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_14.setObjectName("horizontalLayout_14")
         self.CineSpeed_Bottom_Slider = QtWidgets.QSlider(self.frame_18)
+        self.CineSpeed_Bottom_Slider.valueChanged.connect(lambda: self.Graph_2.Cine_Speed(self.CineSpeed_Bottom_Slider.value()))
         self.CineSpeed_Bottom_Slider.setMinimum(1)
         self.CineSpeed_Bottom_Slider.setMaximum(10)
         self.CineSpeed_Bottom_Slider.setOrientation(QtCore.Qt.Horizontal)
