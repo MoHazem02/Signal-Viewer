@@ -69,6 +69,9 @@ class Graph:
                 Temporary_Signal=self.CHANNELS[self.Current_Channel - 1].Signal
                 self.Remove_Signal() 
                 self.Graph_Window.clear()
+                for channel in self.CHANNELS:
+                    channel.Signal.Plot_Signal()
+                    channel.Signal.data_line = self.Graph_Window.plot(pen=channel.Signal.color, name=channel.Signal.legend_text) 
                 self.Other_Graph.Add_Signal(Temporary_Signal)            
                 # Start plotting the signal in the new graph
                 Temporary_Signal.Plot_Signal()
@@ -78,6 +81,10 @@ class Graph:
             Temporary_Signal=self.CHANNELS[self.Current_Channel - 1].Signal
             self.Remove_Signal()
             self.Graph_Window.clear()
+            for channel in self.CHANNELS:
+                    channel.Signal.Plot_Signal()
+                    channel.Signal.data_line = self.Graph_Window.plot(pen=channel.Signal.color, name=channel.Signal.legend_text) 
+            self.Other_Graph.Add_Signal(Temporary_Signal)
             self.Other_Graph.Add_Signal(Temporary_Signal)
             #Start plotting the signal in the new graph
             Temporary_Signal.Plot_Signal() 
@@ -111,6 +118,7 @@ class Graph:
                 self.UI_Window.Edit1_Label_Button.setEnabled(True)
                 self.UI_Window.Play1_Button.setEnabled(True)
                 self.UI_Window.Move_Top_Button.setEnabled(True)
+                self.UI_Window.Hide_Top_Checkbox.setEnabled(True)
                 # self.Enable_Line_Edit()
             else:
                 self.UI_Window.ScrollBar_Bottom.setEnabled(True)
@@ -118,6 +126,7 @@ class Graph:
                 self.UI_Window.Edit2_Label_Button.setEnabled(True)
                 self.UI_Window.Play2_Button.setEnabled(True)
                 self.UI_Window.Move_Bottom_Button.setEnabled(True)
+                self.UI_Window.Hide_Bottom_Checkbox.setEnabled(True)
 
 
                 # self.Enable_Line_Edit()
