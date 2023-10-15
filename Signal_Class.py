@@ -1,5 +1,5 @@
 from PyQt5 import QtCore
-
+import statistics
 class Signal:
     def __init__(self, col, X_List, Y_list, graphWdg, graphObj):
         self.pause = False #to control movement of the signal
@@ -19,6 +19,11 @@ class Signal:
         self.Y = []
         self.i = 0
         self.speed = 1
+        self.Max_Value = 0
+        self.Min_Value = 9999999999999999
+        self.Duration = 0
+        self.Mean = 0
+        self.Standard_Deviation = 0
         #Each signal corresponds to a channel, initially channel 1
 
     def Hide_Signal(self):
@@ -57,12 +62,19 @@ class Signal:
                 # Enable the Rewind button
                 self.Graph_Object.UI_Window.Rewind_1.setEnabled(True)
             
+        if self.Graph_Object.graph_number == 1:
             # Update the scrollbar's maximum value and position
-            self.Graph_Object.UI_Window.horizontalScrollBar.valueChanged.disconnect(self.Graph_Object.UI_Window.scroll_signal)
+            self.Graph_Object.UI_Window.horizontalScrollBar.valueChanged.disconnect(self.Graph_Object.UI_Window.Scroll_Top_Signal)
             self.Graph_Object.UI_Window.horizontalScrollBar.setMaximum(len(self.X_Coordinates))
             self.Graph_Object.UI_Window.horizontalScrollBar.setValue(self.i)
-            self.Graph_Object.UI_Window.horizontalScrollBar.valueChanged.connect(self.Graph_Object.UI_Window.scroll_signal)
+            self.Graph_Object.UI_Window.horizontalScrollBar.valueChanged.connect(self.Graph_Object.UI_Window.Scroll_Top_Signal)
+        
+        else:
 
+            self.Graph_Object.UI_Window.horizontalScrollBar_2.valueChanged.disconnect(self.Graph_Object.UI_Window.Scroll_Bottom_Signal)
+            self.Graph_Object.UI_Window.horizontalScrollBar_2.setMaximum(len(self.X_Coordinates))
+            self.Graph_Object.UI_Window.horizontalScrollBar_2.setValue(self.i)
+            self.Graph_Object.UI_Window.horizontalScrollBar_2.valueChanged.connect(self.Graph_Object.UI_Window.Scroll_Bottom_Signal)
     
     
     def toggle_play_pause(self):
@@ -74,3 +86,17 @@ class Signal:
         #if speed_value == 0:
             #self.speed = 1
             
+    
+    def Creating_Signal_Statistics(self):
+        if self.Y_Coordinates:
+            for i in range(len(self.Y_Coordinates)):
+                if self.Y_Coordinates[i]>self.Max_Value:
+                    self.Max_Value=self.Y_Coordinates[i]
+                if self.Y_Coordinates[i]<=self.Min_Value:
+                    self.Min_Value=self.Y_Coordinates[i]
+                                
+            self.Standard_Deviation = statistics.stdev(self.Y_Coordinates)
+            self.Mean = statistics.mean(self.Y_Coordinates)
+            self.Standard_Deviation = f"{self.Standard_Deviation:.6f}"  
+            self.Mean = f"{self.Mean:.6f}"   
+            self.Duration = f"{self.X_Coordinates[-1]/60:.2f}"      

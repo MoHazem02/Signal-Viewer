@@ -27,21 +27,25 @@ class Ui_MainWindow(object):
         time.sleep(6)
         snapshot = ImageGrab.grabclipboard()    
 		# Save the image to Snapshots folder
-        snapshot.save(f'Snapshots/image{self.Snapshots_Count}.png', 'PNG')
+        snapshot.save(f'D:\Education\Digital Signal Processing\Tasks\Task 1\Signal-Viewer\Snapshots/Image {self.Snapshots_Count}.png', 'PNG')
+        self.Snapshots_Count += 1
 
     def Move_Signal(self, number):
         if number == 1:
-            self.Graph_1.Update_Current_Channel()
-            signal = self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal
-            self.Graph_2.Add_Signal(signal)
-            signal.Plot_Signal()  # Start plotting the signal in the new graph
-            self.Graph_1.Remove_Signal(self.Graph_1.Current_Channel)
+                self.Graph_1.Update_Current_Channel()
+                Temporary_Signal=self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal
+                self.Graph_1.Remove_Signal() 
+                self.Graph_2.Add_Signal(Temporary_Signal)            
+                # Start plotting the signal in the new graph
+                Temporary_Signal.Plot_Signal() 
         else:
             self.Graph_2.Update_Current_Channel()
-            signal = self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal
-            self.Graph_2.Remove_Signal(self.Graph_2.Current_Channel)
-            self.Graph_1.Add_Signal(signal)
-            signal.Plot_Signal()  # Start plotting the signal in the new graph
+            Temporary_Signal=self.Graph_2.CHANNELS[self.Graph_1.Current_Channel - 1].Signal
+            self.Graph_2.Remove_Signal()
+            self.Graph_1.Add_Signal(Temporary_Signal)
+            #Start plotting the signal in the new graph
+            Temporary_Signal.Plot_Signal() 
+           
             
     def Link_Unlink(self):
         # We basically toggle what is already there
@@ -84,16 +88,31 @@ class Ui_MainWindow(object):
 
 
         
-    def scroll_signal(self, value):
-        # Calculate the corresponding index based on the scrollbar's value
-        index = min(int(value / self.horizontalScrollBar.maximum() * len(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates)), len(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates) - 1)
+    def Scroll_Top_Signal(self,Scrolling_Coordinates_Value):
+          # Calculate the corresponding index based on the scrollbar's value
+            index = min(int(Scrolling_Coordinates_Value / self.horizontalScrollBar.maximum() * len(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates)), len(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates) - 1)
 
-        # Update the plot data
-        self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.i = index
-        self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Update_Plot_Data()
+            # Update the plot data
+            self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.i = index
+            self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Update_Plot_Data()
 
-        # Update the X range of the plot
-        self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Graph_Widget.getViewBox().setXRange(max(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]) - 100, max(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]))
+            # Update the X range of the plot
+            self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Graph_Widget.getViewBox().setXRange(max(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]) - 100, max(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]))
+        
+
+    
+    
+    def Scroll_Bottom_Signal(self,Scrolling_Coordinates_Value):
+          # Calculate the corresponding index based on the scrollbar's value
+            index = min(int(Scrolling_Coordinates_Value / self.horizontalScrollBar_2.maximum() * len(self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.X_Coordinates)), len(self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.X_Coordinates) - 1)
+
+            # Update the plot data
+            self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.i = index
+            self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.Update_Plot_Data()
+
+            # Update the X range of the plot
+            self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.Graph_Widget.getViewBox().setXRange(max(self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]) - 100, max(self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]))
+    
 
 
     def setupUi(self, MainWindow):
@@ -129,7 +148,7 @@ class Ui_MainWindow(object):
         self.horizontalScrollBar.setObjectName("horizontalScrollBar")
         #self.horizontalScrollBar.valueChanged.disconnect(self.scroll_signal)
         # Connect the scroll bar's valueChanged signal to a function
-        self.horizontalScrollBar.valueChanged.connect(self.scroll_signal)
+        self.horizontalScrollBar.valueChanged.connect(self.Scroll_Top_Signal)
         
         self.Play_Pause_1 = QtWidgets.QPushButton(self.groupBox, clicked = lambda : self.Graph_1.toggle_play_pause())
         self.Play_Pause_1.setGeometry(QtCore.QRect(10, 130, 191, 31))
@@ -186,6 +205,7 @@ class Ui_MainWindow(object):
         self.horizontalScrollBar_2.setGeometry(QtCore.QRect(220, 590, 1041, 16))
         self.horizontalScrollBar_2.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalScrollBar_2.setObjectName("horizontalScrollBar_2")
+        self.horizontalScrollBar_2.valueChanged.connect(self.Scroll_Bottom_Signal)
         self.label_3 = QtWidgets.QLabel(self.groupBox)
         self.label_3.setGeometry(QtCore.QRect(1340, 30, 111, 16))
         self.label_3.setObjectName("label_3")
@@ -243,6 +263,7 @@ class Ui_MainWindow(object):
             
         self.Hide_Signal_2 = QtWidgets.QCheckBox(self.groupBox)
         self.Hide_Signal_2.setGeometry(QtCore.QRect(1400, 510, 111, 20))
+        self.Hide_Signal_2.clicked.connect(lambda: self.Graph_2.Toggle_Hide_Unhide())
         self.Hide_Signal_2.setObjectName("Hide_Signal_2")
         self.Load1_Button = QtWidgets.QPushButton(self.groupBox, clicked=lambda: self.Graph_1.Browse_Signals())
         self.Load1_Button.setGeometry(QtCore.QRect(10, 80, 191, 31))

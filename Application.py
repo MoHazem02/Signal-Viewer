@@ -1,10 +1,114 @@
-import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 from pyqtgraph import PlotWidget
+import sys
+import pyautogui
+from PIL import ImageGrab
+import time
+import Graph_Class
 
 
 
 class Ui_MainWindow(object):
+
+
+    def __init__(self): 
+        # Be careful there is a difference between Graph_1 and Graph_One. The first one is an object of the class we created, but the second one is the name
+        # of the plot widget of the Top Graph.
+        self.Graph_1 = Graph_Class.Graph(1, self, None, None)
+        self.Graph_2 = Graph_Class.Graph(2, self, None, None)
+        # Every graph has to be able to access the other one as they can be Linked
+        self.Graph_1.Other_Graph = self.Graph_2
+        self.Graph_2.Other_Graph = self.Graph_1
+        self.Top_Scrolling_Coordinates_value = None
+        self.Bottom_Scrolling_Coordinates_value = None
+        self.Snapshots_Count = 0
+
+    def Take_Snapshot(self):
+        #Shortcut to take screenshot
+        pyautogui.hotkey("win", "shift", "s")
+        #wait till user takes screenshot
+        time.sleep(6)
+        snapshot = ImageGrab.grabclipboard()    
+		# Save the image to Snapshots folder
+        snapshot.save(f'Snapshots/image{self.Snapshots_Count}.png', 'PNG')
+
+    def Move_Signal(self, number):
+        if number == 1:
+            self.Graph_1.Update_Current_Channel()
+            signal = self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal
+            self.Graph_2.Add_Signal(signal)
+            signal.Plot_Signal()  # Start plotting the signal in the new graph
+            self.Graph_1.Remove_Signal(self.Graph_1.Current_Channel)
+        else:
+            self.Graph_2.Update_Current_Channel()
+            signal = self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal
+            self.Graph_2.Remove_Signal(self.Graph_2.Current_Channel)
+            self.Graph_1.Add_Signal(signal)
+            signal.Plot_Signal()  # Start plotting the signal in the new graph
+            
+    def Link_Unlink(self):
+        # We basically toggle what is already there
+        self.Graph_1.Linked = not self.Graph_1.Linked
+        self.Graph_2.Linked = not self.Graph_2.Linked
+
+        plot_item_1 = self.Graph_1.Graph_Window.getPlotItem()
+        plot_item_2 = self.Graph_2.Graph_Window.getPlotItem()
+
+        if self.Graph_1.Linked: # to link and unlink from 1 and 2
+            plot_item_2.setXLink(plot_item_1)
+            self.Graph_1.reset_signal()
+            self.Graph_2.reset_signal()
+        else:
+            plot_item_2.setXLink(None)
+            
+    def Reset_Checkbox(self):
+        self.Graph_1.Update_Current_Channel()
+        signal = self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal
+        if signal and signal.hide:
+            self.Hide_Signal_1.setChecked(True)
+        else:
+            self.Hide_Signal_1.setChecked(False)
+        self.Hide_Signal_1.setEnabled(signal is not None)
+        
+        
+    def Rewind_Signal_1(self):
+        # Rewind the signal
+        self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.i = 0
+        self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Update_Plot_Data()
+        # Disable the Rewind button
+        self.Rewind_1.setEnabled(False)
+    
+    def Rewind_Signal_2(self):
+        # Rewind the signal
+        self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.i = 0
+        self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.Update_Plot_Data()
+        # Disable the Rewind button
+        self.Rewind_2.setEnabled(False)
+
+    def Scroll_Top_Signal(self,Scrolling_Coordinates_Value):
+          # Calculate the corresponding index based on the scrollbar's value
+            index = min(int(Scrolling_Coordinates_Value / self.ScrollBar_Top.maximum() * len(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates)), len(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates) - 1)
+
+            # Update the plot data
+            self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.i = index
+            self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Update_Plot_Data()
+
+            # Update the X range of the plot
+            self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Graph_Widget.getViewBox().setXRange(max(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]) - 100, max(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]))
+        
+
+    
+    
+    def Scroll_Bottom_Signal(self,Scrolling_Coordinates_Value):
+          # Calculate the corresponding index based on the scrollbar's value
+            index = min(int(Scrolling_Coordinates_Value / self.ScrollBar_Bottom.maximum() * len(self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.X_Coordinates)), len(self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.X_Coordinates) - 1)
+
+            # Update the plot data
+            self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.i = index
+            self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.Update_Plot_Data()
+
+            # Update the X range of the plot
+            self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.Graph_Widget.getViewBox().setXRange(max(self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]) - 100, max(self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]))
     
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -48,14 +152,14 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_2.addItem(spacerItem1)
-        self.Load1_Button = QtWidgets.QPushButton(self.frame_4)
+        self.Load1_Button = QtWidgets.QPushButton(self.frame_4,clicked=lambda: self.Graph_1.Browse_Signals())
         self.Load1_Button.setStyleSheet("background-color:#3366ff;")
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("Assets/load1.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.Load1_Button.setIcon(icon)
         self.Load1_Button.setObjectName("Load1_Button")
         self.verticalLayout_2.addWidget(self.Load1_Button)
-        self.Play1_Button = QtWidgets.QPushButton(self.frame_4)
+        self.Play1_Button = QtWidgets.QPushButton(self.frame_4, clicked = lambda : self.Graph_1.toggle_play_pause())
         self.Play1_Button.setEnabled(False)
         self.Play1_Button.setStyleSheet("background-color:#3366ff;")
         icon1 = QtGui.QIcon()
@@ -66,6 +170,8 @@ class Ui_MainWindow(object):
         self.Rewind1_Button = QtWidgets.QPushButton(self.frame_4)
         self.Rewind1_Button.setEnabled(False)
         self.Rewind1_Button.setStyleSheet("background-color:#3366ff;")
+        # Connect the Rewind button's clicked signal to a function
+        self.Rewind1_Button.clicked.connect(self.rewind_signal_1)
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap("Assets/rewind.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.Rewind1_Button.setIcon(icon2)
@@ -75,7 +181,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.addItem(spacerItem2)
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        self.ZoomOut1_Button = QtWidgets.QPushButton(self.frame_4)
+        self.ZoomOut1_Button = QtWidgets.QPushButton(self.frame_4, clicked = lambda: self.Graph_1.ZoomOut())
         self.ZoomOut1_Button.setMinimumSize(QtCore.QSize(71, 31))
         self.ZoomOut1_Button.setStyleSheet("background-color:#3366ff;")
         self.ZoomOut1_Button.setText("")
@@ -86,7 +192,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4.addWidget(self.ZoomOut1_Button)
         spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_4.addItem(spacerItem3)
-        self.ZoomIn1_Button = QtWidgets.QPushButton(self.frame_4)
+        self.ZoomIn1_Button = QtWidgets.QPushButton(self.frame_4, clicked = lambda: self.Graph_1.ZoomIn())
         self.ZoomIn1_Button.setMinimumSize(QtCore.QSize(71, 31))
         self.ZoomIn1_Button.setStyleSheet("background-color:#3366ff;")
         self.ZoomIn1_Button.setText("")
@@ -98,7 +204,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.addLayout(self.horizontalLayout_4)
         spacerItem4 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_2.addItem(spacerItem4)
-        self.Link_Unlink_Button = QtWidgets.QPushButton(self.frame_4)
+        self.Link_Unlink_Button = QtWidgets.QPushButton(self.frame_4, clicked = lambda: self.Link_Unlink())
         self.Link_Unlink_Button.setStyleSheet("background-color:#3366ff;")
         icon5 = QtGui.QIcon()
         icon5.addPixmap(QtGui.QPixmap("Assets/link1.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -141,6 +247,9 @@ class Ui_MainWindow(object):
         self.ScrollBar_Top.setSizePolicy(sizePolicy)
         self.ScrollBar_Top.setOrientation(QtCore.Qt.Horizontal)
         self.ScrollBar_Top.setObjectName("ScrollBar_Top")
+        # self.Graph_1.Scroll_Bar = self.ScrollBar_Top
+        # self.Scrolling_Coordinates_value = self.ScrollBar_Top.valueChanged
+        self.ScrollBar_Top.valueChanged.connect(self.Scroll_Top_Signal)
         self.verticalLayout_7.addWidget(self.ScrollBar_Top)
         self.horizontalLayout_15.addLayout(self.verticalLayout_7)
         self.horizontalLayout_2.addWidget(self.frame_5)
@@ -266,12 +375,12 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         spacerItem12 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_3.addItem(spacerItem12)
-        self.Load2_Button = QtWidgets.QPushButton(self.frame_16)
+        self.Load2_Button = QtWidgets.QPushButton(self.frame_16,clicked=lambda: self.Graph_2.Browse_Signals())
         self.Load2_Button.setStyleSheet("background-color:#3366ff;")
         self.Load2_Button.setIcon(icon)
         self.Load2_Button.setObjectName("Load2_Button")
         self.verticalLayout_3.addWidget(self.Load2_Button)
-        self.Play2_Button = QtWidgets.QPushButton(self.frame_16)
+        self.Play2_Button = QtWidgets.QPushButton(self.frame_16, clicked = lambda : self.Graph_2.toggle_play_pause())
         self.Play2_Button.setEnabled(False)
         self.Play2_Button.setStyleSheet("background-color:#3366ff;")
         self.Play2_Button.setIcon(icon1)
@@ -282,12 +391,13 @@ class Ui_MainWindow(object):
         self.Rewind2_Button.setStyleSheet("background-color:#3366ff;")
         self.Rewind2_Button.setIcon(icon2)
         self.Rewind2_Button.setObjectName("Rewind2_Button")
+        self.Rewind2_Button.clicked.connect(self.rewind_signal_2)
         self.verticalLayout_3.addWidget(self.Rewind2_Button)
         spacerItem13 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_3.addItem(spacerItem13)
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
-        self.ZoomOut2_Button = QtWidgets.QPushButton(self.frame_16)
+        self.ZoomOut2_Button = QtWidgets.QPushButton(self.frame_16, clicked = lambda: self.Graph_2.ZoomOut())
         self.ZoomOut2_Button.setMinimumSize(QtCore.QSize(71, 31))
         self.ZoomOut2_Button.setStyleSheet("background-color:#3366ff;")
         self.ZoomOut2_Button.setText("")
@@ -296,7 +406,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_5.addWidget(self.ZoomOut2_Button)
         spacerItem14 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_5.addItem(spacerItem14)
-        self.ZoomIn2_Button = QtWidgets.QPushButton(self.frame_16)
+        self.ZoomIn2_Button = QtWidgets.QPushButton(self.frame_16, clicked = lambda: self.Graph_2.ZoomIn())
         self.ZoomIn2_Button.setMinimumSize(QtCore.QSize(71, 31))
         self.ZoomIn2_Button.setStyleSheet("background-color:#3366ff;")
         self.ZoomIn2_Button.setText("")
@@ -337,6 +447,9 @@ class Ui_MainWindow(object):
         self.ScrollBar_Bottom.setEnabled(False)
         self.ScrollBar_Bottom.setOrientation(QtCore.Qt.Horizontal)
         self.ScrollBar_Bottom.setObjectName("ScrollBar_Bottom")
+        # self.Graph_2.Scroll_Bar = self.ScrollBar_Bottom
+        # self.Bottom_Scrolling_Coordinates_value = self.ScrollBar_Bottom.valueChanged
+        self.ScrollBar_Bottom.valueChanged.connect(self.Scroll_Bottom_Signal)
         self.verticalLayout_6.addWidget(self.ScrollBar_Bottom)
         self.horizontalLayout_16.addLayout(self.verticalLayout_6)
         self.horizontalLayout_6.addWidget(self.frame_17)
