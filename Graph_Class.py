@@ -74,8 +74,9 @@ class Graph:
                 self.Remove_Signal() 
                 self.Graph_Window.clear()
                 for channel in self.CHANNELS:
-                    channel.Signal.Plot_Signal()
-                    channel.Signal.data_line = self.Graph_Window.plot(pen=channel.Signal.color, name=channel.Signal.legend_text) 
+                    if channel.Signal:
+                        channel.Signal.Plot_Signal()
+                        channel.Signal.data_line = self.Graph_Window.plot(pen=channel.Signal.color, name=channel.Signal.legend_text) 
                 
         else:
             self.Update_Current_Channel()
@@ -87,6 +88,7 @@ class Graph:
             self.Remove_Signal()
             self.Graph_Window.clear()
             for channel in self.CHANNELS:
+                if channel.Signal:
                     channel.Signal.Plot_Signal()
                     channel.Signal.data_line = self.Graph_Window.plot(pen=channel.Signal.color, name=channel.Signal.legend_text) 
             
