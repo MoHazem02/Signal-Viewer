@@ -35,16 +35,20 @@ class Ui_MainWindow(object):
                 self.Graph_1.Update_Current_Channel()
                 Temporary_Signal=self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal
                 self.Graph_1.Remove_Signal() 
+                self.Graph_1.Graph_Window.clear()
                 self.Graph_2.Add_Signal(Temporary_Signal)            
                 # Start plotting the signal in the new graph
-                Temporary_Signal.Plot_Signal() 
+                Temporary_Signal.Plot_Signal()
+                Temporary_Signal.data_line = self.Graph_2.Graph_Window.plot(pen=Temporary_Signal.color, name=Temporary_Signal.legend_text) 
         else:
             self.Graph_2.Update_Current_Channel()
             Temporary_Signal=self.Graph_2.CHANNELS[self.Graph_1.Current_Channel - 1].Signal
             self.Graph_2.Remove_Signal()
+            self.Graph_2.Graph_Window.clear()
             self.Graph_1.Add_Signal(Temporary_Signal)
             #Start plotting the signal in the new graph
             Temporary_Signal.Plot_Signal() 
+            Temporary_Signal.data_line = self.Graph_1.Graph_Window.plot(pen=Temporary_Signal.color, name=Temporary_Signal.legend_text) 
            
             
     def Link_Unlink(self):
@@ -259,9 +263,6 @@ class Ui_MainWindow(object):
         self.Hide_Signal_1.clicked.connect(lambda: self.Graph_1.Toggle_Hide_Unhide())
         self.Hide_Signal_1.setGeometry(QtCore.QRect(1400, 200, 111, 20))
         self.Hide_Signal_1.setObjectName("Hide_Signal_1")
-        
-       
-            
         self.Hide_Signal_2 = QtWidgets.QCheckBox(self.groupBox)
         self.Hide_Signal_2.setGeometry(QtCore.QRect(1400, 510, 111, 20))
         self.Hide_Signal_2.clicked.connect(lambda: self.Graph_2.Toggle_Hide_Unhide())
@@ -320,7 +321,6 @@ class Ui_MainWindow(object):
         self.pushButton_2.setGeometry(QtCore.QRect(260, 100, 61, 31))
         self.pushButton_2.setStyleSheet("background-color:#3366ff;")
         self.pushButton_2.setText("")
-        
         # Create the QLineEdit widget for the legend name
         self.lineEdit = QtWidgets.QLineEdit(self.groupBox)
         self.lineEdit.setGeometry(QtCore.QRect(1390, 110, 113, 31))  # Adjust the position and size as needed
@@ -328,19 +328,15 @@ class Ui_MainWindow(object):
         self.lineEdit.setObjectName("lineEdit")
         self.lineEdit.setReadOnly(True)  # Make the QLineEdit widget read-only initially
         self.Graph_1.textbox = self.lineEdit
-
         # Create the "Edit Label" button
         self.Edit_Label_1 = QtWidgets.QPushButton(self.groupBox, clicked = lambda: self.Graph_1.Add_Legend())
         self.Edit_Label_1.setGeometry(QtCore.QRect(1280, 110, 101, 31))  # Adjust the position and size as needed
         self.Edit_Label_1.setStyleSheet("background-color:#3366ff;")
         self.Edit_Label_1.setObjectName("Edit_Label_1")
-
         # Connect the clicked signal of the "Edit Label" button to the Enable_Line_Edit function
         self.Edit_Label_1.clicked.connect(self.Graph_1.Enable_Line_Edit)
-
         # Connect the returnPressed signal of the QLineEdit to the add_legend function
         self.lineEdit.returnPressed.connect(self.Graph_1.Add_Legend)
-
         self.lineEdit_2 = QtWidgets.QLineEdit(self.groupBox)
         self.lineEdit_2.setGeometry(QtCore.QRect(1390, 420, 113, 31))
         self.lineEdit_2.setStyleSheet("border: 1px solid blue\n"";")
@@ -373,8 +369,6 @@ class Ui_MainWindow(object):
         self.ZoomInBottom.setText("")
         self.ZoomInBottom.setIcon(icon6)
         self.ZoomInBottom.setObjectName("ZoomInBottom")
-
-
         icon5 = QtGui.QIcon()
         icon5.addPixmap(QtGui.QPixmap("Assets/zoom-out.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton_2.setIcon(icon5)
@@ -406,14 +400,12 @@ class Ui_MainWindow(object):
         self.actionLoad_Signal = QtWidgets.QAction(MainWindow)
         self.actionLoad_Signal.setObjectName("actionLoad_Signal")
         self.menubar.addAction(self.menuAbout.menuAction())
-
         self.retranslateUi(MainWindow)
         self.horizontalSlider.valueChanged['int'].connect(self.lcdNumber.display)
         self.horizontalSlider_2.valueChanged['int'].connect(self.lcdNumber_2.display)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         self.Graph_1.Graph_Window = self.Graph_One
         self.Graph_2.Graph_Window = self.Graph_Two
-
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Signal Viewer"))
@@ -458,9 +450,6 @@ class Ui_MainWindow(object):
         self.Snapshot_Button.setText(_translate("MainWindow", "   Snapshot"))
         self.menuAbout.setTitle(_translate("MainWindow", "About"))
         self.actionLoad_Signal.setText(_translate("MainWindow", "Load Signal"))
-
-
-
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()

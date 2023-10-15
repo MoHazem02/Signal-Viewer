@@ -115,11 +115,16 @@ class Graph:
         color = QtWidgets.QColorDialog.getColor()
 
         if color.isValid():
+            self.Graph_Window.clear()
             # Set the selected color to the line
             self.Update_Current_Channel()
             signal = self.CHANNELS[self.Current_Channel - 1].Signal
             signal.color = color
             signal.data_line.setPen(color)  # Change the color of the line directly
+            for channel in self.CHANNELS:
+                channel.Signal.Plot_Signal()
+                # Add the signal to the plot with the legend name
+                channel.Signal.data_line = self.Graph_Window.plot(pen=channel.Signal.color, name=channel.Signal.legend_text)
             #signal.data_line.legend_color.setPen(color)      
             
     def Browse_Signals(self):
@@ -130,11 +135,14 @@ class Graph:
         Sample_Signal = Signal_Class.Signal(col = "g", X_List = X_Coordinates, Y_list = Y_Coordinates, graphWdg = self.Graph_Window, graphObj = self)
             
         self.Add_Signal(Sample_Signal)
-        #Sample_Signal.Plot_Signal() 
+        #clear old signals for plotting all together
+        self.Graph_Window.clear()
         # Plot all signals
-        for sig in self.signals:
-            sig.Plot_Signal()
-            self.update_legend(sig)
+        for channel in self.CHANNELS:
+            channel.Signal.Plot_Signal()
+            if channel.Signal.legend_text:
+                channel.Signal.data_line = self.Graph_Window.plot(pen=channel.Signal.color, name=channel.Signal.legend_text)
+            #self.update_legend(channel.Signal)
      
     def ZoomIn(self):
         self.Graph_Window.getViewBox().scaleBy((0.9, 0.9))
@@ -168,14 +176,18 @@ class Graph:
         else:
             pass
         
-    def update_legend(self, current_signal):
-         # Add the signal to the plot with the legend name
+    def update_legend(self, current_signal): # remove this again
+        if current_signal.legend_text:
+            self.Graph_Window.clear()
+             # Add the signal to the plot with the legend name
             current_signal.data_line = self.Graph_Window.plot(pen=current_signal.color, name=current_signal.legend_text)
-
             # Add a legend to the plot
             current_signal.legend = self.Graph_Window.addLegend()
             # Store the legend color in the signal
             current_signal.legend_color = current_signal.color
+            for channel in self.CHANNELS:
+                channel.Signal.Plot_Signal()
+               
         
 
     def Add_Legend(self):
@@ -191,10 +203,16 @@ class Graph:
         if current_signal is not None and current_signal.legend is None:
             # Create a name for the legend
             current_signal.legend_text = text 
-            self.update_legend(current_signal)
+            #self.update_legend(current_signal)
+             # Add the signal to the plot with the legend name
+            current_signal.data_line = self.Graph_Window.plot(pen=current_signal.color, name=current_signal.legend_text)
+            # Add a legend to the plot
+            current_signal.legend = self.Graph_Window.addLegend()
+            # Store the legend color in the signal
+            current_signal.legend_color = current_signal.color
         else:
             # Update the text of the legend
-                # Check if a current signal was found
+            # Check if a current signal was found
             if current_signal is not None:
                 current_signal.legend_text = text
                 # Remove the old legend
@@ -202,8 +220,16 @@ class Graph:
                     self.Graph_Window.removeItem(current_signal.legend)
                     # Clear the plot window
                     self.Graph_Window.clear()
-                    current_signal.Update_Plot_Data()
-                    self.update_legend(current_signal)
+                    for channel in self.CHANNELS:
+                        channel.Signal.Plot_Signal()
+                        # Add the signal to the plot with the legend name
+                        channel.Signal.data_line = self.Graph_Window.plot(pen=channel.Signal.color, name=channel.Signal.legend_text)
+                    # Add a legend to the plot
+                    current_signal.legend = self.Graph_Window.addLegend()
+                    # Store the legend color in the signal
+                    current_signal.legend_color = current_signal.color
+                    #current_signal.Update_Plot_Data()
+                    #self.update_legend(current_signal)
                   
         
     def Enable_Line_Edit(self):
