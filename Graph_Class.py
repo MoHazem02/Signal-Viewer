@@ -338,7 +338,7 @@ class Graph:
 
             pdf.ln(10)
 
-        pdf.output('Signals Data Analysis Report.pdf',"F")
+        pdf.output('Signals Data Analysis Report.pdf')
 
 
     # def Scroll_Signal(self,Scrolling_Coordinates_Value):

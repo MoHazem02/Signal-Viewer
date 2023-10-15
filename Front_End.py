@@ -27,7 +27,7 @@ class Ui_MainWindow(object):
         time.sleep(6)
         snapshot = ImageGrab.grabclipboard()    
 		# Save the image to Snapshots folder
-        snapshot.save(f'D:\Education\Digital Signal Processing\Tasks\Task 1\Signal-Viewer\Snapshots/Image {self.Snapshots_Count}.png', 'PNG')
+        snapshot.save(f'Snapshots/Image {self.Snapshots_Count}.png', 'PNG')
         self.Snapshots_Count += 1
 
     def Move_Signal(self, number):
@@ -103,6 +103,7 @@ class Ui_MainWindow(object):
     
     
     def Scroll_Bottom_Signal(self,Scrolling_Coordinates_Value):
+            
           # Calculate the corresponding index based on the scrollbar's value
             index = min(int(Scrolling_Coordinates_Value / self.horizontalScrollBar_2.maximum() * len(self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.X_Coordinates)), len(self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.X_Coordinates) - 1)
 
@@ -378,13 +379,13 @@ class Ui_MainWindow(object):
         icon5.addPixmap(QtGui.QPixmap("Assets/zoom-out.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton_2.setIcon(icon5)
         self.pushButton_2.setObjectName("pushButton_2")
-        self.pushButton_17 = QtWidgets.QPushButton(self.groupBox_2)
-        self.pushButton_17.setGeometry(QtCore.QRect(1310, 50, 221, 31))
-        self.pushButton_17.setStyleSheet("background-color:#3366ff;")
+        self.Export_Button = QtWidgets.QPushButton(self.groupBox_2, clicked = lambda: self.Graph_1.Export_PDF())
+        self.Export_Button.setGeometry(QtCore.QRect(1310, 50, 221, 31))
+        self.Export_Button.setStyleSheet("background-color:#3366ff;")
         icon6 = QtGui.QIcon()
         icon6.addPixmap(QtGui.QPixmap("Assets/export.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_17.setIcon(icon6)
-        self.pushButton_17.setObjectName("pushButton_17")
+        self.Export_Button.setIcon(icon6)
+        self.Export_Button.setObjectName("Export_Button")
         self.Snapshot_Button = QtWidgets.QPushButton(self.groupBox_2, clicked=lambda: self.Take_Snapshot())
         self.Snapshot_Button.setGeometry(QtCore.QRect(10, 50, 221, 31))
         self.Snapshot_Button.setStyleSheet("background-color:#3366ff;")
@@ -453,7 +454,7 @@ class Ui_MainWindow(object):
         self.checkBox_3.setText(_translate("MainWindow", "Hide"))
         self.pushButton_12.setText(_translate("MainWindow", "Export"))
         self.pushButton_21.setText(_translate("MainWindow", "Add Channel"))
-        self.pushButton_17.setText(_translate("MainWindow", "  Export"))
+        self.Export_Button.setText(_translate("MainWindow", "  Export"))
         self.Snapshot_Button.setText(_translate("MainWindow", "   Snapshot"))
         self.menuAbout.setTitle(_translate("MainWindow", "About"))
         self.actionLoad_Signal.setText(_translate("MainWindow", "Load Signal"))
