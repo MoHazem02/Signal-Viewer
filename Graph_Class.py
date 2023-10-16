@@ -389,7 +389,7 @@ class Graph:
             pdf.cell(0,30,f"Signal of Graph {self.graph_number} Channel {self.Current_Channel} Data: ")
             #Positoning of the image
             pdf.set_xy(10,50)
-            pdf.image('Snapshots/Image 0.png', w=190,h=60)
+            pdf.image('Snapshots/image0.png', w=190,h=60)
             pdf.ln(10)
 
             pdf.set_font('times','', 12)
@@ -418,7 +418,7 @@ class Graph:
             pdf.set_font('times','U', 16)
             pdf.cell(0,30,f"Signal of Graph {self.Other_Graph.graph_number} Channel {self.Other_Graph.Current_Channel} Data: ")
             pdf.set_xy(10,170)
-            pdf.image('Snapshots/Image 1.png', w=190,h=60)
+            pdf.image('Snapshots/image1.png', w=190,h=60)
             pdf.ln(10)
 
             pdf.set_font('times','', 12)

@@ -32,6 +32,7 @@ class Ui_MainWindow(object):
         snapshot = ImageGrab.grabclipboard()    
 		# Save the image to Snapshots folder
         snapshot.save(f'Snapshots/image{self.Snapshots_Count}.png', 'PNG')
+        self.Snapshots_Count += 1
 
             
     def Reset_Checkbox(self):
@@ -567,7 +568,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.Snapshot_Button)
         spacerItem22 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem22)
-        self.Export_Button = QtWidgets.QPushButton(self.groupBox_2, clicked = lambda : self.Export_PDF())
+        self.Export_Button = QtWidgets.QPushButton(self.groupBox_2, clicked = lambda : self.Graph_1.Export_PDF())
         self.Export_Button.setEnabled(False)
         self.Export_Button.setMinimumSize(QtCore.QSize(221, 0))
         self.Export_Button.setMaximumSize(QtCore.QSize(221, 16777215))
