@@ -34,22 +34,6 @@ class Ui_MainWindow(object):
         snapshot.save(f'Snapshots/image{self.Snapshots_Count}.png', 'PNG')
 
             
-    def Link_Unlink(self):
-        # We basically toggle what is already there
-        self.Graph_1.Linked = not self.Graph_1.Linked
-        self.Graph_2.Linked = not self.Graph_2.Linked
-
-        plot_item_1 = self.Graph_1.Graph_Window.getPlotItem()
-        plot_item_2 = self.Graph_2.Graph_Window.getPlotItem()
-
-        if self.Graph_1.Linked: # to link and unlink from 1 and 2
-            plot_item_2.setXLink(plot_item_1)
-            plot_item_2.setYLink(plot_item_1)
-            self.Graph_1.Reset_Signal()
-            self.Graph_2.Reset_Signal()
-        else:
-            plot_item_2.setXLink(None)
-            
     def Reset_Checkbox(self):
         self.Graph_1.Update_Current_Channel()
         signal = self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal
@@ -58,7 +42,22 @@ class Ui_MainWindow(object):
         else:
             self.Hide_Signal_1.setChecked(False)
         self.Hide_Signal_1.setEnabled(signal is not None)
+        
+        
+    def Rewind_Signal_1(self):
+        # Rewind the signal
+        self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.i = 0
+        self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Update_Plot_Data()
+        # Disable the Rewind button
+        self.Rewind_1.setEnabled(False)
     
+
+    def Rewind_Signal_2(self):
+        # Rewind the signal
+        self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.i = 0
+        self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.Update_Plot_Data()
+        # Disable the Rewind button
+        self.Rewind_2.setEnabled(False)
 
 
     def Scroll_Top_Signal(self,Scrolling_Coordinates_Value):
@@ -71,44 +70,8 @@ class Ui_MainWindow(object):
 
             # Update the X range of the plot
             self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Graph_Widget.getViewBox().setXRange(max(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]) - 100, max(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]))
+           
     
-    
-    def VertScroll_Top_Signal(self,Scrolling_Coordinates_Value):
-
-        Scrolling_Coordinates_Value = 0 
-        # Calculate the corresponding index based on the scrollbar's value
-        #index = min(int(Scrolling_Coordinates_Value / self.Vert_Horiz_ScrollBar_Top.maximum() * len(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Y_Coordinates)), len(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Y_Coordinates) - 1)
-
-        # Update the plot data
-        #self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.i = index
-        #self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Update_Plot_Data()
-
-        # Update the Y range of the plot
-        min_value = min(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Y_Coordinates)
-        max_value = max(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Y_Coordinates)
-        range_value = max_value - min_value
-        middle_value = (max_value + min_value) / 2
-        self.GraphWidget_Top.getViewBox().setYRange(middle_value - range_value/2, middle_value + range_value/2)
-        
-        
-    def VertScroll_Bottom_Signal(self,Scrolling_Coordinates_Value):
-
-        Scrolling_Coordinates_Value = 0 
-        # Calculate the corresponding index based on the scrollbar's value
-        #index = min(int(Scrolling_Coordinates_Value / self.Vert_Horiz_ScrollBar_Top.maximum() * len(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Y_Coordinates)), len(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Y_Coordinates) - 1)
-
-        # Update the plot data
-        #self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.i = index
-        #self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Update_Plot_Data()
-
-        # Update the Y range of the plot
-        min_value = min(self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.Y_Coordinates)
-        max_value = max(self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.Y_Coordinates)
-        range_value = max_value - min_value
-        middle_value = (max_value + min_value) / 2
-        self.GraphWidget_Top.getViewBox().setYRange(middle_value - range_value/2, middle_value + range_value/2)
-        
-        
     def Scroll_Bottom_Signal(self,Scrolling_Coordinates_Value):
           # Calculate the corresponding index based on the scrollbar's value
             index = min(int(Scrolling_Coordinates_Value / self.Horiz_ScrollBar_Bottom.maximum() * len(self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.X_Coordinates)), len(self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.X_Coordinates) - 1)
@@ -178,9 +141,11 @@ class Ui_MainWindow(object):
         self.Play1_Button.setIcon(icon1)
         self.Play1_Button.setObjectName("Play1_Button")
         self.verticalLayout_2.addWidget(self.Play1_Button)
-        self.Rewind1_Button = QtWidgets.QPushButton(self.frame_4, clicked = lambda : self.Graph_1.Rewind_Signal())
+        self.Rewind1_Button = QtWidgets.QPushButton(self.frame_4)
         self.Rewind1_Button.setEnabled(False)
         self.Rewind1_Button.setStyleSheet("background-color:#3366ff;")
+        # Connect the Rewind button's clicked signal to a function
+        self.Rewind1_Button.clicked.connect(self.Rewind_Signal_1)
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap("Assets/rewind.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.Rewind1_Button.setIcon(icon2)
@@ -240,8 +205,6 @@ class Ui_MainWindow(object):
         self.Vert_Horiz_ScrollBar_Top.setEnabled(False)
         self.Vert_Horiz_ScrollBar_Top.setOrientation(QtCore.Qt.Vertical)
         self.Vert_Horiz_ScrollBar_Top.setObjectName("Vert_Horiz_ScrollBar_Top")
-        self.Vert_Horiz_ScrollBar_Top.valueChanged.connect(self.VertScroll_Top_Signal)
-        self.Vert_Horiz_ScrollBar_Top.setValue(0)  # Set initial value to 0
         self.horizontalLayout_15.addWidget(self.Vert_Horiz_ScrollBar_Top)
         self.verticalLayout_7 = QtWidgets.QVBoxLayout()
         self.verticalLayout_7.setObjectName("verticalLayout_7")
@@ -403,7 +366,7 @@ class Ui_MainWindow(object):
         self.Play2_Button.setIcon(icon1)
         self.Play2_Button.setObjectName("Play2_Button")
         self.verticalLayout_3.addWidget(self.Play2_Button)
-        self.Rewind2_Button = QtWidgets.QPushButton(self.frame_16, clicked = lambda : self.Graph_2.Rewind_Signal())
+        self.Rewind2_Button = QtWidgets.QPushButton(self.frame_16, clicked = lambda : self.Rewind_Signal_2)
         self.Rewind2_Button.setEnabled(False)
         self.Rewind2_Button.setStyleSheet("background-color:#3366ff;")
         self.Rewind2_Button.setIcon(icon2)
@@ -452,7 +415,6 @@ class Ui_MainWindow(object):
         self.Vert_Horiz_ScrollBar_Bottom.setEnabled(False)
         self.Vert_Horiz_ScrollBar_Bottom.setOrientation(QtCore.Qt.Vertical)
         self.Vert_Horiz_ScrollBar_Bottom.setObjectName("Vert_Horiz_ScrollBar_Bottom")
-        self.Vert_Horiz_ScrollBar_Bottom.valueChanged.connect(self.VertScroll_Bottom_Signal)
         self.horizontalLayout_16.addWidget(self.Vert_Horiz_ScrollBar_Bottom)
         self.verticalLayout_6 = QtWidgets.QVBoxLayout()
         self.verticalLayout_6.setObjectName("verticalLayout_6")
@@ -663,9 +625,9 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Signal Viewer"))
         self.Load1_Button.setText(_translate("MainWindow", "  Load Signal"))
-        self.Play1_Button.setText(_translate("MainWindow", "   Play         "))
+        self.Play1_Button.setText(_translate("MainWindow", "   Pause         "))
         self.Rewind1_Button.setText(_translate("MainWindow", "  Rewind     "))
-        self.Link_Unlink_Button.setText(_translate("MainWindow", "    Link / Unlink Graphs"))
+        self.Link_Unlink_Button.setText(_translate("MainWindow", "    Link Graphs     "))
         self.Graph1_Label.setText(_translate("MainWindow", "Graph 1"))
         self.Channels_Top_ComboBox.setItemText(0, _translate("MainWindow", "Channel 1"))
         self.Edit1_Label_Button.setText(_translate("MainWindow", "Edit Label"))
@@ -675,7 +637,7 @@ class Ui_MainWindow(object):
         self.Hide_Top_Checkbox.setText(_translate("MainWindow", "Hide Signal"))
         self.CineSpeed_Top_Label.setText(_translate("MainWindow", "Cine Speed"))
         self.Load2_Button.setText(_translate("MainWindow", "  Load Signal"))
-        self.Play2_Button.setText(_translate("MainWindow", "   Play         "))
+        self.Play2_Button.setText(_translate("MainWindow", "   Pause         "))
         self.Rewind2_Button.setText(_translate("MainWindow", "  Rewind     "))
         self.Graph2_Label.setText(_translate("MainWindow", "Graph 2"))
         self.Channels_Bottom_ComboBox.setItemText(0, _translate("MainWindow", "Channel 1"))
