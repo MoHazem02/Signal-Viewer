@@ -178,7 +178,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.addLayout(self.horizontalLayout_4)
         spacerItem4 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_2.addItem(spacerItem4)
-        self.Link_Unlink_Button = QtWidgets.QPushButton(self.frame_4, clicked = lambda: self.Link_Unlink())
+        self.Link_Unlink_Button = QtWidgets.QPushButton(self.frame_4, clicked = lambda: self.Graph_1.Link_Unlink())
         self.Link_Unlink_Button.setStyleSheet("background-color:#3366ff;")
         icon5 = QtGui.QIcon()
         icon5.addPixmap(QtGui.QPixmap("Assets/link1.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)

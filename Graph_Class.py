@@ -289,14 +289,14 @@ class Graph:
 
         _translate = QtCore.QCoreApplication.translate
         if self.Linked: # to link and unlink from 1 and 2
-            self.Link_Unlink_Button.setText(_translate("MainWindow", "    Unlink Graphs     "))
+            self.UI_Window.Link_Unlink_Button.setText(_translate("MainWindow", "    Unlink Graphs     "))
             plot_item_2.setXLink(plot_item_1)
             plot_item_2.setYLink(plot_item_1)
             self.Reset_Signal()
             self.Other_Graph.Reset_Signal()
         else:
             plot_item_2.setXLink(None)
-            self.Link_Unlink_Button.setText(_translate("MainWindow", "    Link Graphs     "))
+            self.UI_Window.Link_Unlink_Button.setText(_translate("MainWindow", "    Link Graphs     "))
   
 
     def Reset(self):
