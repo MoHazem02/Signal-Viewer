@@ -23,6 +23,7 @@ class Ui_MainWindow(object):
         self.Bottom_Scrolling_Coordinates_value = None
         self.Snapshots_Count = 0
 
+
     def Take_Snapshot(self):
         self.Export_Button.setEnabled(True)
         #Shortcut to take screenshot
@@ -44,47 +45,7 @@ class Ui_MainWindow(object):
             self.Hide_Signal_1.setChecked(False)
         self.Hide_Signal_1.setEnabled(signal is not None)
         
-        
-    def Rewind_Signal_1(self):
-        # Rewind the signal
-        self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.i = 0
-        self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Update_Plot_Data()
-        # Disable the Rewind button
-        self.Rewind_1.setEnabled(False)
-    
 
-    def Rewind_Signal_2(self):
-        # Rewind the signal
-        self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.i = 0
-        self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.Update_Plot_Data()
-        # Disable the Rewind button
-        self.Rewind_2.setEnabled(False)
-
-
-    def Scroll_Top_Signal(self,Scrolling_Coordinates_Value):
-          # Calculate the corresponding index based on the scrollbar's value
-            index = min(int(Scrolling_Coordinates_Value / self.Horiz_ScrollBar_Top.maximum() * len(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates)), len(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates) - 1)
-
-            # Update the plot data
-            self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.i = index
-            self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Update_Plot_Data()
-
-            # Update the X range of the plot
-            self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Graph_Widget.getViewBox().setXRange(max(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]) - 100, max(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]))
-           
-    
-    def Scroll_Bottom_Signal(self,Scrolling_Coordinates_Value):
-          # Calculate the corresponding index based on the scrollbar's value
-            index = min(int(Scrolling_Coordinates_Value / self.Horiz_ScrollBar_Bottom.maximum() * len(self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.X_Coordinates)), len(self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.X_Coordinates) - 1)
-
-            # Update the plot data
-            self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.i = index
-            self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.Update_Plot_Data()
-
-            # Update the X range of the plot
-            self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.Graph_Widget.getViewBox().setXRange(max(self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]) - 100, max(self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]))
-    
-    
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1689, 871)
@@ -134,7 +95,7 @@ class Ui_MainWindow(object):
         self.Load1_Button.setIcon(icon)
         self.Load1_Button.setObjectName("Load1_Button")
         self.verticalLayout_2.addWidget(self.Load1_Button)
-        self.Play1_Button = QtWidgets.QPushButton(self.frame_4, clicked = lambda : self.Graph_1.toggle_play_pause())
+        self.Play1_Button = QtWidgets.QPushButton(self.frame_4, clicked = lambda : self.Graph_1.Toggle_Play_Pause())
         self.Play1_Button.setEnabled(False)
         self.Play1_Button.setStyleSheet("background-color:#3366ff;")
         icon1 = QtGui.QIcon()
@@ -142,7 +103,7 @@ class Ui_MainWindow(object):
         self.Play1_Button.setIcon(icon1)
         self.Play1_Button.setObjectName("Play1_Button")
         self.verticalLayout_2.addWidget(self.Play1_Button)
-        self.Rewind1_Button = QtWidgets.QPushButton(self.frame_4, clicked = lambda : self.Rewind_Signal_1())
+        self.Rewind1_Button = QtWidgets.QPushButton(self.frame_4, clicked = lambda : self.Graph_1.Rewind_Signal())
         self.Rewind1_Button.setEnabled(False)
         self.Rewind1_Button.setStyleSheet("background-color:#3366ff;")
         icon2 = QtGui.QIcon()
@@ -228,7 +189,7 @@ class Ui_MainWindow(object):
         self.Horiz_ScrollBar_Top.setObjectName("Horiz_ScrollBar_Top")
         # self.Graph_1.Scroll_Bar = self.Horiz_ScrollBar_Top
         # self.Scrolling_Coordinates_value = self.Horiz_ScrollBar_Top.valueChanged
-        self.Horiz_ScrollBar_Top.valueChanged.connect(self.Scroll_Top_Signal)
+        self.Horiz_ScrollBar_Top.valueChanged.connect(self.Graph_1.Scroll_Signal)
         self.verticalLayout_7.addWidget(self.Horiz_ScrollBar_Top)
         self.horizontalLayout_15.addLayout(self.verticalLayout_7)
         self.horizontalLayout_2.addWidget(self.frame_5)
@@ -360,13 +321,13 @@ class Ui_MainWindow(object):
         self.Load2_Button.setIcon(icon)
         self.Load2_Button.setObjectName("Load2_Button")
         self.verticalLayout_3.addWidget(self.Load2_Button)
-        self.Play2_Button = QtWidgets.QPushButton(self.frame_16, clicked = lambda : self.Graph_2.toggle_play_pause())
+        self.Play2_Button = QtWidgets.QPushButton(self.frame_16, clicked = lambda : self.Graph_2.Toggle_Play_Pause())
         self.Play2_Button.setEnabled(False)
         self.Play2_Button.setStyleSheet("background-color:#3366ff;")
         self.Play2_Button.setIcon(icon1)
         self.Play2_Button.setObjectName("Play2_Button")
         self.verticalLayout_3.addWidget(self.Play2_Button)
-        self.Rewind2_Button = QtWidgets.QPushButton(self.frame_16, clicked = lambda : self.Rewind_Signal_2())
+        self.Rewind2_Button = QtWidgets.QPushButton(self.frame_16, clicked = lambda : self.Graph_2.Rewind_Signal())
         self.Rewind2_Button.setEnabled(False)
         self.Rewind2_Button.setStyleSheet("background-color:#3366ff;")
         self.Rewind2_Button.setIcon(icon2)
@@ -434,7 +395,7 @@ class Ui_MainWindow(object):
         self.Horiz_ScrollBar_Bottom.setObjectName("Horiz_ScrollBar_Bottom")
         # self.Graph_2.Scroll_Bar = self.Horiz_ScrollBar_Bottom
         # self.Bottom_Scrolling_Coordinates_value = self.Horiz_ScrollBar_Bottom.valueChanged
-        self.Horiz_ScrollBar_Bottom.valueChanged.connect(self.Scroll_Bottom_Signal)
+        self.Horiz_ScrollBar_Bottom.valueChanged.connect(self.Graph_2.Scroll_Signal)
         self.verticalLayout_6.addWidget(self.Horiz_ScrollBar_Bottom)
         self.horizontalLayout_16.addLayout(self.verticalLayout_6)
         self.horizontalLayout_6.addWidget(self.frame_17)

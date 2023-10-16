@@ -34,6 +34,7 @@ class Graph:
         else:
             self.Current_Channel = int(str(self.UI_Window.Channels_Bottom_ComboBox.currentText())[-1])
 
+
     def Remove_Signal(self):
         
         self.Update_Current_Channel()
@@ -119,6 +120,7 @@ class Graph:
                 self.UI_Window.Play1_Button.setEnabled(True)
                 self.UI_Window.Move_Top_Button.setEnabled(True)
                 self.UI_Window.Hide_Top_Checkbox.setEnabled(True)
+                self.UI_Window.Vert_ScrollBar_Top.setEnabled(True)
             else:
                 self.UI_Window.Horiz_ScrollBar_Bottom.setEnabled(True)
                 self.UI_Window.Color_Bottom_Button_2.setEnabled(True)
@@ -126,6 +128,7 @@ class Graph:
                 self.UI_Window.Play2_Button.setEnabled(True)
                 self.UI_Window.Move_Bottom_Button.setEnabled(True)
                 self.UI_Window.Hide_Bottom_Checkbox.setEnabled(True)
+                self.UI_Window.Vert_ScrollBar_Bottom.setEnabled(True)
             
             if self.signal_count > 1:
                 self.Reset_Signal()
@@ -210,7 +213,7 @@ class Graph:
                 #     self.UI_Window.Hide_Signal_2.setChecked(True)
 
         
-    def update_legend(self, current_signal): # remove this again
+    def Update_Legend(self, current_signal): # remove this again
         if current_signal.legend_text:
             self.Graph_Window.clear()
              # Add the signal to the plot with the legend name
@@ -223,7 +226,6 @@ class Graph:
                 channel.Signal.Plot_Signal()
                
         
-
     def Add_Legend(self):
         if self.graph_number == 1:
             self.UI_Window.Label_Top_LineEdit.setEnabled(True)
@@ -241,7 +243,7 @@ class Graph:
         if current_signal is not None and current_signal.legend is None:
             # Create a name for the legend
             current_signal.legend_text = text 
-            #self.update_legend(current_signal)
+            #self.Update_Legend(current_signal)
              # Add the signal to the plot with the legend name
             current_signal.data_line = self.Graph_Window.plot(pen=current_signal.color, name=current_signal.legend_text)
             # Add a legend to the plot
@@ -267,7 +269,7 @@ class Graph:
                     # Store the legend color in the signal
                     current_signal.legend_color = current_signal.color
                     #current_signal.Update_Plot_Data()
-                    #self.update_legend(current_signal)
+                    #self.Update_Legend(current_signal)
                   
     
     def Link_Unlink(self):
@@ -314,10 +316,10 @@ class Graph:
         # self.Update_Current_Channel()
         # current_signal = self.CHANNELS[self.Current_Channel - 1].Signal
         # if current_signal is not None:
-        #     current_signal.i = 0
+        #     current_signal.X_Points_Plotted = 0
         for channel in self.CHANNELS:
             if channel.Signal:
-                channel.Signal.i = 0
+                channel.Signal.X_Points_Plotted = 0
 
         # Clear the plot window
         self.Graph_Window.clear()
@@ -326,16 +328,16 @@ class Graph:
         if self.UI_Window.Graph_1.Linked:
             for channel in self.UI_Window.Graph_1.CHANNELS:
                 if channel.Signal is not None:
-                    channel.Signal.i = 0
+                    channel.Signal.X_Points_Plotted = 0
                     channel.Signal.Plot_Signal()  # Replot the signal from the beginning
 
             for channel in self.UI_Window.Graph_2.CHANNELS:
                 if channel.Signal is not None:
-                    channel.Signal.i = 0
+                    channel.Signal.X_Points_Plotted = 0
                     channel.Signal.Plot_Signal()  # Replot the signal from the beginning
         
 
-    def toggle_play_pause(self):
+    def Toggle_Play_Pause(self):
         _translate = QtCore.QCoreApplication.translate
         self.Paused = not self.Paused
         if self.graph_number == 1:
@@ -351,11 +353,51 @@ class Graph:
 
         for sig in self.signals:
             sig.pause = not sig.pause
-            self.Graph_Window.getViewBox().setXRange(max(sig.X_Coordinates[0 : sig.i + 1]) - 100, max(sig.X_Coordinates[0 : sig.i + 1]))
+            self.Graph_Window.getViewBox().setXRange(max(sig.X_Coordinates[0 : sig.X_Points_Plotted + 1]) - 100, max(sig.X_Coordinates[0 : sig.X_Points_Plotted + 1]))
         
         if self.Linked:
             for channel in self.Other_Graph.CHANNELS:
                 channel.Signal.pause = not channel.Signal.pause
+
+
+    def Scroll_Signal(self, Scrolling_Coordinates_Value):
+        # Calculate the corresponding index based on the scrollbar's value
+        index = min(int(Scrolling_Coordinates_Value / self.UI_Window.Horiz_ScrollBar_Top.maximum() * len(self.CHANNELS[self.Current_Channel - 1].Signal.X_Coordinates)), len(self.CHANNELS[self.Current_Channel - 1].Signal.X_Coordinates) - 1)
+
+        # Update the plot data
+        self.CHANNELS[self.Current_Channel - 1].Signal.X_Points_Plotted = index
+        self.CHANNELS[self.Current_Channel - 1].Signal.Update_Plot_Data()
+
+        # Update the X range of the plot
+        self.CHANNELS[self.Current_Channel - 1].Signal.Graph_Widget.getViewBox().setXRange(max(self.CHANNELS[self.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]) - 100, max(self.CHANNELS[self.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]))
+
+
+    def VertScroll_Top_Signal(self, Scrolling_Coordinates_Value):
+
+        Scrolling_Coordinates_Value = 0 
+        # Calculate the corresponding index based on the scrollbar's value
+        #index = min(int(Scrolling_Coordinates_Value / self.Vert_Horiz_ScrollBar_Top.maximum() * len(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Y_Coordinates)), len(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Y_Coordinates) - 1)
+
+        # Update the plot data
+        #self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.i = index
+        #self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Update_Plot_Data()
+        # Update the Y range of the plot
+        min_value = min(self.CHANNELS[self.Current_Channel - 1].Signal.Y_Coordinates)
+        max_value = max(self.CHANNELS[self.Current_Channel - 1].Signal.Y_Coordinates)
+        range_value = max_value - min_value
+        middle_value = (max_value + min_value) / 2
+        self.UI_Window.GraphWidget_Top.getViewBox().setYRange(middle_value - range_value/2, middle_value + range_value/2)
+
+
+    def Rewind_Signal(self):
+        # Rewind the signal
+        self.CHANNELS[self.Current_Channel - 1].Signal.X_Points_Plotted = 0
+        self.CHANNELS[self.Current_Channel - 1].Signal.Update_Plot_Data()
+        # Disable the Rewind button
+        if self.graph_number == 1:
+            self.UI_Window.Rewind1_Button.setEnabled(False)
+        else:
+            self.UI_Window.Rewind2_Button.setEnabled(False)
 
 
     def Export_PDF(self):
@@ -367,7 +409,7 @@ class Graph:
         pdf.set_auto_page_break(auto=1,margin=20)
         #Setting the title of the page style
         pdf.set_font('times','B', 22)
-        pdf.cell(0,10,"Signals Data Analysis Report",align="C",ln=1)
+        pdf.cell(0, 10, "Signals Data Analysis Report", align="C", ln=1)
         #Updating the current channel number to know which channel is displayed in both graphs
         self.Update_Current_Channel()
         self.Other_Graph.Update_Current_Channel()
@@ -380,7 +422,7 @@ class Graph:
             pdf.cell(0,30,f"Signal of Graph {self.graph_number} Channel {self.Current_Channel} Data: ")
             #Positoning of the image
             pdf.set_xy(10,50)
-            pdf.image('Snapshots/image0.png', w=190,h=60)
+            pdf.image('Snapshots/image0.png', w=190, h=60)
             pdf.ln(10)
 
             pdf.set_font('times','', 12)
@@ -434,19 +476,6 @@ class Graph:
         pdf.output('Signals Data Analysis Report.pdf')
 
 
-    # def Scroll_Signal(self,Scrolling_Coordinates_Value):
-   
-    #         # Calculate the corresponding index based on the scrollbar's value
-    #         index = min(int(Scrolling_Coordinates_Value / self.Scroll_Bar.maximum() * len(self.CHANNELS[self.Current_Channel - 1].Signal.X_Coordinates)), len(self.CHANNELS[self.Current_Channel - 1].Signal.X_Coordinates) - 1)
-
-    #         # Update the plot data
-    #         self.CHANNELS[self.Current_Channel - 1].Signal.i = index
-    #         self.CHANNELS[self.Current_Channel - 1].Signal.Update_Plot_Data()
-
-    #         # Update the X range of the plot
-    #         self.CHANNELS[self.Current_Channel - 1].Signal.Graph_Widget.getViewBox().setXRange(max(self.CHANNELS[self.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]) - 100, max(self.CHANNELS[self.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]))    
-        
-                
 
         
 
