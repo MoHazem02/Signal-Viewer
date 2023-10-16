@@ -206,16 +206,16 @@ class Graph:
             # Toggle the visibility of the signal
             if self.current_channel.Signal.hide:
                 self.current_channel.Signal.Unhide_Signal()
-                if self.graph_number == 1:
-                    self.UI_Window.Hide_Signal_1.setChecked(False)
-                else:
-                    self.UI_Window.Hide_Signal_2.setChecked(False)
+                # if self.graph_number == 1:
+                #     self.UI_Window.Hide_Signal_1.setChecked(False)
+                # else:
+                #     self.UI_Window.Hide_Signal_2.setChecked(False)
             else:
                 self.current_channel.Signal.Hide_Signal()
-                if self.graph_number == 1:
-                    self.UI_Window.Hide_Signal_1.setChecked(True)
-                else:
-                    self.UI_Window.Hide_Signal_2.setChecked(True)
+                # if self.graph_number == 1:
+                #     self.UI_Window.Hide_Signal_1.setChecked(True)
+                # else:
+                #     self.UI_Window.Hide_Signal_2.setChecked(True)
         else:
             pass
         
