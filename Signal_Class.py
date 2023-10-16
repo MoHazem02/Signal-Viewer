@@ -59,8 +59,15 @@ class Signal:
             
             # Check if the signal has ended
             if self.i >= len(self.X_Coordinates):
-                # Enable the Rewind button
-                self.Graph_Object.UI_Window.Rewind_1.setEnabled(True)
+
+                if self.Graph_Object.graph_number == 1:
+                    # Enable the Rewind button
+                    self.Graph_Object.UI_Window.Rewind1_Button.setEnabled(True)
+
+                else:
+                    # Enable the Rewind button
+                    self.Graph_Object.UI_Window.Rewind2_Button.setEnabled(True)
+
             
         if self.Graph_Object.graph_number == 1:
             # Update the scrollbar's maximum value and position
