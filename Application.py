@@ -34,22 +34,6 @@ class Ui_MainWindow(object):
         snapshot.save(f'Snapshots/image{self.Snapshots_Count}.png', 'PNG')
 
             
-    def Link_Unlink(self):
-        # We basically toggle what is already there
-        self.Graph_1.Linked = not self.Graph_1.Linked
-        self.Graph_2.Linked = not self.Graph_2.Linked
-
-        plot_item_1 = self.Graph_1.Graph_Window.getPlotItem()
-        plot_item_2 = self.Graph_2.Graph_Window.getPlotItem()
-
-        if self.Graph_1.Linked: # to link and unlink from 1 and 2
-            plot_item_2.setXLink(plot_item_1)
-            plot_item_2.setYLink(plot_item_1)
-            self.Graph_1.Reset_Signal()
-            self.Graph_2.Reset_Signal()
-        else:
-            plot_item_2.setXLink(None)
-            
     def Reset_Checkbox(self):
         self.Graph_1.Update_Current_Channel()
         signal = self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal
@@ -641,9 +625,9 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Signal Viewer"))
         self.Load1_Button.setText(_translate("MainWindow", "  Load Signal"))
-        self.Play1_Button.setText(_translate("MainWindow", "   Play         "))
+        self.Play1_Button.setText(_translate("MainWindow", "   Pause         "))
         self.Rewind1_Button.setText(_translate("MainWindow", "  Rewind     "))
-        self.Link_Unlink_Button.setText(_translate("MainWindow", "    Link / Unlink Graphs"))
+        self.Link_Unlink_Button.setText(_translate("MainWindow", "    Link Graphs     "))
         self.Graph1_Label.setText(_translate("MainWindow", "Graph 1"))
         self.Channels_Top_ComboBox.setItemText(0, _translate("MainWindow", "Channel 1"))
         self.Edit1_Label_Button.setText(_translate("MainWindow", "Edit Label"))
@@ -653,7 +637,7 @@ class Ui_MainWindow(object):
         self.Hide_Top_Checkbox.setText(_translate("MainWindow", "Hide Signal"))
         self.CineSpeed_Top_Label.setText(_translate("MainWindow", "Cine Speed"))
         self.Load2_Button.setText(_translate("MainWindow", "  Load Signal"))
-        self.Play2_Button.setText(_translate("MainWindow", "   Play         "))
+        self.Play2_Button.setText(_translate("MainWindow", "   Pause         "))
         self.Rewind2_Button.setText(_translate("MainWindow", "  Rewind     "))
         self.Graph2_Label.setText(_translate("MainWindow", "Graph 2"))
         self.Channels_Bottom_ComboBox.setItemText(0, _translate("MainWindow", "Channel 1"))

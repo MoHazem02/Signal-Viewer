@@ -26,6 +26,7 @@ class Graph:
         self.Other_Graph = other_graph # Reference to the other graph
         self.Current_Frame = 0
         self.Scroll_Bar = scroll_bar
+        self.Paused = False
         
     
     def Update_Current_Channel(self): 
@@ -249,10 +250,38 @@ class Graph:
                         channel.Signal.Plot_Signal()
                         # Add the signal to the plot with the legend name
                         channel.Signal.data_line = self.Graph_Window.plot(pen=channel.Signal.color, name=channel.Signal.legend_text)
+                    # Add a legend to the plot
+                    self.CHANNELS[self.Current_Channel - 1].Signal.legend = self.Graph_Window.addLegend()
+                    # Store the legend color in the signal
+                    self.CHANNELS[self.Current_Channel - 1].Signal.legend_color = self.CHANNELS[self.Current_Channel - 1].Signal.color
+                    #current_signal.Update_Plot_Data()
+                    #self.update_legend(current_signal)
+                  
+    
+    def Link_Unlink(self):
+        # We basically toggle what is already there
+        self.Linked = not self.Linked
+        self.Other_Graph.Linked = not self.Other_Graph.Linked
+
+        plot_item_1 = self.Graph_Window.getPlotItem()
+        plot_item_2 = self.Other_Graph.Graph_Window.getPlotItem()
+
+        _translate = QtCore.QCoreApplication.translate
+        if self.Linked: # to link and unlink from 1 and 2
+            self.Link_Unlink_Button.setText(_translate("MainWindow", "    Unlink Graphs     "))
+            plot_item_2.setXLink(plot_item_1)
+            plot_item_2.setYLink(plot_item_1)
+            self.Reset_Signal()
+            self.Other_Graph.Reset_Signal()
+        else:
+            plot_item_2.setXLink(None)
+            self.Link_Unlink_Button.setText(_translate("MainWindow", "    Link Graphs     "))
+  
 
     def Reset(self):
         self.textbox.setReadOnly(True) #reset the textbox until user add a signal
         #self.Toggle_Hide_Unhide()
+
 
     def Cine_Speed(self, value):
         for channel in self.CHANNELS:
@@ -287,7 +316,21 @@ class Graph:
                     channel.Signal.i = 0
                     channel.Signal.Plot_Signal()  # Replot the signal from the beginning
         
+
     def toggle_play_pause(self):
+        _translate = QtCore.QCoreApplication.translate
+        self.Paused = not self.Paused
+        if self.graph_number == 1:
+            if self.Paused == False:
+                self.UI_Window.Play1_Button.setText(_translate("MainWindow", "   Pause         "))
+            else:
+                self.UI_Window.Play1_Button.setText(_translate("MainWindow", "   Play         "))
+        else:
+            if self.Paused == False:
+                self.UI_Window.Play2_Button.setText(_translate("MainWindow", "   Pause         "))
+            else:
+                self.UI_Window.Play2_Button.setText(_translate("MainWindow", "   Play         "))
+
         for sig in self.signals:
             sig.pause = not sig.pause
             self.Graph_Window.getViewBox().setXRange(max(sig.X_Coordinates[0 : sig.i + 1]) - 100, max(sig.X_Coordinates[0 : sig.i + 1]))
