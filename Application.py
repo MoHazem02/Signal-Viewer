@@ -28,7 +28,7 @@ class Ui_MainWindow(object):
         #Shortcut to take screenshot
         pyautogui.hotkey("win", "shift", "s")
         #wait till user takes screenshot
-        time.sleep(6)
+        time.sleep(4)
         snapshot = ImageGrab.grabclipboard()    
 		# Save the image to Snapshots folder
         snapshot.save(f'Snapshots/image{self.Snapshots_Count}.png', 'PNG')

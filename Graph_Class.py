@@ -8,7 +8,7 @@ import fpdf
 from fpdf import FPDF
 
 class Graph:
-    def __init__(self, Graph_Number, ui_mainwindow, other_graph, scroll_bar = None ,graph_window = None):
+    def __init__(self, Graph_Number, ui_mainwindow, other_graph, scroll_bar = None, graph_window = None):
         self.signals = []  # Add this line to initialize the list
         self.hidden_lines = []  # Add this line to initialize the list
         self.textbox = None
@@ -19,7 +19,6 @@ class Graph:
         self.Graph_Window = graph_window
         self.Current_Channel = 1
         self.CHANNELS = []
-        self.Signal_Plotter = None
         self.First_Channel = Channel(1)
         self.CHANNELS.append(self.First_Channel)
         self.Linked = False # Whether the 2 graphs are linked or not
@@ -102,7 +101,7 @@ class Graph:
                 new_Channel.Signal.Graph_Widget = self.Graph_Window
                 new_Channel.Signal.Graph_Object = self
                 #Add the new signal to the list of signals
-                self.signals.append( new_Channel.Signal)
+                self.signals.append(new_Channel.Signal)
             else:
                 for channel in self.CHANNELS:
                     if channel.Signal is None:
@@ -112,10 +111,7 @@ class Graph:
                         #Add the new signal to the list of signals
                         self.signals.append(channel.Signal)
                         break
-        
             self.signal_count += 1
-            
-
             if self.graph_number == 1:
                 self.UI_Window.Horiz_ScrollBar_Top.setEnabled(True)
                 self.UI_Window.Color_Top_Button.setEnabled(True)
@@ -123,7 +119,6 @@ class Graph:
                 self.UI_Window.Play1_Button.setEnabled(True)
                 self.UI_Window.Move_Top_Button.setEnabled(True)
                 self.UI_Window.Hide_Top_Checkbox.setEnabled(True)
-                # self.Enable_Line_Edit()
             else:
                 self.UI_Window.Horiz_ScrollBar_Bottom.setEnabled(True)
                 self.UI_Window.Color_Bottom_Button_2.setEnabled(True)
@@ -131,17 +126,11 @@ class Graph:
                 self.UI_Window.Play2_Button.setEnabled(True)
                 self.UI_Window.Move_Bottom_Button.setEnabled(True)
                 self.UI_Window.Hide_Bottom_Checkbox.setEnabled(True)
-
-
-                # self.Enable_Line_Edit()
             
-
-            # Add the new signal to the list of signals
-            # self.signals.append(signal)
-            # Reset the current signal and clear the plot window
             if self.signal_count > 1:
                 self.Reset_Signal()
-                
+
+
     def Add_Channel(self):
         self.channel_count += 1
         Temporary_String = f"Channel {self.channel_count}"
@@ -153,8 +142,8 @@ class Graph:
         self.CHANNELS.append(new_Channel)
         return new_Channel
 
+
     def Change_Color(self):
-        
         color = QtWidgets.QColorDialog.getColor()
 
         if color.isValid():
@@ -169,7 +158,8 @@ class Graph:
                 # Add the signal to the plot with the legend name
                 channel.Signal.data_line = self.Graph_Window.plot(pen=channel.Signal.color, name=channel.Signal.legend_text)
             #signal.data_line.legend_color.setPen(color)      
-            
+
+
     def Browse_Signals(self):
         File_Path, _ = QFileDialog.getOpenFileName(None, "Browse Signal", "" , "All Files (*)")
         Record = wfdb.rdrecord(File_Path[:-4])
@@ -185,17 +175,19 @@ class Graph:
             channel.Signal.Plot_Signal()
             if channel.Signal.legend_text:
                 channel.Signal.data_line = self.Graph_Window.plot(pen=channel.Signal.color, name=channel.Signal.legend_text)
-            #self.update_legend(channel.Signal)
+
      
     def ZoomIn(self):
         self.Graph_Window.getViewBox().scaleBy((0.9, 0.9))
         if self.Linked:
             self.Other_Graph.Graph_Window.getViewBox().scaleBy((0.9, 0.9))
 
+
     def ZoomOut(self):
         self.Graph_Window.getViewBox().scaleBy((1.1, 1.1))
         if self.Linked:
             self.Other_Graph.Graph_Window.getViewBox().scaleBy((1.1, 1.1))     
+
 
     def Toggle_Hide_Unhide(self):
         # Get the current channel
@@ -216,8 +208,7 @@ class Graph:
                 #     self.UI_Window.Hide_Signal_1.setChecked(True)
                 # else:
                 #     self.UI_Window.Hide_Signal_2.setChecked(True)
-        else:
-            pass
+
         
     def update_legend(self, current_signal): # remove this again
         if current_signal.legend_text:
