@@ -307,6 +307,9 @@ color:white;
               <property name="enabled">
                <bool>false</bool>
               </property>
+              <property name="value">
+               <number>50</number>
+              </property>
               <property name="orientation">
                <enum>Qt::Vertical</enum>
               </property>
@@ -894,6 +897,9 @@ color:white;
              <widget class="QScrollBar" name="Vert_ScrollBar_Bottom">
               <property name="enabled">
                <bool>false</bool>
+              </property>
+              <property name="value">
+               <number>50</number>
               </property>
               <property name="orientation">
                <enum>Qt::Vertical</enum>
