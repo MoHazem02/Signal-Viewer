@@ -121,6 +121,8 @@ class Graph:
             
 
             if self.graph_number == 1:
+                self.UI_Window.Vert_Horiz_ScrollBar_Top.setValue(0)
+                self.UI_Window.Vert_Horiz_ScrollBar_Top.setEnabled(True)
                 self.UI_Window.Horiz_ScrollBar_Top.setEnabled(True)
                 self.UI_Window.Color_Top_Button.setEnabled(True)
                 self.UI_Window.Edit1_Label_Button.setEnabled(True)
@@ -131,6 +133,7 @@ class Graph:
                 self.UI_Window.Rewind1_Button.setEnabled(True)
                 # self.Enable_Line_Edit()
             else:
+                self.UI_Window.Vert_Horiz_ScrollBar_Bottom.setEnabled(True)
                 self.UI_Window.Horiz_ScrollBar_Bottom.setEnabled(True)
                 self.UI_Window.Color_Bottom_Button_2.setEnabled(True)
                 self.UI_Window.Edit2_Label_Button.setEnabled(True)

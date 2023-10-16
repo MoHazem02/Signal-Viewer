@@ -70,14 +70,20 @@ class Signal:
 
             
         if self.Graph_Object.graph_number == 1:
-            # Update the scrollbar's maximum value and position
+            # Update the horizontal scrollbar's maximum value and position
             self.Graph_Object.UI_Window.Horiz_ScrollBar_Top.valueChanged.disconnect(self.Graph_Object.UI_Window.Scroll_Top_Signal)
             self.Graph_Object.UI_Window.Horiz_ScrollBar_Top.setMaximum(len(self.X_Coordinates))
             self.Graph_Object.UI_Window.Horiz_ScrollBar_Top.setValue(self.i)
             self.Graph_Object.UI_Window.Horiz_ScrollBar_Top.valueChanged.connect(self.Graph_Object.UI_Window.Scroll_Top_Signal)
+            
+            # Update the vertical scrollbar's maximum value and position
+            #self.Graph_Object.UI_Window.Vert_Horiz_ScrollBar_Top.valueChanged.disconnect(self.Graph_Object.UI_Window.VertScroll_Top_Signal)
+            #self.Graph_Object.UI_Window.Vert_Horiz_ScrollBar_Top.setMaximum(len(self.Y_Coordinates))
+            #self.Graph_Object.UI_Window.Vert_Horiz_ScrollBar_Top.setValue(round(max(self.Y_Coordinates)))
+            #self.Graph_Object.UI_Window.Vert_Horiz_ScrollBar_Top.valueChanged.connect(self.Graph_Object.UI_Window.VertScroll_Top_Signal)
         
         else:
-
+            
             self.Graph_Object.UI_Window.Horiz_ScrollBar_Bottom.valueChanged.disconnect(self.Graph_Object.UI_Window.Scroll_Bottom_Signal)
             self.Graph_Object.UI_Window.Horiz_ScrollBar_Bottom.setMaximum(len(self.X_Coordinates))
             self.Graph_Object.UI_Window.Horiz_ScrollBar_Bottom.setValue(self.i)

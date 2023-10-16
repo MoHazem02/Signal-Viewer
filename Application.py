@@ -71,8 +71,44 @@ class Ui_MainWindow(object):
 
             # Update the X range of the plot
             self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Graph_Widget.getViewBox().setXRange(max(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]) - 100, max(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]))
-           
     
+    
+    def VertScroll_Top_Signal(self,Scrolling_Coordinates_Value):
+
+        Scrolling_Coordinates_Value = 0 
+        # Calculate the corresponding index based on the scrollbar's value
+        #index = min(int(Scrolling_Coordinates_Value / self.Vert_Horiz_ScrollBar_Top.maximum() * len(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Y_Coordinates)), len(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Y_Coordinates) - 1)
+
+        # Update the plot data
+        #self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.i = index
+        #self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Update_Plot_Data()
+
+        # Update the Y range of the plot
+        min_value = min(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Y_Coordinates)
+        max_value = max(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Y_Coordinates)
+        range_value = max_value - min_value
+        middle_value = (max_value + min_value) / 2
+        self.GraphWidget_Top.getViewBox().setYRange(middle_value - range_value/2, middle_value + range_value/2)
+        
+        
+    def VertScroll_Bottom_Signal(self,Scrolling_Coordinates_Value):
+
+        Scrolling_Coordinates_Value = 0 
+        # Calculate the corresponding index based on the scrollbar's value
+        #index = min(int(Scrolling_Coordinates_Value / self.Vert_Horiz_ScrollBar_Top.maximum() * len(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Y_Coordinates)), len(self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Y_Coordinates) - 1)
+
+        # Update the plot data
+        #self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.i = index
+        #self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal.Update_Plot_Data()
+
+        # Update the Y range of the plot
+        min_value = min(self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.Y_Coordinates)
+        max_value = max(self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.Y_Coordinates)
+        range_value = max_value - min_value
+        middle_value = (max_value + min_value) / 2
+        self.GraphWidget_Top.getViewBox().setYRange(middle_value - range_value/2, middle_value + range_value/2)
+        
+        
     def Scroll_Bottom_Signal(self,Scrolling_Coordinates_Value):
           # Calculate the corresponding index based on the scrollbar's value
             index = min(int(Scrolling_Coordinates_Value / self.Horiz_ScrollBar_Bottom.maximum() * len(self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.X_Coordinates)), len(self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal.X_Coordinates) - 1)
@@ -204,6 +240,8 @@ class Ui_MainWindow(object):
         self.Vert_Horiz_ScrollBar_Top.setEnabled(False)
         self.Vert_Horiz_ScrollBar_Top.setOrientation(QtCore.Qt.Vertical)
         self.Vert_Horiz_ScrollBar_Top.setObjectName("Vert_Horiz_ScrollBar_Top")
+        self.Vert_Horiz_ScrollBar_Top.valueChanged.connect(self.VertScroll_Top_Signal)
+        self.Vert_Horiz_ScrollBar_Top.setValue(0)  # Set initial value to 0
         self.horizontalLayout_15.addWidget(self.Vert_Horiz_ScrollBar_Top)
         self.verticalLayout_7 = QtWidgets.QVBoxLayout()
         self.verticalLayout_7.setObjectName("verticalLayout_7")
@@ -414,6 +452,7 @@ class Ui_MainWindow(object):
         self.Vert_Horiz_ScrollBar_Bottom.setEnabled(False)
         self.Vert_Horiz_ScrollBar_Bottom.setOrientation(QtCore.Qt.Vertical)
         self.Vert_Horiz_ScrollBar_Bottom.setObjectName("Vert_Horiz_ScrollBar_Bottom")
+        self.Vert_Horiz_ScrollBar_Bottom.valueChanged.connect(self.VertScroll_Bottom_Signal)
         self.horizontalLayout_16.addWidget(self.Vert_Horiz_ScrollBar_Bottom)
         self.verticalLayout_6 = QtWidgets.QVBoxLayout()
         self.verticalLayout_6.setObjectName("verticalLayout_6")
