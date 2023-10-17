@@ -128,6 +128,7 @@ class Graph:
                 self.UI_Window.Hide_Top_Checkbox.setEnabled(True)
                 self.UI_Window.Vert_ScrollBar_Top.setEnabled(True)
                 self.UI_Window.Label_Top_LineEdit.setEnabled(True)
+                self.UI_Window.Rewind1_Button.setEnabled(True)
             else:
                 self.UI_Window.Horiz_ScrollBar_Bottom.setEnabled(True)
                 self.UI_Window.Color_Bottom_Button_2.setEnabled(True)
@@ -137,6 +138,7 @@ class Graph:
                 self.UI_Window.Hide_Bottom_Checkbox.setEnabled(True)
                 self.UI_Window.Vert_ScrollBar_Bottom.setEnabled(True)
                 self.UI_Window.Label_Bottom_LineEdit.setEnabled(True)
+                self.UI_Window.Rewind2_Button.setEnabled(True)
              
 
     def Add_Channel(self):
@@ -370,11 +372,6 @@ class Graph:
         # Rewind the signal
         self.CHANNELS[self.Current_Channel - 1].Signal.X_Points_Plotted = 0
         self.CHANNELS[self.Current_Channel - 1].Signal.Update_Plot_Data()
-        # Disable the Rewind button
-        if self.graph_number == 1:
-            self.UI_Window.Rewind1_Button.setEnabled(False)
-        else:
-            self.UI_Window.Rewind2_Button.setEnabled(False)
 
 
     def Export_PDF(self):
