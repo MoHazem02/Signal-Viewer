@@ -37,14 +37,14 @@ class Ui_MainWindow(object):
         self.Snapshots_Count += 1
 
             
-    def Reset_Checkbox(self):
-        self.Graph_1.Update_Current_Channel()
-        signal = self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal
-        if signal and signal.hide:
-            self.Hide_Signal_1.setChecked(True)
-        else:
-            self.Hide_Signal_1.setChecked(False)
-        self.Hide_Signal_1.setEnabled(signal is not None)
+    # def Reset_Checkbox(self):
+    #     self.Graph_1.Update_Current_Channel()
+    #     signal = self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal
+    #     if signal and signal.hide:
+    #         self.Hide_Signal_1.setChecked(True)
+    #     else:
+    #         self.Hide_Signal_1.setChecked(False)
+    #     self.Hide_Signal_1.setEnabled(signal is not None)
         
 
     def setupUi(self, MainWindow):

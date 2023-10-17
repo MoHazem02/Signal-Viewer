@@ -160,14 +160,13 @@ class Graph:
             self.Update_Current_Channel()
             signal = self.CHANNELS[self.Current_Channel - 1].Signal
             signal.color = color
-            signal.data_line.setPen(color)  # Change the color of the line directly
 
             self.Graph_Window.clear()
             for channel in self.CHANNELS:
                 channel.Signal.Plot_Signal()
 
             if self.Paused:
-                self.Toggle_Play_Pause()
+                signal.data_line.setData(pen = color)
     
 
                 
@@ -237,33 +236,7 @@ class Graph:
             self.Legend.addItem(current_signal.data_line, text)
 
         
-        # #enable right textbox
-        # if self.graph_number == 1:
-        #     self.UI_Window.Label_Top_LineEdit.setEnabled(True)
-        # else:
-        #     self.UI_Window.Label_Bottom_LineEdit.setEnabled(True)
-            
-        # #assign new text from textbox
-        # if current_signal.legend_text is None:
-        #     text = self.textbox.text()
-        #     checker = text 
-        # # check if it is still the first click
-        # if checker == '':
-        #     return
-        # #if it is first time to add a legend
-        # if current_signal.legend_text is None:
-        #     # Create a name for the legend
-        #     current_signal.legend_text = text
-        #     current_signal.legend_color = current_signal.color
-        #     # Add the signal to the plot with the legend name
-        #     # Add a legend to the plot
-        #     current_signal.legend = self.Graph_Window.addLegend()
-        #     current_signal.data_line = self.Graph_Window.plot(pen=current_signal.color, name=current_signal.legend_text)
-            
-        # else: # adding legend if loading two signals or more, linking graphs, editing the legend
-        #     Newtext = self.textbox.text()
-        #     if Newtext is not current_signal.legend_text: # if the user wants to edit the current legend
-        #         self.Update_Legend(Newtext, current_signal)
+        
                 
         
     
@@ -478,7 +451,14 @@ class Graph:
         pdf.output('Signals Data Analysis Report.pdf')
 
 
-
+    def Reset_Checkbox(self):
+        self.Update_Current_Channel()
+        signal = self.CHANNELS[self.Graph_1.Current_Channel - 1].Signal
+        if signal and signal.hide:
+            self.Toggle_Hide_Unhide.setChecked(True)
+        else:
+            self.Toggle_Hide_Unhide.setChecked(False)
+        self.Toggle_Hide_Unhide.setEnabled(signal is not None)
         
 
         
