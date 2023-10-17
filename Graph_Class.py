@@ -23,7 +23,7 @@ class Graph:
         self.CHANNELS.append(self.First_Channel)
         self.Linked = False # Whether the 2 graphs are linked or not
         self.Other_Graph = other_graph # Reference to the other graph
-        self.Current_Frame = 0
+        self.Hidden = False
         self.Scroll_Bar = scroll_bar
         self.Paused = False
         self.Legend = None
@@ -125,7 +125,7 @@ class Graph:
                 self.UI_Window.Edit1_Label_Button.setEnabled(True)
                 self.UI_Window.Play1_Button.setEnabled(True)
                 self.UI_Window.Move_Top_Button.setEnabled(True)
-                self.UI_Window.Hide_Top_Checkbox.setEnabled(True)
+                self.UI_Window.Hide_Top_Button.setEnabled(True)
                 self.UI_Window.Vert_ScrollBar_Top.setEnabled(True)
                 self.UI_Window.Label_Top_LineEdit.setEnabled(True)
                 self.UI_Window.Rewind1_Button.setEnabled(True)
@@ -135,7 +135,7 @@ class Graph:
                 self.UI_Window.Edit2_Label_Button.setEnabled(True)
                 self.UI_Window.Play2_Button.setEnabled(True)
                 self.UI_Window.Move_Bottom_Button.setEnabled(True)
-                self.UI_Window.Hide_Bottom_Checkbox.setEnabled(True)
+                self.UI_Window.Hide_Bottom_Button.setEnabled(True)
                 self.UI_Window.Vert_ScrollBar_Bottom.setEnabled(True)
                 self.UI_Window.Label_Bottom_LineEdit.setEnabled(True)
                 self.UI_Window.Rewind2_Button.setEnabled(True)
@@ -199,6 +199,19 @@ class Graph:
 
     def Toggle_Hide_Unhide(self):
         # Get the current channel
+        self.Hidden = not self.Hidden
+        _translate = QtCore.QCoreApplication.translate
+        if self.Hidden:
+            if self.graph_number == 1:
+                self.UI_Window.Hide_Top_Button.setText(_translate("MainWindow", "Unhide"))
+            else:
+                self.UI_Window.Hide_Bottom_Button.setText(_translate("MainWindow", "Unhide"))
+        else:
+            if self.graph_number == 1:
+                self.UI_Window.Hide_Top_Button.setText(_translate("MainWindow", "Hide"))
+            else:
+                self.UI_Window.Hide_Bottom_Button.setText(_translate("MainWindow", "Hide"))
+
         self.Update_Current_Channel()
         self.current_channel = self.CHANNELS[self.Current_Channel - 1]
         # Check if the channel has a signal
