@@ -192,17 +192,6 @@ class Graph:
     def Toggle_Hide_Unhide(self):
         # Get the current channel
         self.Hidden = not self.Hidden
-        _translate = QtCore.QCoreApplication.translate
-        if self.Hidden:
-            if self.graph_number == 1:
-                self.UI_Window.Hide_Top_Button.setText(_translate("MainWindow", "Unhide"))
-            else:
-                self.UI_Window.Hide_Bottom_Button.setText(_translate("MainWindow", "Unhide"))
-        else:
-            if self.graph_number == 1:
-                self.UI_Window.Hide_Top_Button.setText(_translate("MainWindow", "Hide"))
-            else:
-                self.UI_Window.Hide_Bottom_Button.setText(_translate("MainWindow", "Hide"))
 
         self.Update_Current_Channel()
         self.current_channel = self.CHANNELS[self.Current_Channel - 1]
