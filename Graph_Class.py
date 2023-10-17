@@ -65,33 +65,18 @@ class Graph:
             
 
     def Move_Signal(self):
-        if self.graph_number == 1:
-                self.Update_Current_Channel()
-                Temporary_Signal=self.CHANNELS[self.Current_Channel - 1].Signal
-                self.Other_Graph.Add_Signal(Temporary_Signal)            
-                # Start plotting the signal in the new graph
-                Temporary_Signal.Plot_Signal()
-                Temporary_Signal.data_line = self.Other_Graph.Graph_Window.plot(pen=Temporary_Signal.color, name=Temporary_Signal.legend_text) 
-                self.Remove_Signal() 
-                self.Graph_Window.clear()
-                for channel in self.CHANNELS:
-                    if channel.Signal:
-                        channel.Signal.Plot_Signal()
-                        channel.Signal.data_line = self.Graph_Window.plot(pen=channel.Signal.color, name=channel.Signal.legend_text) 
-                
-        else:
             self.Update_Current_Channel()
-            Temporary_Signal=self.CHANNELS[self.Current_Channel - 1].Signal
-            self.Other_Graph.Add_Signal(Temporary_Signal)
-            #Start plotting the signal in the new graph
-            Temporary_Signal.Plot_Signal() 
-            Temporary_Signal.data_line = self.Other_Graph.Graph_Window.plot(pen=Temporary_Signal.color, name=Temporary_Signal.legend_text)
-            self.Remove_Signal()
+            Moving_Signal = self.CHANNELS[self.Current_Channel - 1].Signal
+            self.Other_Graph.Add_Signal(Moving_Signal)     
+            self.Other_Graph.Add_Legend(Moving_Signal.legend_text)       
+            # Start plotting the signal in the new graph
+            self.Remove_Signal() 
             self.Graph_Window.clear()
             for channel in self.CHANNELS:
                 if channel.Signal:
                     channel.Signal.Plot_Signal()
                     channel.Signal.data_line = self.Graph_Window.plot(pen=channel.Signal.color, name=channel.Signal.legend_text) 
+        
             
 
     def Add_Signal(self, signal): # add the signal to a channel 
@@ -113,6 +98,16 @@ class Graph:
                         self.signals.append(channel.Signal)
                         break
             self.signal_count += 1
+            
+            #clear old signals for plotting all together
+            self.Graph_Window.clear()
+            # Plot all signals
+            for channel in self.CHANNELS:
+                channel.Signal.Plot_Signal()
+                if channel.Signal.legend_text:
+                    channel.Signal.data_line = self.Graph_Window.plot(pen=channel.Signal.color, name=channel.Signal.legend_text)
+            
+
             if self.graph_number == 1:
                 self.UI_Window.Horiz_ScrollBar_Top.setEnabled(True)
                 self.UI_Window.Color_Top_Button.setEnabled(True)
@@ -171,13 +166,7 @@ class Graph:
         Sample_Signal = Signal_Class.Signal(col = "g", X_List = X_Coordinates, Y_list = Y_Coordinates, graphWdg = self.Graph_Window, graphObj = self)
             
         self.Add_Signal(Sample_Signal)
-        #clear old signals for plotting all together
-        self.Graph_Window.clear()
-        # Plot all signals
-        for channel in self.CHANNELS:
-            channel.Signal.Plot_Signal()
-            if channel.Signal.legend_text:
-                channel.Signal.data_line = self.Graph_Window.plot(pen=channel.Signal.color, name=channel.Signal.legend_text)
+        
 
      
     def ZoomIn(self):
@@ -226,7 +215,21 @@ class Graph:
                 channel.Signal.Plot_Signal()
                
         
-    def Add_Legend(self):
+    def Add_Legend(self, text = None):
+        
+        if text is not None:
+            self.Update_Current_Channel()
+            if self.Current_Channel:
+                current_signal = self.CHANNELS[self.Current_Channel - 1].Signal
+            else:
+                return
+            current_signal.data_line = self.Graph_Window.plot(pen=current_signal.color, name=current_signal.legend_text)
+            # Add a legend to the plot
+            current_signal.legend = self.Graph_Window.addLegend()
+            # Store the legend color in the signal
+            current_signal.legend_color = current_signal.color
+            return
+
         if self.graph_number == 1:
             self.UI_Window.Label_Top_LineEdit.setEnabled(True)
         else:
