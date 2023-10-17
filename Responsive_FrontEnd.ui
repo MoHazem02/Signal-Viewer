@@ -436,7 +436,11 @@ color:white;
                  <string notr="true">background-color:#3366ff;</string>
                 </property>
                 <property name="text">
-                 <string>Edit Label</string>
+                 <string>  Edit Label</string>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>Assets/draw.png</normaloff>Assets/draw.png</iconset>
                 </property>
                </widget>
               </item>
@@ -559,31 +563,21 @@ color:white;
                </widget>
               </item>
               <item>
-               <spacer name="horizontalSpacer_8">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="QCheckBox" name="Hide_Top_Checkbox">
+               <widget class="QPushButton" name="Hide_Top_Button">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>111</width>
+                  <width>0</width>
                   <height>31</height>
                  </size>
                 </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color:#3366ff;</string>
+                </property>
                 <property name="text">
-                 <string>Hide Signal</string>
+                 <string>Hide</string>
                 </property>
                </widget>
               </item>
@@ -1027,7 +1021,11 @@ color:white;
                  <string notr="true">background-color:#3366ff;</string>
                 </property>
                 <property name="text">
-                 <string>Edit Label</string>
+                 <string>  Edit Label</string>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>Assets/draw.png</normaloff>Assets/draw.png</iconset>
                 </property>
                </widget>
               </item>
@@ -1150,31 +1148,21 @@ color:white;
                </widget>
               </item>
               <item>
-               <spacer name="horizontalSpacer_9">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="QCheckBox" name="Hide_Bottom_Checkbox">
+               <widget class="QPushButton" name="Hide_Bottom_Button">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>111</width>
+                  <width>0</width>
                   <height>31</height>
                  </size>
                 </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color:#3366ff;</string>
+                </property>
                 <property name="text">
-                 <string>Hide Signal</string>
+                 <string>Hide</string>
                 </property>
                </widget>
               </item>
