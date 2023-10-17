@@ -6,7 +6,7 @@ class Signal:
     def __init__(self, col, X_List, Y_list, graphWdg, graphObj):
         self.pause = False #to control movement of the signal
         self.hidden_lines = []  # Add this line to initialize the list
-        self.legend = None
+        # self.legend = None
         self.legend_text = None
         self.legend_color = None
         self.X_Coordinates = X_List
