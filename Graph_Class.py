@@ -449,16 +449,6 @@ class Graph:
             pdf.ln(10)
 
         pdf.output('Signals Data Analysis Report.pdf')
-
-
-   
-        self.Update_Current_Channel()
-        signal = self.CHANNELS[self.Graph_1.Current_Channel - 1].Signal
-        if signal and signal.hide:
-            self.Toggle_Hide_Unhide.setChecked(True)
-        else:
-            self.Toggle_Hide_Unhide.setChecked(False)
-        self.Toggle_Hide_Unhide.setEnabled(signal is not None)
         
 
         
