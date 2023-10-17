@@ -38,8 +38,7 @@ class Signal:
 
 
     def Plot_Signal(self):
-        
-        self.data_line = self.Graph_Widget.plot(self.X_Coordinates[:1], self.Y_Coordinates[:1], self.legend , pen = self.color )
+        self.data_line = self.Graph_Widget.plot(self.X_Coordinates[:1], self.Y_Coordinates[:1], name = self.legend_text , pen = self.color )
         self.timer = QtCore.QTimer()
         self.timer.setInterval(100)
         self.timer.timeout.connect(self.Update_Plot_Data)

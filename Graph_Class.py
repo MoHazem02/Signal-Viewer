@@ -6,6 +6,7 @@ import numpy as np
 from Channel_Class import Channel
 import fpdf
 from fpdf import FPDF
+import time
 
 class Graph:
     def __init__(self, Graph_Number, ui_mainwindow, other_graph, scroll_bar = None, graph_window = None):
@@ -25,6 +26,7 @@ class Graph:
         self.Current_Frame = 0
         self.Scroll_Bar = scroll_bar
         self.Paused = False
+        self.Legend = None
         
     
     def Update_Current_Channel(self): 
@@ -49,12 +51,6 @@ class Graph:
             self.Graph_Window.getViewBox().setXRange(0, 1)
 
 
-            # Remove the signal's legend from the plot
-            if self.CHANNELS[self.Current_Channel-1].Signal.legend:
-                for item in self.CHANNELS[self.Current_Channel-1].Signal.legend.items:
-                    if item[1].text == self.CHANNELS[self.Current_Channel-1].Signal.data_line.name():
-                       self.CHANNELS[self.Current_Channel-1].Signal.legend.removeItem(item[1].text)
-                       break
             #Set the channel's signal to None
             self.CHANNELS[self.Current_Channel-1].Signal = None
             self.signal_count -= 1
@@ -62,17 +58,40 @@ class Graph:
             
 
     def Move_Signal(self):
+
+        #Checks which graph that its move is pressed
+        if self.graph_number == 1:
+                #Gets the current selected channel
+                self.Update_Current_Channel()
+                #Store the data of the signal that will be moved
+                Temporary_Signal=self.CHANNELS[self.Current_Channel - 1].Signal  
+                #Remove the signal of the current selected channel from its graph   
+                self.Remove_Signal()
+                Temporary_Signal.Graph_Widget = self.Other_Graph.Graph_Window
+                Temporary_Signal.Graph_Object = self.Other_Graph
+                #Add the signal that will be moved to the other graph       
+                self.Other_Graph.Add_Signal(Temporary_Signal)
+ 
+        else:
             self.Update_Current_Channel()
-            Moving_Signal = self.CHANNELS[self.Current_Channel - 1].Signal
-            self.Other_Graph.Add_Signal(Moving_Signal)     
-            self.Other_Graph.Add_Legend(Moving_Signal.legend_text)       
-            # Start plotting the signal in the new graph
-            self.Remove_Signal() 
-            self.Graph_Window.clear()
-            for channel in self.CHANNELS:
-                if channel.Signal:
-                    channel.Signal.Plot_Signal()
-                    channel.Signal.data_line = self.Graph_Window.plot(pen=channel.Signal.color, name=channel.Signal.legend_text) 
+            Temporary_Signal=self.CHANNELS[self.Current_Channel - 1].Signal
+            self.Remove_Signal()
+            Temporary_Signal.Graph_Widget = self.Other_Graph.Graph_Window
+            Temporary_Signal.Graph_Object = self.Other_Graph 
+            self.Other_Graph.Add_Signal(Temporary_Signal)
+
+        #Clear both graphs windows before starting plotting
+        self.Graph_Window.clear()
+        self.Other_Graph.Graph_Window.clear()    
+
+        #Start plotting both graphs signals
+        for channel in self.CHANNELS:
+            if channel.Signal:
+                channel.Signal.Plot_Signal()
+
+        for channel in self.Other_Graph.CHANNELS:
+            if channel.Signal:
+                channel.Signal.Plot_Signal() 
         
             
 
@@ -98,9 +117,7 @@ class Graph:
             # Plot all signals
             for channel in self.CHANNELS:
                 channel.Signal.Plot_Signal()
-                if channel.Signal.legend_text:
-                    channel.Signal.data_line = self.Graph_Window.plot(pen=channel.Signal.color, name=channel.Signal.legend_text)
-            
+              
 
             if self.graph_number == 1:
                 self.UI_Window.Horiz_ScrollBar_Top.setEnabled(True)
@@ -139,18 +156,24 @@ class Graph:
         color = QtWidgets.QColorDialog.getColor()
 
         if color.isValid():
-            self.Graph_Window.clear()
             # Set the selected color to the line
             self.Update_Current_Channel()
             signal = self.CHANNELS[self.Current_Channel - 1].Signal
             signal.color = color
             signal.data_line.setPen(color)  # Change the color of the line directly
+
+            self.Graph_Window.clear()
             for channel in self.CHANNELS:
                 channel.Signal.Plot_Signal()
-                # Add the signal to the plot with the legend name
-                channel.Signal.data_line = self.Graph_Window.plot(pen=channel.Signal.color, name=channel.Signal.legend_text)
-            #signal.data_line.legend_color.setPen(color)      
-            
+
+            if self.Paused:
+                self.Toggle_Play_Pause()
+    
+
+                
+
+
+
     def Browse_Signals(self):
         File_Path, _ = QFileDialog.getOpenFileName(None, "Browse Signal", "" , "All Files (*)")
         Record = wfdb.rdrecord(File_Path[:-4])
@@ -161,7 +184,6 @@ class Graph:
         self.Add_Signal(Sample_Signal)
         
 
-     
     def ZoomIn(self):
         self.Graph_Window.getViewBox().scaleBy((0.9, 0.9))
         if self.Linked:
@@ -171,6 +193,7 @@ class Graph:
         self.Graph_Window.getViewBox().scaleBy((1.1, 1.1))
         if self.Linked:
             self.Other_Graph.Graph_Window.getViewBox().scaleBy((1.1, 1.1))     
+
 
     def Toggle_Hide_Unhide(self):
         # Get the current channel
@@ -192,45 +215,27 @@ class Graph:
                 # else:
                 #     self.UI_Window.Hide_Signal_2.setChecked(True)
 
-        
-    def Update_Legend(self, text, current_signal): # remove this again
-        if current_signal.legend_text:
-            self.Graph_Window.clear()
-            # Store the legend color in the signal
-            current_signal.legend_color = current_signal.color
-            current_signal.legend_text = text
-            for channel in self.CHANNELS:
-                channel.Signal.Plot_Signal()
                
         
-    def Add_Legend(self, text = None):
+    def Add_Legend(self):
+        if self.Legend is None:
+            self.Legend = self.Graph_Window.addLegend()
+            self.Other_Graph.Legend = self.Other_Graph.Graph_Window.addLegend()
+        text = self.textbox.text()
+        if text == "":
+            return
+        self.Update_Current_Channel()
         
-        # if text is not None:
-        #     self.Update_Current_Channel()
-        #     if self.Current_Channel:
-        #         current_signal = self.CHANNELS[self.Current_Channel - 1].Signal
-        #     else:
-        #         return
-        #     current_signal.data_line = self.Graph_Window.plot(pen=current_signal.color, name=current_signal.legend_text)
-        #     # Add a legend to the plot
-        #     current_signal.legend = self.Graph_Window.addLegend()
-        #     # Store the legend color in the signal
-        #     current_signal.legend_color = current_signal.color
-        #     return
+        # Get the current signal
+        current_signal = self.CHANNELS[self.Current_Channel - 1].Signal
 
-        # if self.graph_number == 1:
-        #     self.UI_Window.Label_Top_LineEdit.setEnabled(True)
-        # else:
-        #     self.UI_Window.Label_Bottom_LineEdit.setEnabled(True)
+        if current_signal.legend_text:
+            self.Legend.removeItem(current_signal.data_line)
+            self.Legend.addItem(current_signal.data_line, text)
+        else:    
+            current_signal.legend_text = text
+            self.Legend.addItem(current_signal.data_line, text)
 
-        # text = self.textbox.text()
-        # self.Update_Current_Channel()
-        
-        # # Get the current signal
-        # if self.Current_Channel:
-        #     current_signal = self.CHANNELS[self.Current_Channel - 1].Signal
-        # else:
-        #     return
         
         # #enable right textbox
         # if self.graph_number == 1:
@@ -357,8 +362,6 @@ class Graph:
                     self.UI_Window.Play2_Button.setText(_translate("MainWindow", "   Play         "))
             
 
-
-
     def Scroll_Signal(self, Scrolling_Coordinates_Value):
         # Calculate the corresponding index based on the scrollbar's value
         index = min(int(Scrolling_Coordinates_Value / self.UI_Window.Horiz_ScrollBar_Top.maximum() * len(self.CHANNELS[self.Current_Channel - 1].Signal.X_Coordinates)), len(self.CHANNELS[self.Current_Channel - 1].Signal.X_Coordinates) - 1)
@@ -380,15 +383,12 @@ class Graph:
         #self.CHANNELS[self.Current_Channel - 1].Signal.i = index
         #self.CHANNELS[self.Current_Channel - 1].Signal.Update_Plot_Data()
         # Update the Y range of the plot
-        self.UI_Window.Vert_ScrollBar_Top.setProperty("value", 50)
-        min_value = min(self.CHANNELS[self.Current_Channel - 1].Signal.Y_Coordinates)
-        max_value = max(self.CHANNELS[self.Current_Channel - 1].Signal.Y_Coordinates)
+        min_value = -0.4
+        max_value = 0.4
         if self.graph_number == 1:
-            pass
-            #self.UI_Window.GraphWidget_Top.getViewBox().setYRange(min_value, max_value)
+            self.UI_Window.GraphWidget_Top.getViewBox().setYRange(min_value, max_value)
         else:
             self.UI_Window.GraphWidget_Bottom.getViewBox().setYRange(min_value, max_value)
-
 
 
     def Rewind_Signal(self):
