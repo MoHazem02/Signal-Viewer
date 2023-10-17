@@ -166,7 +166,8 @@ class Graph:
                 channel.Signal.Plot_Signal()
 
             if self.Paused:
-                signal.data_line.setData(pen = color)
+                signal.data_line.setData(signal.X_Coordinates[0 : signal.X_Points_Plotted + 1], 
+                                         signal.Y_Coordinates[0 : signal.X_Points_Plotted + 1], color = color)
     
 
                 
@@ -257,6 +258,7 @@ class Graph:
             self.Other_Graph.Reset_Signal()
         else:
             plot_item_2.setXLink(None)
+            plot_item_1.setYLink(None)
             self.UI_Window.Link_Unlink_Button.setText(_translate("MainWindow", "    Link Graphs     "))
   
 
