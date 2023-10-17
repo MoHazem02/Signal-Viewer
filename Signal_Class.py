@@ -27,6 +27,7 @@ class Signal:
         self.Mean = 0
         self.Standard_Deviation = 0
 
+
     def Hide_Signal(self):
         self.data_line.setVisible(False)
         self.hide = True

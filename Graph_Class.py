@@ -1,12 +1,9 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
-from pyqtgraph import PlotWidget
+from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 import wfdb, Signal_Class
 import numpy as np
 from Channel_Class import Channel
 import fpdf
-from fpdf import FPDF
-import time
 
 class Graph:
     def __init__(self, Graph_Number, ui_mainwindow, other_graph, scroll_bar = None, graph_window = None):
@@ -56,7 +53,6 @@ class Graph:
             self.signal_count -= 1
             
             
-
     def Move_Signal(self):
 
         #Checks which graph that its move is pressed
@@ -94,7 +90,6 @@ class Graph:
                 channel.Signal.Plot_Signal() 
         
             
-
     def Add_Signal(self, signal): # add the signal to a channel 
        if signal:
             if self.channel_count == self.signal_count:
@@ -169,12 +164,8 @@ class Graph:
 
             if self.Paused:
                 signal.data_line.setData(signal.X_Coordinates[0 : signal.X_Points_Plotted + 1], 
-                                         signal.Y_Coordinates[0 : signal.X_Points_Plotted + 1], color = color)
+                                         signal.Y_Coordinates[0 : signal.X_Points_Plotted + 1], color = color, name = self.legend_text)
     
-
-                
-
-
 
     def Browse_Signals(self):
         File_Path, _ = QFileDialog.getOpenFileName(None, "Browse Signal", "" , "All Files (*)")
@@ -190,6 +181,7 @@ class Graph:
         self.Graph_Window.getViewBox().scaleBy((0.9, 0.9))
         if self.Linked:
             self.Other_Graph.Graph_Window.getViewBox().scaleBy((0.9, 0.9))
+
 
     def ZoomOut(self):
         self.Graph_Window.getViewBox().scaleBy((1.1, 1.1))
@@ -228,10 +220,9 @@ class Graph:
                 # if self.graph_number == 1:
                 #     self.UI_Window.Hide_Signal_1.setChecked(True)
                 # else:
-                #     self.UI_Window.Hide_Signal_2.setChecked(True)
+                #     self.UI_Window.Hide_Signal_2.setChecked(True)      
 
-               
-        
+
     def Add_Legend(self):
         if self.Legend is None:
             self.Legend = self.Graph_Window.addLegend()
@@ -246,15 +237,12 @@ class Graph:
 
         if current_signal.legend_text:
             self.Legend.removeItem(current_signal.data_line)
+            current_signal.legend_text = text
             self.Legend.addItem(current_signal.data_line, text)
         else:    
             current_signal.legend_text = text
             self.Legend.addItem(current_signal.data_line, text)
-
-        
-        
-                
-        
+                        
     
     def Link_Unlink(self):
         # We basically toggle what is already there
@@ -463,7 +451,7 @@ class Graph:
         pdf.output('Signals Data Analysis Report.pdf')
 
 
-    def Reset_Checkbox(self):
+   
         self.Update_Current_Channel()
         signal = self.CHANNELS[self.Graph_1.Current_Channel - 1].Signal
         if signal and signal.hide:

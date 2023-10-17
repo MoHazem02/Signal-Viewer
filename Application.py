@@ -5,8 +5,6 @@ import pyautogui
 from PIL import ImageGrab
 import time
 import Graph_Class
-from PyQt5.QtWidgets import QLabel
-
 
 
 class Ui_MainWindow(object):
@@ -35,16 +33,6 @@ class Ui_MainWindow(object):
 		# Save the image to Snapshots folder
         snapshot.save(f'Snapshots/image{self.Snapshots_Count}.png', 'PNG')
         self.Snapshots_Count += 1
-
-            
-    # def Reset_Checkbox(self):
-    #     self.Graph_1.Update_Current_Channel()
-    #     signal = self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal
-    #     if signal and signal.hide:
-    #         self.Hide_Signal_1.setChecked(True)
-    #     else:
-    #         self.Hide_Signal_1.setChecked(False)
-    #     self.Hide_Signal_1.setEnabled(signal is not None)
         
 
     def setupUi(self, MainWindow):
@@ -398,8 +386,6 @@ class Ui_MainWindow(object):
         self.Horiz_ScrollBar_Bottom.setEnabled(False)
         self.Horiz_ScrollBar_Bottom.setOrientation(QtCore.Qt.Horizontal)
         self.Horiz_ScrollBar_Bottom.setObjectName("Horiz_ScrollBar_Bottom")
-        # self.Graph_2.Scroll_Bar = self.Horiz_ScrollBar_Bottom
-        # self.Bottom_Scrolling_Coordinates_value = self.Horiz_ScrollBar_Bottom.valueChanged
         self.Horiz_ScrollBar_Bottom.valueChanged.connect(self.Graph_2.Scroll_Signal)
         self.verticalLayout_6.addWidget(self.Horiz_ScrollBar_Bottom)
         self.horizontalLayout_16.addLayout(self.verticalLayout_6)
