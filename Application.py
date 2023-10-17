@@ -5,6 +5,7 @@ import pyautogui
 from PIL import ImageGrab
 import time
 import Graph_Class
+from PyQt5.QtWidgets import QLabel
 
 
 
@@ -23,6 +24,46 @@ class Ui_MainWindow(object):
         self.Bottom_Scrolling_Coordinates_value = None
         self.Snapshots_Count = 0
 
+
+    def Move_Signal(self, graph_number):
+        if graph_number == 1:
+                self.Graph_1.Update_Current_Channel()
+                Temporary_Signal=self.Graph_1.CHANNELS[self.Graph_1.Current_Channel - 1].Signal
+                self.Graph_2.Add_Signal(Temporary_Signal)            
+                # Start plotting the signal in the new graph
+                self.Graph_2.Update_Current_Channel()
+                currentsig=self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal
+                self.Graph_1.Graph_Window.clear()
+                self.Graph_2.Graph_Window.clear()
+                #self.Graph_2.Update_Legend(Temporary_Signal.legend_text, currentsig)
+                currentsig.Plot_Signal()
+                current_signal = self.Graph_2.CHANNELS[self.Graph_2.Current_Channel - 1].Signal
+                currentsig.legend = Temporary_Signal.legend
+                currentsig.legend  = self.Graph_2.Graph_Window.addLegend()
+                current = Temporary_Signal.legend_text
+                #self.Graph_2.Add_Legend()
+                #currentsig.legend = self.Graph_2.Graph_Window.addLegend()
+                #currentsig.data_line = self.Graph_2.Graph_Window.plot(pen=currentsig.color, name=currentsig.legend_text)
+                self.Graph_1.Remove_Signal() 
+                for channel in self.Graph_1.CHANNELS:
+                    if channel.Signal:
+                        channel.Signal.Plot_Signal()
+                        channel.Signal.data_line = self.Graph_Window.plot(pen=channel.Signal.color, name=channel.Signal.legend_text) 
+                
+        else:
+            self.Update_Current_Channel()
+            Temporary_Signal=self.CHANNELS[self.Current_Channel - 1].Signal
+            self.Other_Graph.Add_Signal(Temporary_Signal)
+            #Start plotting the signal in the new graph
+            Temporary_Signal.Plot_Signal() 
+            Temporary_Signal.data_line = self.Other_Graph.Graph_Window.plot(pen=Temporary_Signal.color, name=Temporary_Signal.legend_text)
+            self.Remove_Signal()
+            self.Graph_Window.clear()
+            for channel in self.CHANNELS:
+                if channel.Signal:
+                    channel.Signal.Plot_Signal()
+                    channel.Signal.data_line = self.Graph_Window.plot(pen=channel.Signal.color, name=channel.Signal.legend_text) 
+            
 
     def Take_Snapshot(self):
         self.Export_Button.setEnabled(True)
@@ -166,6 +207,7 @@ class Ui_MainWindow(object):
         self.Vert_ScrollBar_Top.setProperty("value", 50)
         self.Vert_ScrollBar_Top.setOrientation(QtCore.Qt.Vertical)
         self.Vert_ScrollBar_Top.setObjectName("Vert_ScrollBar_Top")
+        self.Vert_ScrollBar_Top.valueChanged.connect(self.Graph_1.VertScroll_Signal)
         self.horizontalLayout_15.addWidget(self.Vert_ScrollBar_Top)
         self.verticalLayout_7 = QtWidgets.QVBoxLayout()
         self.verticalLayout_7.setObjectName("verticalLayout_7")
@@ -251,7 +293,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.addItem(spacerItem8)
         self.horizontalLayout_9 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_9.setObjectName("horizontalLayout_9")
-        self.Move_Top_Button = QtWidgets.QPushButton(self.frame_6, clicked = lambda : self.Graph_1.Move_Signal())
+        self.Move_Top_Button = QtWidgets.QPushButton(self.frame_6, clicked = lambda : self.Move_Signal(1))
         self.Move_Top_Button.setEnabled(False)
         self.Move_Top_Button.setMinimumSize(QtCore.QSize(134, 31))
         self.Move_Top_Button.setStyleSheet("background-color:#3366ff;")
@@ -377,6 +419,7 @@ class Ui_MainWindow(object):
         self.Vert_ScrollBar_Bottom.setProperty("value", 50)
         self.Vert_ScrollBar_Bottom.setOrientation(QtCore.Qt.Vertical)
         self.Vert_ScrollBar_Bottom.setObjectName("Vert_ScrollBar_Bottom")
+        self.Vert_ScrollBar_Bottom.valueChanged.connect(self.Graph_2.VertScroll_Signal)
         self.horizontalLayout_16.addWidget(self.Vert_ScrollBar_Bottom)
         self.verticalLayout_6 = QtWidgets.QVBoxLayout()
         self.verticalLayout_6.setObjectName("verticalLayout_6")
@@ -461,7 +504,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_5.addItem(spacerItem19)
         self.horizontalLayout_13 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_13.setObjectName("horizontalLayout_13")
-        self.Move_Bottom_Button = QtWidgets.QPushButton(self.frame_18, clicked = lambda : self.Graph_2.Move_Signal())
+        self.Move_Bottom_Button = QtWidgets.QPushButton(self.frame_18, clicked = lambda : self.Graph_2.Move_Signal(2))
         self.Move_Bottom_Button.setEnabled(False)
         self.Move_Bottom_Button.setMinimumSize(QtCore.QSize(134, 31))
         self.Move_Bottom_Button.setStyleSheet("background-color:#3366ff;")
