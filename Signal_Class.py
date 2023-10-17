@@ -105,4 +105,4 @@ class Signal:
             self.Mean = statistics.mean(self.Y_Coordinates)
             self.Standard_Deviation = f"{self.Standard_Deviation:.6f}"  
             self.Mean = f"{self.Mean:.6f}"   
-            self.Duration = f"{self.X_Coordinates[-1]/60:.2f}"      
+            self.Duration = f"{self.X_Coordinates[-1]/60000:.2f}"      

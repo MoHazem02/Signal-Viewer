@@ -177,8 +177,6 @@ class Ui_MainWindow(object):
         self.Horiz_ScrollBar_Top.setSizePolicy(sizePolicy)
         self.Horiz_ScrollBar_Top.setOrientation(QtCore.Qt.Horizontal)
         self.Horiz_ScrollBar_Top.setObjectName("Horiz_ScrollBar_Top")
-        # self.Graph_1.Scroll_Bar = self.Horiz_ScrollBar_Top
-        # self.Scrolling_Coordinates_value = self.Horiz_ScrollBar_Top.valueChanged
         self.Horiz_ScrollBar_Top.valueChanged.connect(self.Graph_1.Scroll_Signal)
         self.verticalLayout_7.addWidget(self.Horiz_ScrollBar_Top)
         self.horizontalLayout_15.addLayout(self.verticalLayout_7)
@@ -205,7 +203,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.addItem(spacerItem6)
         self.horizontalLayout_7 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_7.setObjectName("horizontalLayout_7")
-        self.Edit1_Label_Button = QtWidgets.QPushButton(self.frame_6)
+        self.Edit1_Label_Button = QtWidgets.QPushButton(self.frame_6, clicked = lambda: self.Graph_1.Add_Legend())
         self.Edit1_Label_Button.setEnabled(False)
         self.Edit1_Label_Button.setMinimumSize(QtCore.QSize(101, 31))
         self.Edit1_Label_Button.setToolTip("")

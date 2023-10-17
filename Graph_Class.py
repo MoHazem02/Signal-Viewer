@@ -161,10 +161,11 @@ class Graph:
             self.Graph_Window.clear()
             for channel in self.CHANNELS:
                 channel.Signal.Plot_Signal()
+                if self.Paused:
+                    channel.Signal.data_line.setData(channel.Signal.X_Coordinates[0 : channel.Signal.X_Points_Plotted + 1], 
+                                         channel.Signal.Y_Coordinates[0 : channel.Signal.X_Points_Plotted + 1], color = color, name = channel.Signal.legend_text)
 
-            if self.Paused:
-                signal.data_line.setData(signal.X_Coordinates[0 : signal.X_Points_Plotted + 1], 
-                                         signal.Y_Coordinates[0 : signal.X_Points_Plotted + 1], color = color, name = self.legend_text)
+           
     
 
     def Browse_Signals(self):
@@ -200,16 +201,9 @@ class Graph:
             # Toggle the visibility of the signal
             if self.current_channel.Signal.hide:
                 self.current_channel.Signal.Unhide_Signal()
-                # if self.graph_number == 1:
-                #     self.UI_Window.Hide_Signal_1.setChecked(False)
-                # else:
-                #     self.UI_Window.Hide_Signal_2.setChecked(False)
             else:
                 self.current_channel.Signal.Hide_Signal()
-                # if self.graph_number == 1:
-                #     self.UI_Window.Hide_Signal_1.setChecked(True)
-                # else:
-                #     self.UI_Window.Hide_Signal_2.setChecked(True)      
+     
 
 
     def Add_Legend(self):
@@ -244,10 +238,10 @@ class Graph:
         _translate = QtCore.QCoreApplication.translate
         if self.Linked: # to link and unlink from 1 and 2
             self.UI_Window.Link_Unlink_Button.setText(_translate("MainWindow", "    Unlink Graphs     "))
-            plot_item_2.setXLink(plot_item_1)
-            plot_item_2.setYLink(plot_item_1)
             self.Reset_Signal()
             self.Other_Graph.Reset_Signal()
+            plot_item_2.setXLink(plot_item_1)
+            plot_item_2.setYLink(plot_item_1)
         else:
             plot_item_2.setXLink(None)
             plot_item_1.setYLink(None)
@@ -274,22 +268,31 @@ class Graph:
             
                 
     def Reset_Signal(self):
+
+        #If the graphs are linked, reset all signals in both graphs
+        if self.Linked:
+            self.Graph_Window.clear()
+            for channel in self.CHANNELS:
+                if channel.Signal:
+                    channel.Signal.X_Points_Plotted = 0
+                    channel.Signal.Plot_Signal()  # Replot the signal from the beginning
+
+            self.Other_Graph.Graph_Window.clear()
+            for channel in self.Other_Graph.CHANNELS:
+                if channel.Signal:
+                    channel.Signal.X_Points_Plotted = 0
+                    channel.Signal.Plot_Signal()  # Replot the signal from the beginning
+
+            return
+        
+        
+        self.Graph_Window.clear()
         for channel in self.CHANNELS:
             if channel.Signal:
                 channel.Signal.X_Points_Plotted = 0
 
 
-        # If the graphs are linked, reset all signals in both graphs
-        if self.Linked:
-            for channel in self.CHANNELS:
-                if channel.Signal is not None:
-                    channel.Signal.X_Points_Plotted = 0
-                    channel.Signal.Plot_Signal()  # Replot the signal from the beginning
 
-            for channel in self.Other_Graph.CHANNELS:
-                if channel.Signal is not None:
-                    channel.Signal.X_Points_Plotted = 0
-                    channel.Signal.Plot_Signal()  # Replot the signal from the beginning
         
 
     def Toggle_Play_Pause(self):
@@ -359,9 +362,21 @@ class Graph:
 
 
     def Rewind_Signal(self):
+        if self.Linked:
+            if self.CHANNELS[self.Current_Channel - 1].Signal:
+                self.CHANNELS[self.Current_Channel - 1].Signal.X_Points_Plotted = 0
+                self.CHANNELS[self.Current_Channel - 1].Signal.Update_Plot_Data()
+
+            if self.Other_Graph.CHANNELS[self.Current_Channel - 1].Signal:
+                self.Other_Graph.CHANNELS[self.Current_Channel - 1].Signal.X_Points_Plotted = 0
+                self.Other_Graph.CHANNELS[self.Current_Channel - 1].Signal.Update_Plot_Data()
+
+
         # Rewind the signal
-        self.CHANNELS[self.Current_Channel - 1].Signal.X_Points_Plotted = 0
-        self.CHANNELS[self.Current_Channel - 1].Signal.Update_Plot_Data()
+        elif self.CHANNELS[self.Current_Channel - 1].Signal:
+            self.CHANNELS[self.Current_Channel - 1].Signal.X_Points_Plotted = 0
+            self.CHANNELS[self.Current_Channel - 1].Signal.Update_Plot_Data()
+
 
 
     def Export_PDF(self):
