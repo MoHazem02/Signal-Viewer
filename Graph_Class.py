@@ -363,13 +363,15 @@ class Graph:
 
     def Rewind_Signal(self):
         if self.Linked:
-            if self.CHANNELS[self.Current_Channel - 1].Signal:
-                self.CHANNELS[self.Current_Channel - 1].Signal.X_Points_Plotted = 0
-                self.CHANNELS[self.Current_Channel - 1].Signal.Update_Plot_Data()
+            for channel in self.CHANNELS:
+                if channel.Signal:
+                    channel.Signal.X_Points_Plotted = 0
+                    channel.Signal.Update_Plot_Data()
 
-            if self.Other_Graph.CHANNELS[self.Current_Channel - 1].Signal:
-                self.Other_Graph.CHANNELS[self.Current_Channel - 1].Signal.X_Points_Plotted = 0
-                self.Other_Graph.CHANNELS[self.Current_Channel - 1].Signal.Update_Plot_Data()
+            for channel in self.Other_Graph.CHANNELS:
+                if channel.Signal:
+                    channel.Signal.X_Points_Plotted = 0
+                    channel.Signal.Update_Plot_Data()
 
 
         # Rewind the signal
