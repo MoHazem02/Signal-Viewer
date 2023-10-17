@@ -64,7 +64,20 @@ class Graph:
             #self.Reset_Signal
             
 
-   
+    def Move_Signal(self):
+            self.Update_Current_Channel()
+            Moving_Signal = self.CHANNELS[self.Current_Channel - 1].Signal
+            self.Other_Graph.Add_Signal(Moving_Signal)     
+            self.Other_Graph.Add_Legend(Moving_Signal.legend_text)       
+            # Start plotting the signal in the new graph
+            self.Remove_Signal() 
+            self.Graph_Window.clear()
+            for channel in self.CHANNELS:
+                if channel.Signal:
+                    channel.Signal.Plot_Signal()
+                    channel.Signal.data_line = self.Graph_Window.plot(pen=channel.Signal.color, name=channel.Signal.legend_text) 
+        
+            
 
     def Add_Signal(self, signal): # add the signal to a channel 
        if signal:
@@ -86,6 +99,14 @@ class Graph:
                         break
         
             self.signal_count += 1
+            
+            #clear old signals for plotting all together
+            self.Graph_Window.clear()
+            # Plot all signals
+            for channel in self.CHANNELS:
+                channel.Signal.Plot_Signal()
+                if channel.Signal.legend_text:
+                    channel.Signal.data_line = self.Graph_Window.plot(pen=channel.Signal.color, name=channel.Signal.legend_text)
             
 
             if self.graph_number == 1:
@@ -145,14 +166,8 @@ class Graph:
         Sample_Signal = Signal_Class.Signal(col = "g", X_List = X_Coordinates, Y_list = Y_Coordinates, graphWdg = self.Graph_Window, graphObj = self)
             
         self.Add_Signal(Sample_Signal)
-        #clear old signals for plotting all together
-        self.Graph_Window.clear()
-        # Plot all signals
-        for channel in self.CHANNELS:
-            channel.Signal.Plot_Signal()
-            #if channel.Signal.legend_text:
-                #channel.Signal.data_line = self.Graph_Window.plot(pen=channel.Signal.color, name=channel.Signal.legend_text)
-            #self.update_legend(channel.Signal)
+        
+
      
     def ZoomIn(self):
         self.Graph_Window.getViewBox().scaleBy((0.9, 0.9))
@@ -193,16 +208,29 @@ class Graph:
             current_signal.legend_text = text
             for channel in self.CHANNELS:
                 channel.Signal.Plot_Signal()
-                # Add a legend to the plot
-                current_signal.legend = self.Graph_Window.addLegend()
-                # Add the signal to the plot with the legend name
-                current_signal.data_line = self.Graph_Window.plot(pen=current_signal.color, name=current_signal.legend_text)
                
-   
-
-    def Add_Legend(self):
         
-        checker = None # checker to see if it is the first time to press edit label 
+    def Add_Legend(self, text = None):
+        
+        if text is not None:
+            self.Update_Current_Channel()
+            if self.Current_Channel:
+                current_signal = self.CHANNELS[self.Current_Channel - 1].Signal
+            else:
+                return
+            current_signal.data_line = self.Graph_Window.plot(pen=current_signal.color, name=current_signal.legend_text)
+            # Add a legend to the plot
+            current_signal.legend = self.Graph_Window.addLegend()
+            # Store the legend color in the signal
+            current_signal.legend_color = current_signal.color
+            return
+
+        if self.graph_number == 1:
+            self.UI_Window.Label_Top_LineEdit.setEnabled(True)
+        else:
+            self.UI_Window.Label_Bottom_LineEdit.setEnabled(True)
+
+        text = self.textbox.text()
         self.Update_Current_Channel()
         
         # Get the current signal
