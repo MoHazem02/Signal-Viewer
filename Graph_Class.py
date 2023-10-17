@@ -344,16 +344,18 @@ class Graph:
     def VertScroll_Signal(self, Scrolling_Coordinates_Value):
 
         # Calculate the corresponding index based on the scrollbar's value
-        index = min(int(Scrolling_Coordinates_Value / self.UI_Window.Vert_ScrollBar_Top.maximum() * len(self.CHANNELS[self.Current_Channel - 1].Signal.Y_Coordinates)), len(self.CHANNELS[self.Current_Channel - 1].Signal.Y_Coordinates) - 1)
+        #index = min(int(Scrolling_Coordinates_Value / self.UI_Window.Vert_ScrollBar_Top.maximum() * len(self.CHANNELS[self.Current_Channel - 1].Signal.Y_Coordinates)), len(self.CHANNELS[self.Current_Channel - 1].Signal.Y_Coordinates) - 1)
 
         # Update the plot data
-        self.CHANNELS[self.Current_Channel - 1].Signal.i = index
-        self.CHANNELS[self.Current_Channel - 1].Signal.Update_Plot_Data()
+        #self.CHANNELS[self.Current_Channel - 1].Signal.i = index
+        #self.CHANNELS[self.Current_Channel - 1].Signal.Update_Plot_Data()
         # Update the Y range of the plot
+        self.UI_Window.Vert_ScrollBar_Top.setProperty("value", 50)
         min_value = min(self.CHANNELS[self.Current_Channel - 1].Signal.Y_Coordinates)
         max_value = max(self.CHANNELS[self.Current_Channel - 1].Signal.Y_Coordinates)
         if self.graph_number == 1:
-            self.UI_Window.GraphWidget_Top.getViewBox().setYRange(min_value, max_value)
+            pass
+            #self.UI_Window.GraphWidget_Top.getViewBox().setYRange(min_value, max_value)
         else:
             self.UI_Window.GraphWidget_Bottom.getViewBox().setYRange(min_value, max_value)
 
