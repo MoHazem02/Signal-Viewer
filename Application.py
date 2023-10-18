@@ -21,6 +21,7 @@ class Ui_MainWindow(object):
         self.Top_Scrolling_Coordinates_value = None
         self.Bottom_Scrolling_Coordinates_value = None
         self.Snapshots_Count = 0
+        self.Snapshots_Taken = [] # This List stores each snapshot was taken from which graph, 1 or 2
 
 
     def Take_Snapshot(self):
@@ -29,7 +30,12 @@ class Ui_MainWindow(object):
         pyautogui.hotkey("win", "shift", "s")
         #wait till user takes screenshot
         time.sleep(4)
-        snapshot = ImageGrab.grabclipboard()    
+        snapshot = ImageGrab.grabclipboard()
+        selected_graph = self.Snapshot_Combobox.currentText()
+        if selected_graph == "Graph 1":
+            self.Snapshots_Taken.append(1)
+        else:
+            self.Snapshots_Taken.append(2)
         # Save the image to Snapshots folder
         snapshot.save(f'Snapshots/image{self.Snapshots_Count}.png', 'PNG')
         self.Snapshots_Count += 1

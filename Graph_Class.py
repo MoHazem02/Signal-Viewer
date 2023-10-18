@@ -385,36 +385,37 @@ class Graph:
         #Updating the current channel number to know which channel is displayed in both graphs
         self.Update_Current_Channel()
         self.Other_Graph.Update_Current_Channel()
-        for snapshot_number in range(self.UI_Window.Snapshots_Count):
-            #Checks if the current has a signal
-            if self.CHANNELS[self.Current_Channel-1].Signal:
-                #Creating the statistics of the signal
-                self.CHANNELS[self.Current_Channel-1].Signal.Creating_Signal_Statistics()
-                #Setting the title of the signal style
-                pdf.set_font('times','U', 16)
-                pdf.cell(0,30,f"Signal of Graph {self.graph_number} Channel {self.Current_Channel} Data: ")
-                #Positoning of the image
-                pdf.set_xy(10,50)
-                pdf.image('Snapshots/image0.png', w=190, h=60)
-                pdf.ln(10)
+        for snapshot_number in self.UI_Window.Snapshots_Taken:
+            if snapshot_number == 1:
+                #Checks if the current has a signal
+                if self.CHANNELS[self.Current_Channel-1].Signal:
+                    #Creating the statistics of the signal
+                    self.CHANNELS[self.Current_Channel-1].Signal.Creating_Signal_Statistics()
+                    #Setting the title of the signal style
+                    pdf.set_font('times','U', 16)
+                    pdf.cell(0,30,f"Signal of Graph {self.graph_number} Channel {self.Current_Channel} Data: ")
+                    #Positoning of the image
+                    pdf.set_xy(10,50)
+                    pdf.image('Snapshots/image0.png', w=190, h=60)
+                    pdf.ln(10)
 
-                pdf.set_font('times','', 12)
-                table_data = [['Maximum Value', 'Minimum Value', 'Mean','Standard Deviation','Duration'],
-                            [self.CHANNELS[self.Current_Channel-1].Signal.Max_Value, self.CHANNELS[self.Current_Channel-1].Signal.Min_Value,
-                            self.CHANNELS[self.Current_Channel-1].Signal.Mean,self.CHANNELS[self.Current_Channel-1].Signal.Standard_Deviation,
-                            f"{self.CHANNELS[self.Current_Channel-1].Signal.Duration} min"]]
+                    pdf.set_font('times','', 12)
+                    table_data = [['Maximum Value', 'Minimum Value', 'Mean','Standard Deviation','Duration'],
+                                [self.CHANNELS[self.Current_Channel-1].Signal.Max_Value, self.CHANNELS[self.Current_Channel-1].Signal.Min_Value,
+                                self.CHANNELS[self.Current_Channel-1].Signal.Mean,self.CHANNELS[self.Current_Channel-1].Signal.Standard_Deviation,
+                                f"{self.CHANNELS[self.Current_Channel-1].Signal.Duration} min"]]
 
-                # Create a header row
-                for header in table_data[0]:
-                    pdf.cell(38, 10, header, border=1, align='C')
-                pdf.ln()
+                    # Create a header row
+                    for header in table_data[0]:
+                        pdf.cell(38, 10, header, border=1, align='C')
+                    pdf.ln()
 
-                # Iterate over the table data and write each cell to the PDF
-                for row in table_data[1:]:
-                    for cell in row:
-                        pdf.cell(38, 10, str(cell), border=1, align='C')
+                    # Iterate over the table data and write each cell to the PDF
+                    for row in table_data[1:]:
+                        for cell in row:
+                            pdf.cell(38, 10, str(cell), border=1, align='C')
 
-                pdf.ln(10)
+                    pdf.ln(10)
             else:
                 if self.Other_Graph.CHANNELS[self.Other_Graph.Current_Channel-1].Signal :
                     self.Other_Graph.CHANNELS[self.Other_Graph.Current_Channel-1].Signal.Creating_Signal_Statistics()
