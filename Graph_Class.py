@@ -5,6 +5,8 @@ import numpy as np
 from Channel_Class import Channel
 import fpdf
 
+
+# noinspection PyTypeChecker
 class Graph:
     def __init__(self, Graph_Number, ui_mainwindow, other_graph, scroll_bar = None, graph_window = None):
         self.hidden_lines = []  # Add this line to initialize the list
@@ -60,7 +62,7 @@ class Graph:
                 #Gets the current selected channel
                 self.Update_Current_Channel()
                 #Store the data of the signal that will be moved
-                Temporary_Signal=self.CHANNELS[self.Current_Channel - 1].Signal  
+                Temporary_Signal = self.CHANNELS[self.Current_Channel - 1].Signal
                 #Remove the signal of the current selected channel from its graph   
                 self.Remove_Signal()
                 Temporary_Signal.Graph_Widget = self.Other_Graph.Graph_Window
@@ -103,9 +105,7 @@ class Graph:
             else:
                 for channel in self.CHANNELS:
                     if channel.Signal is None:
-                        channel.Signal = signal  
-                        #Add the new signal to the list of signals
-                        
+                        channel.Signal = signal
                         break
             self.signal_count += 1
             
@@ -259,11 +259,13 @@ class Graph:
 
     def Cine_Speed(self, value):
         for channel in self.CHANNELS:
-            channel.Signal.Update_Cine_Speed(value)
+            if channel.Signal:
+                channel.Signal.Update_Cine_Speed(value)
         
         if self.Linked:
             for channel in self.Other_Graph.CHANNELS:
-                channel.Signal.Update_Cine_Speed(value)
+                if channel.Signal:
+                    channel.Signal.Update_Cine_Speed(value)
             
             if self.graph_number == 1:
                 self.UI_Window.CineSpeed_Bottom_Slider.setValue(value)
@@ -287,54 +289,39 @@ class Graph:
                     channel.Signal.X_Points_Plotted = 0
                     channel.Signal.Plot_Signal()  # Replot the signal from the beginning
 
-            return
-        
-        
-        self.Graph_Window.clear()
-        for channel in self.CHANNELS:
-            if channel.Signal:
-                channel.Signal.X_Points_Plotted = 0
-
-
-
-        
 
     def Toggle_Play_Pause(self):
         _translate = QtCore.QCoreApplication.translate
         self.Paused = not self.Paused
-        if self.graph_number == 1:
+        if self.Linked:
+            self.Other_Graph.Paused = self.Paused
+            for channel in self.Other_Graph.CHANNELS:
+                if channel.Signal:
+                    channel.Signal.pause = not channel.Signal.pause
+
             if not self.Paused:
                 self.UI_Window.Play1_Button.setText(_translate("MainWindow", "   Pause         "))
-            else:
-                self.UI_Window.Play1_Button.setText(_translate("MainWindow", "   Play         "))
-        else:
-            if not self.Paused:
                 self.UI_Window.Play2_Button.setText(_translate("MainWindow", "   Pause         "))
             else:
+                self.UI_Window.Play1_Button.setText(_translate("MainWindow", "   Play         "))
                 self.UI_Window.Play2_Button.setText(_translate("MainWindow", "   Play         "))
-
-        for channel in self.CHANNELS:
-            channel.Signal.pause = not channel.Signal.pause
-            self.Graph_Window.getViewBox().setXRange(max(channel.Signal.X_Coordinates[0 : channel.Signal.X_Points_Plotted + 1]) - 100, max(channel.Signal.X_Coordinates[0 : channel.Signal.X_Points_Plotted + 1]))
-        
-        if self.Linked:
-            for channel in self.Other_Graph.CHANNELS:
-                channel.Signal.pause = not channel.Signal.pause
+        else:
             if self.graph_number == 1:
                 if not self.Paused:
                     self.UI_Window.Play1_Button.setText(_translate("MainWindow", "   Pause         "))
-                    self.UI_Window.Play2_Button.setText(_translate("MainWindow", "   Pause         "))
                 else:
                     self.UI_Window.Play1_Button.setText(_translate("MainWindow", "   Play         "))
-                    self.UI_Window.Play2_Button.setText(_translate("MainWindow", "   Play         "))
             else:
                 if not self.Paused:
-                    self.UI_Window.Play1_Button.setText(_translate("MainWindow", "   Pause         "))
                     self.UI_Window.Play2_Button.setText(_translate("MainWindow", "   Pause         "))
                 else:
-                    self.UI_Window.Play1_Button.setText(_translate("MainWindow", "   Play         "))
                     self.UI_Window.Play2_Button.setText(_translate("MainWindow", "   Play         "))
-            
+
+        for channel in self.CHANNELS:
+            if channel.Signal:
+                channel.Signal.pause = not channel.Signal.pause
+                self.Graph_Window.getViewBox().setXRange(max(channel.Signal.X_Coordinates[0 : channel.Signal.X_Points_Plotted + 1]) - 100, max(channel.Signal.X_Coordinates[0 : channel.Signal.X_Points_Plotted + 1]))
+        
 
     def Scroll_Signal(self, Scrolling_Coordinates_Value):
         # Calculate the corresponding index based on the scrollbar's value
