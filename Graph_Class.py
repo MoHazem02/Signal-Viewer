@@ -65,6 +65,8 @@ class Graph:
                 self.Remove_Signal()
                 Temporary_Signal.Graph_Widget = self.Other_Graph.Graph_Window
                 Temporary_Signal.Graph_Object = self.Other_Graph
+                # Ensure that the signal will be moving when transferred to other graph
+                Temporary_Signal.pause = False
                 #Add the signal that will be moved to the other graph       
                 self.Other_Graph.Add_Signal(Temporary_Signal)
  
@@ -73,7 +75,9 @@ class Graph:
             Temporary_Signal=self.CHANNELS[self.Current_Channel - 1].Signal
             self.Remove_Signal()
             Temporary_Signal.Graph_Widget = self.Other_Graph.Graph_Window
-            Temporary_Signal.Graph_Object = self.Other_Graph 
+            Temporary_Signal.Graph_Object = self.Other_Graph
+            # Ensure that the signal will be moving when transferred to other graph
+            Temporary_Signal.pause = False
             self.Other_Graph.Add_Signal(Temporary_Signal)
 
         #Clear both graphs windows before starting plotting
@@ -299,12 +303,12 @@ class Graph:
         _translate = QtCore.QCoreApplication.translate
         self.Paused = not self.Paused
         if self.graph_number == 1:
-            if self.Paused == False:
+            if not self.Paused:
                 self.UI_Window.Play1_Button.setText(_translate("MainWindow", "   Pause         "))
             else:
                 self.UI_Window.Play1_Button.setText(_translate("MainWindow", "   Play         "))
         else:
-            if self.Paused == False:
+            if not self.Paused:
                 self.UI_Window.Play2_Button.setText(_translate("MainWindow", "   Pause         "))
             else:
                 self.UI_Window.Play2_Button.setText(_translate("MainWindow", "   Play         "))
@@ -317,14 +321,14 @@ class Graph:
             for channel in self.Other_Graph.CHANNELS:
                 channel.Signal.pause = not channel.Signal.pause
             if self.graph_number == 1:
-                if self.Paused == False:
+                if not self.Paused:
                     self.UI_Window.Play1_Button.setText(_translate("MainWindow", "   Pause         "))
                     self.UI_Window.Play2_Button.setText(_translate("MainWindow", "   Pause         "))
                 else:
                     self.UI_Window.Play1_Button.setText(_translate("MainWindow", "   Play         "))
                     self.UI_Window.Play2_Button.setText(_translate("MainWindow", "   Play         "))
             else:
-                if self.Paused == False:
+                if not self.Paused:
                     self.UI_Window.Play1_Button.setText(_translate("MainWindow", "   Pause         "))
                     self.UI_Window.Play2_Button.setText(_translate("MainWindow", "   Pause         "))
                 else:

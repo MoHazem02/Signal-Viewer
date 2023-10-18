@@ -7,6 +7,7 @@ import time
 import Graph_Class
 
 
+# noinspection PyUnresolvedReferences,PyArgumentList
 class Ui_MainWindow(object):
 
 
@@ -30,7 +31,7 @@ class Ui_MainWindow(object):
         #wait till user takes screenshot
         time.sleep(4)
         snapshot = ImageGrab.grabclipboard()    
-		# Save the image to Snapshots folder
+        # Save the image to Snapshots folder
         snapshot.save(f'Snapshots/image{self.Snapshots_Count}.png', 'PNG')
         self.Snapshots_Count += 1
         
