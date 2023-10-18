@@ -7,7 +7,6 @@ import time
 import Graph_Class
 
 
-# noinspection PyUnresolvedReferences,PyArgumentList
 class Ui_MainWindow(object):
 
 

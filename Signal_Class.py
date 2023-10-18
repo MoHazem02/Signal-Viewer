@@ -14,7 +14,6 @@ class Signal:
         self.hide = False
         self.running = True
         self.color = col
-        self.Old_Color = col
         self.Graph_Widget = graphWdg
         self.Graph_Object = graphObj
         self.X = []
