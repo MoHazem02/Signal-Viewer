@@ -5,6 +5,7 @@ import pyautogui
 from PIL import ImageGrab
 import time
 import Graph_Class
+import fpdf
 
 
 class Ui_MainWindow(object):
@@ -20,8 +21,6 @@ class Ui_MainWindow(object):
         self.Graph_2.Other_Graph = self.Graph_1
         self.Top_Scrolling_Coordinates_value = None
         self.Bottom_Scrolling_Coordinates_value = None
-        self.Snapshots_Count = 0
-        self.Snapshots_Taken = [] # This List stores each snapshot was taken from which graph, 1 or 2
 
 
     def Take_Snapshot(self):
@@ -33,13 +32,103 @@ class Ui_MainWindow(object):
         snapshot = ImageGrab.grabclipboard()
         selected_graph = self.Snapshot_Combobox.currentText()
         if selected_graph == "Graph 1":
-            self.Snapshots_Taken.append(1)
+            self.Graph_1.Snapshots_Count += 1
+            # Save the image to Snapshots folder
+            snapshot.save(f'Snapshots/Graph 1 Image {self.Graph_1.Snapshots_Count}.png', 'PNG')
         else:
-            self.Snapshots_Taken.append(2)
-        # Save the image to Snapshots folder
-        snapshot.save(f'Snapshots/image{self.Snapshots_Count}.png', 'PNG')
-        self.Snapshots_Count += 1
-        
+            self.Graph_2.Snapshots_Count += 1
+            snapshot.save(f'Snapshots/Graph 2 Image {self.Graph_2.Snapshots_Count}.png', 'PNG')
+
+    def Export_PDF(self):
+        # Creating the pdf object
+        pdf = fpdf.FPDF()
+        # Adding the first page to the pdf
+        pdf.add_page()
+        # Adding page break with margin = 15 to open another page when limit is reached
+        pdf.set_auto_page_break(auto=1, margin=20)
+        # Setting the title of the page style
+        pdf.set_font('times', 'B', 22)
+        pdf.cell(0, 10, "Signals Data Analysis Report", align="C", ln=1)
+        pdf.cell(0, 5, "", align="C", ln=1)
+
+        if self.Graph_1.Snapshots_Count:
+            # Setting the title of the signal style
+            pdf.set_font('times', 'U', 16)
+            pdf.cell(0, 10, "Signals of Graph 1 Data Analysis:")
+            pdf.cell(0, 17, "", align="C", ln=1)
+            Printed_Photos_Counter = 0
+            for Signals_Counter in range(len(self.Graph_1.CHANNELS)):
+                # Checks if the current channel has a signal
+                if self.Graph_1.CHANNELS[Signals_Counter].Signal:
+                    # Creating the statistics of the signal
+                    self.Graph_1.CHANNELS[Signals_Counter].Signal.Creating_Signal_Statistics()
+                    # Checks if there is snapshot for this signal or not
+                    if Printed_Photos_Counter < self.Graph_1.Snapshots_Count:
+                        pdf.image(f'Snapshots/Graph 1 Image {Printed_Photos_Counter+1}.png', w=190, h=60)
+                        pdf.cell(0, 10, "", align="C", ln=1)
+                        Printed_Photos_Counter += 1
+
+                    pdf.set_font('times', '', 12)
+                    table_data = [['Maximum Value', 'Minimum Value', 'Mean', 'Standard Deviation', 'Duration'],
+                                  [self.Graph_1.CHANNELS[Signals_Counter].Signal.Max_Value,
+                                   self.Graph_1.CHANNELS[Signals_Counter].Signal.Min_Value,
+                                   self.Graph_1.CHANNELS[Signals_Counter].Signal.Mean,
+                                   self.Graph_1.CHANNELS[Signals_Counter].Signal.Standard_Deviation,
+                                   f"{self.Graph_1.CHANNELS[Signals_Counter].Signal.Duration} min"]]
+
+                    # Create a header row
+                    for header in table_data[0]:
+                        pdf.cell(38, 10, header, border=1, align='C')
+                    pdf.ln()
+
+                    # Iterate over the table data and write each cell to the PDF
+                    for row in table_data[1:]:
+                        for cell in row:
+                            pdf.cell(38, 10, str(cell), border=1, align='C')
+
+                    pdf.cell(0, 20, "", align="C", ln=1)
+
+        pdf.cell(0, 20, "", align="C", ln=1)
+
+        if self.Graph_2.Snapshots_Count:
+            # Setting the title of the signal style
+            pdf.set_font('times', 'U', 16)
+            pdf.cell(0, 10, "Signals of Graph 2 Data Analysis:")
+            pdf.cell(0, 17, "", align="C", ln=1)
+            Printed_Photos_Counter = 0
+            for Signals_Counter in range(len(self.Graph_2.CHANNELS)):
+                # Checks if the current channel has a signal
+                if self.Graph_2.CHANNELS[Signals_Counter].Signal:
+                    # Creating the statistics of the signal
+                    self.Graph_2.CHANNELS[Signals_Counter].Signal.Creating_Signal_Statistics()
+                    # Checks if there is snapshot for this signal or not
+                    if Printed_Photos_Counter < self.Graph_2.Snapshots_Count:
+                        pdf.image(f'Snapshots/Graph 2 Image {Printed_Photos_Counter + 1}.png', w=190, h=60)
+                        pdf.cell(0, 10, "", align="C", ln=1)
+                        Printed_Photos_Counter += 1
+
+                    pdf.set_font('times', '', 12)
+                    table_data = [['Maximum Value', 'Minimum Value', 'Mean', 'Standard Deviation', 'Duration'],
+                                  [self.Graph_2.CHANNELS[Signals_Counter].Signal.Max_Value,
+                                   self.Graph_2.CHANNELS[Signals_Counter].Signal.Min_Value,
+                                   self.Graph_2.CHANNELS[Signals_Counter].Signal.Mean,
+                                   self.Graph_2.CHANNELS[Signals_Counter].Signal.Standard_Deviation,
+                                   f"{self.Graph_2.CHANNELS[Signals_Counter].Signal.Duration} min"]]
+
+                    # Create a header row
+                    for header in table_data[0]:
+                        pdf.cell(38, 10, header, border=1, align='C')
+                    pdf.ln()
+
+                    # Iterate over the table data and write each cell to the PDF
+                    for row in table_data[1:]:
+                        for cell in row:
+                            pdf.cell(38, 10, str(cell), border=1, align='C')
+
+                    pdf.cell(0, 20, "", align="C", ln=1)
+
+        pdf.output('Signals Data Analysis Report.pdf')
+
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -537,7 +626,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.Snapshot_Combobox)
         spacerItem22 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem22)
-        self.Export_Button = QtWidgets.QPushButton(self.groupBox_2, clicked = lambda : self.Graph_1.Export_PDF())
+        self.Export_Button = QtWidgets.QPushButton(self.groupBox_2, clicked = lambda : self.Export_PDF())
         self.Export_Button.setEnabled(False)
         self.Export_Button.setMinimumSize(QtCore.QSize(221, 0))
         self.Export_Button.setMaximumSize(QtCore.QSize(221, 16777215))
