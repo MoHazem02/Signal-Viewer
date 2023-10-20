@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QFileDialog
 import wfdb, Signal_Class
 import numpy as np
 from Channel_Class import Channel
+import random
 
 
 # noinspection PyTypeChecker
@@ -172,8 +173,10 @@ class Graph:
             Record = wfdb.rdrecord(File_Path[:-4])
             Y_Coordinates = list(Record.p_signal[:, 0])
             X_Coordinates = list(np.arange(len(Y_Coordinates)))
-            Sample_Signal = Signal_Class.Signal(col="g", X_List=X_Coordinates, Y_list=Y_Coordinates,
-                                                graphWdg=self.Graph_Window, graphObj=self)
+            colors = ['r', 'y', 'light blue']
+            random_color = random.choice(colors)
+            Sample_Signal = Signal_Class.Signal(col = random_color, X_List=X_Coordinates, Y_list=Y_Coordinates,graphWdg=self.Graph_Window, graphObj=self)
+            
             self.Add_Signal(Sample_Signal)
 
     def ZoomIn(self):
