@@ -312,25 +312,19 @@ class Graph:
                     max(channel.Signal.X_Coordinates[0: channel.Signal.X_Points_Plotted + 1]) - 100,
                     max(channel.Signal.X_Coordinates[0: channel.Signal.X_Points_Plotted + 1]))
 
-    def Scroll_Signal(self):
+    def Scroll_Signal(self, Scrolling_Value):
         if self.graph_number == 1:
-            # Prevent scrolling beyond the signal data
-            self.UI_Window.Horiz_ScrollBar_Top.setValue(self.CHANNELS[self.Current_Channel - 1].Signal.checker)
-            self.UI_Window.Horiz_ScrollBar_Top.setTracking(True)
-            if self.CHANNELS[self.Current_Channel - 1].Signal.checker < 100:
-                self.CHANNELS[self.Current_Channel - 1].Signal.Graph_Widget.getViewBox().setXRange(0, self.CHANNELS[self.Current_Channel - 1].Signal.checker)
-            else:     
-                self.CHANNELS[self.Current_Channel - 1].Signal.Graph_Widget.getViewBox().setXRange((self.CHANNELS[self.Current_Channel - 1].Signal.checker - 100), self.CHANNELS[self.Current_Channel - 1].Signal.checker)
-            self.CHANNELS[self.Current_Channel - 1].Signal.checker = self.CHANNELS[self.Current_Channel - 1].Signal.checker - 1
-        else:# if it is the second graph
-            # Prevent scrolling beyond the signal data
-            self.UI_Window.Horiz_ScrollBar_Bottom.setValue(self.CHANNELS[self.Current_Channel - 1].Signal.checker)
-            self.UI_Window.Horiz_ScrollBar_Bottom.setTracking(True)
-            if self.CHANNELS[self.Current_Channel - 1].Signal.checker < 100:
-                self.CHANNELS[self.Current_Channel - 1].Signal.Graph_Widget.getViewBox().setXRange(0, self.CHANNELS[self.Current_Channel - 1].Signal.checker)
-            else:     
-                self.CHANNELS[self.Current_Channel - 1].Signal.Graph_Widget.getViewBox().setXRange((self.CHANNELS[self.Current_Channel - 1].Signal.checker - 100), self.CHANNELS[self.Current_Channel - 1].Signal.checker)
-            self.CHANNELS[self.Current_Channel - 1].Signal.checker = self.CHANNELS[self.Current_Channel - 1].Signal.checker - 1
+            # Update the horizontal range of the ViewBox
+            if Scrolling_Value < 10:
+                self.UI_Window.GraphWidget_Top.getViewBox().setXRange(0, Scrolling_Value)
+            else:
+                self.UI_Window.GraphWidget_Top.getViewBox().setXRange(Scrolling_Value - 10, Scrolling_Value)
+        else:
+            if Scrolling_Value < 10:
+                self.UI_Window.GraphWidget_Bottom.getViewBox().setXRange(0, Scrolling_Value)
+            else:
+                self.UI_Window.GraphWidget_Bottom.getViewBox().setXRange(Scrolling_Value - 10, Scrolling_Value)
+        
             
 
     def VertScroll_Signal(self, Scrolling_Coordinates_Value):
