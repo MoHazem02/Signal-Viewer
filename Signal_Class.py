@@ -20,7 +20,7 @@ class Signal:
         self.X_Points_Plotted = 0
         self.speed = 1
         self.Max_Value = 0
-        self.Min_Value = 9999999999999999
+        self.Min_Value = float('inf')
         self.Duration = 0
         self.Mean = 0
         self.Standard_Deviation = 0
@@ -34,8 +34,7 @@ class Signal:
         self.hide = False
 
     def Plot_Signal(self):
-        self.data_line = self.Graph_Widget.plot(self.X_Coordinates[:1], self.Y_Coordinates[:1], name=self.legend_text,
-                                                pen=self.color)
+        self.data_line = self.Graph_Widget.plot(self.X_Coordinates[:1], self.Y_Coordinates[:1], name=self.legend_text,pen=self.color)
         self.timer = QtCore.QTimer()
         self.timer.setInterval(100)
         self.timer.timeout.connect(self.Update_Plot_Data)

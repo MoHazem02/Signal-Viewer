@@ -10,7 +10,7 @@ import fpdf
 
 class Ui_MainWindow(object):
 
-
+    
     def __init__(self): 
         # Be careful there is a difference between Graph_1 and Graph_One. The first one is an object of the class we created, but the second one is the name
         # of the plot widget of the Top Graph.
@@ -130,6 +130,7 @@ class Ui_MainWindow(object):
 
 
     def setupUi(self, MainWindow):
+        
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1689, 871)
         MainWindow.setMinimumSize(QtCore.QSize(1201, 801))
@@ -255,12 +256,15 @@ class Ui_MainWindow(object):
         self.verticalLayout_7.setObjectName("verticalLayout_7")
         self.GraphWidget_Top = PlotWidget(self.frame_5)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        
         sizePolicy.setHorizontalStretch(1)
         sizePolicy.setVerticalStretch(1)
         sizePolicy.setHeightForWidth(self.GraphWidget_Top.sizePolicy().hasHeightForWidth())
         self.GraphWidget_Top.setSizePolicy(sizePolicy)
         self.GraphWidget_Top.setMinimumSize(QtCore.QSize(501, 231))
         self.GraphWidget_Top.setObjectName("GraphWidget_Top")
+        # Set the limits of the plot widget's view
+        self.GraphWidget_Top.setLimits(xMin = 0, xMax = float('inf'))
         self.verticalLayout_7.addWidget(self.GraphWidget_Top)
         self.Horiz_ScrollBar_Top = QtWidgets.QScrollBar(self.frame_5)
         self.Horiz_ScrollBar_Top.setEnabled(False)
@@ -474,6 +478,7 @@ class Ui_MainWindow(object):
         self.GraphWidget_Bottom.setMinimumSize(QtCore.QSize(501, 231))
         self.GraphWidget_Bottom.setObjectName("GraphWidget_Bottom")
         self.verticalLayout_6.addWidget(self.GraphWidget_Bottom)
+        self.GraphWidget_Bottom.setLimits(xMin = 0, xMax = float('inf'))
         self.Horiz_ScrollBar_Bottom = QtWidgets.QScrollBar(self.frame_17)
         self.Horiz_ScrollBar_Bottom.setEnabled(False)
         self.Horiz_ScrollBar_Bottom.setOrientation(QtCore.Qt.Horizontal)
@@ -674,6 +679,7 @@ class Ui_MainWindow(object):
         self.Graph_2.textbox = self.Label_Bottom_LineEdit
         self.Label_Top_LineEdit.returnPressed.connect(self.Graph_1.Add_Legend)
         self.Label_Bottom_LineEdit.returnPressed.connect(self.Graph_2.Add_Legend)
+    
 
         self.retranslateUi(MainWindow)
         self.CineSpeed_Top_Slider.valueChanged['int'].connect(self.LCD_Top.display) # type: ignore
