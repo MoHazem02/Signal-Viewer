@@ -274,6 +274,7 @@ class Graph:
                     channel.Signal.X_Points_Plotted = 0
                     channel.Signal.Plot_Signal()  # Replot the signal from the beginning
         else:
+            self.Graph_Window.clear()
             for channel in self.CHANNELS:
                 if channel.Signal:
                     channel.Signal.X_Points_Plotted = 0
