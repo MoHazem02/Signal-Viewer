@@ -57,17 +57,18 @@ class Ui_MainWindow(object):
             pdf.cell(0, 10, "Signals of Graph 1 Data Analysis:")
             pdf.cell(0, 17, "", align="C", ln=1)
             Printed_Photos_Counter = 0
+            # Prints all graph 1 snapshots
+            while Printed_Photos_Counter < self.Graph_1.Snapshots_Count:
+                pdf.image(f'Snapshots/Graph 1 Image {Printed_Photos_Counter + 1}.png', w=190, h=60)
+                pdf.cell(0, 10, "", align="C", ln=1)
+                Printed_Photos_Counter += 1
+            # Prints all graph 1 signals statistics
             for Signals_Counter in range(len(self.Graph_1.CHANNELS)):
                 # Checks if the current channel has a signal
                 if self.Graph_1.CHANNELS[Signals_Counter].Signal:
                     # Creating the statistics of the signal
                     self.Graph_1.CHANNELS[Signals_Counter].Signal.Creating_Signal_Statistics()
-                    # Checks if there is snapshot for this signal or not
-                    if Printed_Photos_Counter < self.Graph_1.Snapshots_Count:
-                        pdf.image(f'Snapshots/Graph 1 Image {Printed_Photos_Counter+1}.png', w=190, h=60)
-                        pdf.cell(0, 10, "", align="C", ln=1)
-                        Printed_Photos_Counter += 1
-
+                    # Creating the table of signal statistics
                     pdf.set_font('times', '', 12)
                     table_data = [['Maximum Value', 'Minimum Value', 'Mean', 'Standard Deviation', 'Duration'],
                                   [self.Graph_1.CHANNELS[Signals_Counter].Signal.Max_Value,
@@ -96,17 +97,15 @@ class Ui_MainWindow(object):
             pdf.cell(0, 10, "Signals of Graph 2 Data Analysis:")
             pdf.cell(0, 17, "", align="C", ln=1)
             Printed_Photos_Counter = 0
+            while Printed_Photos_Counter < self.Graph_2.Snapshots_Count:
+                pdf.image(f'Snapshots/Graph 2 Image {Printed_Photos_Counter + 1}.png', w=190, h=60)
+                pdf.cell(0, 10, "", align="C", ln=1)
+                Printed_Photos_Counter += 1
             for Signals_Counter in range(len(self.Graph_2.CHANNELS)):
                 # Checks if the current channel has a signal
                 if self.Graph_2.CHANNELS[Signals_Counter].Signal:
                     # Creating the statistics of the signal
                     self.Graph_2.CHANNELS[Signals_Counter].Signal.Creating_Signal_Statistics()
-                    # Checks if there is snapshot for this signal or not
-                    if Printed_Photos_Counter < self.Graph_2.Snapshots_Count:
-                        pdf.image(f'Snapshots/Graph 2 Image {Printed_Photos_Counter + 1}.png', w=190, h=60)
-                        pdf.cell(0, 10, "", align="C", ln=1)
-                        Printed_Photos_Counter += 1
-
                     pdf.set_font('times', '', 12)
                     table_data = [['Maximum Value', 'Minimum Value', 'Mean', 'Standard Deviation', 'Duration'],
                                   [self.Graph_2.CHANNELS[Signals_Counter].Signal.Max_Value,
