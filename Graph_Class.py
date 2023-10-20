@@ -133,6 +133,9 @@ class Graph:
                 self.UI_Window.Label_Bottom_LineEdit.setEnabled(True)
                 self.UI_Window.Rewind2_Button.setEnabled(True)
 
+            if self.signal_count > 1:
+                self.Reset_Signal()
+
     def Add_Channel(self):
         self.channel_count += 1
         Temporary_String = f"Channel {self.channel_count}"
@@ -257,7 +260,6 @@ class Graph:
                 self.UI_Window.CineSpeed_Top_Slider.setValue(value)
 
     def Reset_Signal(self):
-
         # If the graphs are linked, reset all signals in both graphs
         if self.Linked:
             self.Graph_Window.clear()
@@ -271,7 +273,11 @@ class Graph:
                 if channel.Signal:
                     channel.Signal.X_Points_Plotted = 0
                     channel.Signal.Plot_Signal()  # Replot the signal from the beginning
-
+        else:
+            for channel in self.CHANNELS:
+                if channel.Signal:
+                    channel.Signal.X_Points_Plotted = 0
+                    channel.Signal.Plot_Signal()  # Replot the signal from the beginning
     def Toggle_Play_Pause(self):
         _translate = QtCore.QCoreApplication.translate
         self.Paused = not self.Paused
