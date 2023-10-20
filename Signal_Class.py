@@ -4,9 +4,9 @@ import statistics
 
 class Signal:
     def __init__(self, col, X_List, Y_list, graphWdg, graphObj):
+        self.checker = 0 #counter to decrease everytime it scrolls in pause position
         self.pause = False #to control movement of the signal
         self.hidden_lines = []  # Add this line to initialize the list
-        # self.legend = None
         self.legend_text = None
         self.legend_color = None
         self.X_Coordinates = X_List
@@ -49,6 +49,7 @@ class Signal:
         
         if not self.pause and self.data_line:
             self.X_Points_Plotted += self.speed
+            self.checker = self.X_Points_Plotted
             self.data_line.setData(self.X_Coordinates[0 : self.X_Points_Plotted + 1], self.Y_Coordinates[0 : self.X_Points_Plotted + 1])  # Update the data.
             if not self.hide:
                 self.Graph_Widget.getViewBox().setXRange(max(self.X_Coordinates[0 : self.X_Points_Plotted + 1]) - 100, max(self.X_Coordinates[0 : self.X_Points_Plotted + 1]))
@@ -63,29 +64,23 @@ class Signal:
                 else:
                     # Enable the Rewind button
                     self.Graph_Object.UI_Window.Rewind2_Button.setEnabled(True)
+       
+       
 
             
-        if self.Graph_Object.graph_number == 1:
+        if self.Graph_Object.graph_number == 1 and not self.pause:
             # Update the horizontal scrollbar's maximum value and position
             self.Graph_Object.UI_Window.Horiz_ScrollBar_Top.valueChanged.disconnect(self.Graph_Object.Scroll_Signal)
             self.Graph_Object.UI_Window.Horiz_ScrollBar_Top.setMaximum(len(self.X_Coordinates))
             self.Graph_Object.UI_Window.Horiz_ScrollBar_Top.setValue(self.X_Points_Plotted)
             self.Graph_Object.UI_Window.Horiz_ScrollBar_Top.valueChanged.connect(self.Graph_Object.Scroll_Signal)
-            
-            # Update the vertical scrollbar's maximum value and position
-            #self.Graph_Object.UI_Window.Vert_Horiz_ScrollBar_Top.valueChanged.disconnect(self.Graph_Object.UI_Window.VertScroll_Top_Signal)
-            # self.Graph_Object.UI_Window.Vert_ScrollBar_Top.setMaximum(len(self.Y_Coordinates))
-            # self.Graph_Object.UI_Window.Vert_ScrollBar_Top.setValue(round(self.Y_Coordinates[self.X_Points_Plotted]))
-            #self.Graph_Object.UI_Window.Vert_Horiz_ScrollBar_Top.valueChanged.connect(self.Graph_Object.UI_Window.VertScroll_Top_Signal)
         
-        else:
+        if self.Graph_Object.graph_number == 2 and not self.pause:
             
             self.Graph_Object.UI_Window.Horiz_ScrollBar_Bottom.valueChanged.disconnect(self.Graph_Object.Scroll_Signal)
             self.Graph_Object.UI_Window.Horiz_ScrollBar_Bottom.setMaximum(len(self.X_Coordinates))
             self.Graph_Object.UI_Window.Horiz_ScrollBar_Bottom.setValue(self.X_Points_Plotted)
             self.Graph_Object.UI_Window.Horiz_ScrollBar_Bottom.valueChanged.connect(self.Graph_Object.Scroll_Signal)
-            # self.Graph_Object.UI_Window.Vert_ScrollBar_Bottom.setMaximum(len(self.Y_Coordinates))
-            # self.Graph_Object.UI_Window.Vert_ScrollBar_Bottom.setValue(self.Y_Coordinates[self.X_Points_Plotted])
     
     
     def Toggle_Play_Pause(self):

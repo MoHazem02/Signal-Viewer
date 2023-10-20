@@ -178,7 +178,6 @@ class Graph:
         Y_Coordinates = list(Record.p_signal[:,0])
         X_Coordinates = list(np.arange(len(Y_Coordinates)))
         Sample_Signal = Signal_Class.Signal(col = "g", X_List = X_Coordinates, Y_list = Y_Coordinates, graphWdg = self.Graph_Window, graphObj = self)
-            
         self.Add_Signal(Sample_Signal)
         
 
@@ -323,34 +322,41 @@ class Graph:
                 self.Graph_Window.getViewBox().setXRange(max(channel.Signal.X_Coordinates[0 : channel.Signal.X_Points_Plotted + 1]) - 100, max(channel.Signal.X_Coordinates[0 : channel.Signal.X_Points_Plotted + 1]))
         
 
-    def Scroll_Signal(self, Scrolling_Coordinates_Value):
-        # Calculate the corresponding index based on the scrollbar's value
-        index = min(int(Scrolling_Coordinates_Value / self.UI_Window.Horiz_ScrollBar_Top.maximum() * len(self.CHANNELS[self.Current_Channel - 1].Signal.X_Coordinates)), len(self.CHANNELS[self.Current_Channel - 1].Signal.X_Coordinates) - 1)
-
-        # Update the plot data
-        self.CHANNELS[self.Current_Channel - 1].Signal.X_Points_Plotted = index
-        self.CHANNELS[self.Current_Channel - 1].Signal.Update_Plot_Data()
-
-        # Update the X range of the plot
-        self.CHANNELS[self.Current_Channel - 1].Signal.Graph_Widget.getViewBox().setXRange(max(self.CHANNELS[self.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]) - 100, max(self.CHANNELS[self.Current_Channel - 1].Signal.X_Coordinates[0 : index + 1]))
-
+    def Scroll_Signal(self):
+        if self.graph_number == 1:
+            # Prevent scrolling beyond the signal data
+            self.UI_Window.Horiz_ScrollBar_Top.setValue(self.CHANNELS[self.Current_Channel - 1].Signal.checker)
+            self.UI_Window.Horiz_ScrollBar_Top.setTracking(True)
+            if self.CHANNELS[self.Current_Channel - 1].Signal.checker < 100:
+                self.CHANNELS[self.Current_Channel - 1].Signal.Graph_Widget.getViewBox().setXRange(0, self.CHANNELS[self.Current_Channel - 1].Signal.checker)
+            else:     
+                self.CHANNELS[self.Current_Channel - 1].Signal.Graph_Widget.getViewBox().setXRange((self.CHANNELS[self.Current_Channel - 1].Signal.checker - 100), self.CHANNELS[self.Current_Channel - 1].Signal.checker)
+            self.CHANNELS[self.Current_Channel - 1].Signal.checker = self.CHANNELS[self.Current_Channel - 1].Signal.checker - 1
+        else:# if it is the second graph
+            # Prevent scrolling beyond the signal data
+            self.UI_Window.Horiz_ScrollBar_Bottom.setValue(self.CHANNELS[self.Current_Channel - 1].Signal.checker)
+            self.UI_Window.Horiz_ScrollBar_Bottom.setTracking(True)
+            if self.CHANNELS[self.Current_Channel - 1].Signal.checker < 100:
+                self.CHANNELS[self.Current_Channel - 1].Signal.Graph_Widget.getViewBox().setXRange(0, self.CHANNELS[self.Current_Channel - 1].Signal.checker)
+            else:     
+                self.CHANNELS[self.Current_Channel - 1].Signal.Graph_Widget.getViewBox().setXRange((self.CHANNELS[self.Current_Channel - 1].Signal.checker - 100), self.CHANNELS[self.Current_Channel - 1].Signal.checker)
+            self.CHANNELS[self.Current_Channel - 1].Signal.checker = self.CHANNELS[self.Current_Channel - 1].Signal.checker - 1
+            
 
     def VertScroll_Signal(self, Scrolling_Coordinates_Value):
-
-        # Calculate the corresponding index based on the scrollbar's value
-        #index = min(int(Scrolling_Coordinates_Value / self.UI_Window.Vert_ScrollBar_Top.maximum() * len(self.CHANNELS[self.Current_Channel - 1].Signal.Y_Coordinates)), len(self.CHANNELS[self.Current_Channel - 1].Signal.Y_Coordinates) - 1)
-
-        # Update the plot data
-        #self.CHANNELS[self.Current_Channel - 1].Signal.i = index
-        #self.CHANNELS[self.Current_Channel - 1].Signal.Update_Plot_Data()
-        # Update the Y range of the plot
-        min_value = -0.4
-        max_value = 0.4
+        decimal_value = -(Scrolling_Coordinates_Value / 100.0)
         if self.graph_number == 1:
-            self.UI_Window.GraphWidget_Top.getViewBox().setYRange(min_value, max_value)
+            if Scrolling_Coordinates_Value <= 50 and Scrolling_Coordinates_Value > 0:
+                # Update the vertical range of the ViewBox
+                self.UI_Window.GraphWidget_Top.getViewBox().setYRange(decimal_value, 0.5 + decimal_value)
+            else:
+                self.UI_Window.GraphWidget_Top.getViewBox().setYRange(decimal_value, 0.5 - decimal_value)
         else:
-            self.UI_Window.GraphWidget_Bottom.getViewBox().setYRange(min_value, max_value)
-
+            if Scrolling_Coordinates_Value <= 50 and Scrolling_Coordinates_Value > 0:
+                # Update the vertical range of the ViewBox
+                self.UI_Window.GraphWidget_Bottom.getViewBox().setYRange(decimal_value, 0.5 + decimal_value)
+            else:
+                self.UI_Window.GraphWidget_Bottom.getViewBox().setYRange(decimal_value, 0.5 - decimal_value)
 
     def Rewind_Signal(self):
         if self.Linked:
