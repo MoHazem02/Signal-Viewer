@@ -319,12 +319,12 @@ class Graph:
             if Scrolling_Value < 10:
                 self.UI_Window.GraphWidget_Top.getViewBox().setXRange(0, Scrolling_Value)
             else:
-                self.UI_Window.GraphWidget_Top.getViewBox().setXRange(Scrolling_Value - 10, Scrolling_Value)
+                self.UI_Window.GraphWidget_Top.getViewBox().setXRange(Scrolling_Value - 100, Scrolling_Value)
         else:
             if Scrolling_Value < 10:
                 self.UI_Window.GraphWidget_Bottom.getViewBox().setXRange(0, Scrolling_Value)
             else:
-                self.UI_Window.GraphWidget_Bottom.getViewBox().setXRange(Scrolling_Value - 10, Scrolling_Value)
+                self.UI_Window.GraphWidget_Bottom.getViewBox().setXRange(Scrolling_Value - 100, Scrolling_Value)
         
             
 
