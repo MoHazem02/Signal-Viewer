@@ -1,6 +1,9 @@
 # ICU Monitor Signal Viewer
 
 ICU Monitor Signal Viewer is a desktop application built with Python that enables users to load and display signals from various channels. The application utilizes PyQt5, pyqtgraph, pyautogui, and PIL to offer a feature-rich and user-friendly signal visualization experience. With ICU Monitor Signal Viewer, users can analyze signals, manipulate their appearance, create reports, and perform data analysis.
+##  Demo
+![Demo](https://github.com/MoHazem02/Signal-Viewer/assets/66066832/c8f3f5f6-2541-4c2c-b690-8273ab251242)
+
 
 ## Features
 
