@@ -27,6 +27,7 @@ class Graph:
         self.Paused = False
         self.Legend = None
         self.Snapshots_Count = 0
+        self.Selected_Colors = []
 
     def Update_Current_Channel(self):
         if self.graph_number == 1:
@@ -169,14 +170,21 @@ class Graph:
 
     def Browse_Signals(self):
         File_Path, _ = QFileDialog.getOpenFileName(None, "Browse Signal", "", "All Files (*)")
+        Selected_Color_index = 0
         if File_Path:
             Record = wfdb.rdrecord(File_Path[:-4])
             Y_Coordinates = list(Record.p_signal[:, 0])
             X_Coordinates = list(np.arange(len(Y_Coordinates)))
-            colors = ['r', 'y', 'light blue', 'b', 'pink', 'white']
-            random_color = random.choice(colors)
-            Sample_Signal = Signal_Class.Signal(col = random_color, X_List=X_Coordinates, Y_list=Y_Coordinates,graphWdg=self.Graph_Window, graphObj=self)
-            
+            Colors = ['r', 'green', 'b', 'white', 'orange', 'y', 'light blue', 'pink']
+            Random_Color = random.choice(Colors)
+            self.Selected_Colors.append(Random_Color)
+            if len(self.Selected_Colors) > 1:
+                while Random_Color in self.Selected_Colors:
+                    Random_Color = random.choice(Colors)
+                self.Selected_Colors.append(Random_Color)
+
+            Sample_Signal = Signal_Class.Signal(col = Random_Color, X_List=X_Coordinates, Y_list=Y_Coordinates,graphWdg=self.Graph_Window, graphObj=self)
+
             self.Add_Signal(Sample_Signal)
 
     def ZoomIn(self):
