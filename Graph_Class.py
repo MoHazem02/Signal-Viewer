@@ -35,6 +35,8 @@ class Graph:
         else:
             self.Current_Channel = int(str(self.UI_Window.Channels_Bottom_ComboBox.currentText())[-1])
 
+
+
     def Remove_Signal(self):
 
         self.Update_Current_Channel()
@@ -138,6 +140,7 @@ class Graph:
             if self.signal_count > 1:
                 self.Reset_Signal()
 
+
     def Add_Channel(self):
         self.channel_count += 1
         Temporary_String = f"Channel {self.channel_count}"
@@ -187,6 +190,19 @@ class Graph:
 
             self.Add_Signal(Sample_Signal)
 
+    def Reset_Yaxis(self):
+        minimum = 99
+        maximum = -99
+        for channel in self.CHANNELS:
+            if minimum > min(channel.Signal.Y_Coordinates[0 : channel.Signal.X_Points_Plotted + 1]):
+                minimum = min(channel.Signal.Y_Coordinates[0 : channel.Signal.X_Points_Plotted + 1])
+
+            if maximum < max(channel.Signal.Y_Coordinates[0 : channel.Signal.X_Points_Plotted + 1]):
+                maximum = max(channel.Signal.Y_Coordinates[0 : channel.Signal.X_Points_Plotted + 1])
+
+        self.Graph_Window.setLimits(yMin= minimum,yMax=maximum)
+        #self.Graph_Window.getViewBox().setYRange(minimum,maximum)
+
     def ZoomIn(self):
         self.Graph_Window.getViewBox().scaleBy((0.9, 0.9))
         if self.Linked:
@@ -198,6 +214,17 @@ class Graph:
             self.Other_Graph.Graph_Window.getViewBox().scaleBy((1.1, 1.1))
 
     def Toggle_Hide_Unhide(self):
+        _translate = QtCore.QCoreApplication.translate
+        if self.graph_number == 1:
+            if self.Hidden:
+                self.UI_Window.Hide_Top_Button.setText(_translate("MainWindow", "   Unhide         "))
+            else:
+                self.UI_Window.Hide_Top_Button.setText(_translate("MainWindow", "   Hide         "))
+        else:
+            if self.Hidden:
+                self.UI_Window.Hide_Bottom_Button.setText(_translate("MainWindow", "   Unhide         "))
+            else:
+                self.UI_Window.Hide_Bottom_Button.setText(_translate("MainWindow", "   Hide         "))
         # Get the current channel
         self.Hidden = not self.Hidden
 
@@ -206,7 +233,7 @@ class Graph:
         # Check if the channel has a signal
         if self.current_channel.Signal is not None:
             # Toggle the visibility of the signal
-            if self.current_channel.Signal.hide:
+            if self.current_channel.Signal.hidden:
                 self.current_channel.Signal.Unhide_Signal()
             else:
                 self.current_channel.Signal.Hide_Signal()
@@ -274,11 +301,12 @@ class Graph:
         # If the graphs are linked, reset all signals in both graphs
         if self.Linked:
             self.Graph_Window.clear()
+            self.UI_Window.CineSpeed_Bottom_Slider.setValue(1)
+            self.UI_Window.CineSpeed_Top_Slider.setValue(1)
             for channel in self.CHANNELS:
                 if channel.Signal:
                     channel.Signal.X_Points_Plotted = 0
-                    channel.Signal.Plot_Signal()  # Replot the signal from the beginning
-
+                    channel.Signal.Plot_Signal() # Replot the signal from the beginning
             self.Other_Graph.Graph_Window.clear()
             for channel in self.Other_Graph.CHANNELS:
                 if channel.Signal:
@@ -286,10 +314,17 @@ class Graph:
                     channel.Signal.Plot_Signal()  # Replot the signal from the beginning
         else:
             self.Graph_Window.clear()
+
             for channel in self.CHANNELS:
                 if channel.Signal:
                     channel.Signal.X_Points_Plotted = 0
+                    if self.graph_number == 2:
+                        self.UI_Window.CineSpeed_Bottom_Slider.setValue(1)
+                    else:
+                        self.UI_Window.CineSpeed_Top_Slider.setValue(1)
                     channel.Signal.Plot_Signal()  # Replot the signal from the beginning
+
+
     def Toggle_Play_Pause(self):
         _translate = QtCore.QCoreApplication.translate
         self.Paused = not self.Paused

@@ -10,7 +10,7 @@ class Signal:
         self.legend_color = None
         self.X_Coordinates = X_List
         self.Y_Coordinates = Y_list
-        self.hide = False
+        self.hidden = False
         self.running = True
         self.color = col
         self.Graph_Widget = graphWdg
@@ -27,11 +27,11 @@ class Signal:
 
     def Hide_Signal(self):
         self.data_line.setVisible(False)
-        self.hide = True
+        self.hidden = True
 
     def Unhide_Signal(self):
         self.data_line.setVisible(True)
-        self.hide = False
+        self.hidden = False
 
     def Plot_Signal(self):
         self.data_line = self.Graph_Widget.plot(self.X_Coordinates[:1], self.Y_Coordinates[:1], name=self.legend_text,pen=self.color)
@@ -44,9 +44,12 @@ class Signal:
 
         if not self.pause and self.data_line:
             self.X_Points_Plotted += self.speed
+            self.Graph_Object.Reset_Yaxis()
+            self.Graph_Widget.setLimits(xMin=0, xMax=float('inf'))
             self.data_line.setData(self.X_Coordinates[0 : self.X_Points_Plotted + 1], self.Y_Coordinates[0 : self.X_Points_Plotted + 1])  # Update the data.
-            if not self.hide:
+            if not self.hidden:
                 self.Graph_Widget.getViewBox().setXRange(max(self.X_Coordinates[0: self.X_Points_Plotted + 1]) - 100, max(self.X_Coordinates[0: self.X_Points_Plotted + 1]))
+
 
             # Check if the signal has ended
             if self.X_Points_Plotted >= len(self.X_Coordinates):
@@ -58,6 +61,9 @@ class Signal:
                 else:
                     # Enable the Rewind button
                     self.Graph_Object.UI_Window.Rewind2_Button.setEnabled(True)
+
+        elif self.pause:
+            self.Graph_Widget.setLimits(xMin=0, xMax=self.X_Points_Plotted)
        
         if self.Graph_Object.graph_number == 1 and not self.pause:
             self.Graph_Object.UI_Window.Horiz_ScrollBar_Top.setMaximum(self.X_Points_Plotted)
@@ -66,6 +72,19 @@ class Signal:
         if self.Graph_Object.graph_number == 2 and not self.pause:
             self.Graph_Object.UI_Window.Horiz_ScrollBar_Bottom.setMaximum(self.X_Points_Plotted)
             self.Graph_Object.UI_Window.Horiz_ScrollBar_Bottom.setMinimum(0)
+        self.Graph_Object.Update_Current_Channel()
+        _translate = QtCore.QCoreApplication.translate
+        if self.Graph_Object.graph_number == 1:
+            if self.hidden:
+                self.Graph_Object.UI_Window.Hide_Top_Button.setText(_translate("MainWindow", "   Unhide         "))
+            else:
+                self.Graph_Object.UI_Window.Hide_Top_Button.setText(_translate("MainWindow", "   Hide         "))
+        else:
+            if self.hidden:
+                self.Graph_Object.UI_Window.Hide_Bottom_Button.setText(_translate("MainWindow", "   Unhide         "))
+            else:
+                self.Graph_Object.UI_Window.Hide_Bottom_Button.setText(_translate("MainWindow", "   Hide         "))
+
     
     def Toggle_Play_Pause(self):
         self.pause = not self.pause
@@ -79,6 +98,6 @@ class Signal:
             self.Min_Value = min(self.Y_Coordinates)
             self.Standard_Deviation = statistics.stdev(self.Y_Coordinates)
             self.Mean = statistics.mean(self.Y_Coordinates)
-            self.Standard_Deviation = f"{self.Standard_Deviation:.6f}"
-            self.Mean = f"{self.Mean:.6f}"
+            self.Standard_Deviation = f"{self.Standard_Deviation:.3f}"
+            self.Mean = f"{self.Mean:.3f}"
             self.Duration = f"{self.X_Coordinates[-1] / 1000:.2f}"

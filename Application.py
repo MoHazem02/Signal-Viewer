@@ -330,11 +330,6 @@ class Ui_MainWindow(object):
         self.Color_Top_Button.setStyleSheet("background-color:#3366ff;")
         self.Color_Top_Button.setObjectName("Color_Top_Button")
         self.horizontalLayout_8.addWidget(self.Color_Top_Button)
-        self.AddChannel_Top_Button = QtWidgets.QPushButton(self.frame_6, clicked = lambda: self.Graph_1.Add_Channel())
-        self.AddChannel_Top_Button.setMinimumSize(QtCore.QSize(0, 31))
-        self.AddChannel_Top_Button.setStyleSheet("background-color:#3366ff;")
-        self.AddChannel_Top_Button.setObjectName("AddChannel_Top_Button")
-        self.horizontalLayout_8.addWidget(self.AddChannel_Top_Button)
         self.verticalLayout_4.addLayout(self.horizontalLayout_8)
         spacerItem8 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_4.addItem(spacerItem8)
@@ -542,11 +537,6 @@ class Ui_MainWindow(object):
         self.Color_Bottom_Button_2.setStyleSheet("background-color:#3366ff;")
         self.Color_Bottom_Button_2.setObjectName("Color_Bottom_Button_2")
         self.horizontalLayout_12.addWidget(self.Color_Bottom_Button_2)
-        self.AddChannel_Bottom_Button = QtWidgets.QPushButton(self.frame_18, clicked = lambda: self.Graph_2.Add_Channel())
-        self.AddChannel_Bottom_Button.setMinimumSize(QtCore.QSize(0, 31))
-        self.AddChannel_Bottom_Button.setStyleSheet("background-color:#3366ff;")
-        self.AddChannel_Bottom_Button.setObjectName("AddChannel_Bottom_Button")
-        self.horizontalLayout_12.addWidget(self.AddChannel_Bottom_Button)
         self.verticalLayout_5.addLayout(self.horizontalLayout_12)
         spacerItem19 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_5.addItem(spacerItem19)
@@ -679,12 +669,15 @@ class Ui_MainWindow(object):
         self.Graph_2.textbox = self.Label_Bottom_LineEdit
         self.Label_Top_LineEdit.returnPressed.connect(self.Graph_1.Add_Legend)
         self.Label_Bottom_LineEdit.returnPressed.connect(self.Graph_2.Add_Legend)
-    
+
+
 
         self.retranslateUi(MainWindow)
         self.CineSpeed_Top_Slider.valueChanged['int'].connect(self.LCD_Top.display) # type: ignore
         self.CineSpeed_Bottom_Slider.valueChanged['int'].connect(self.LCD_Bottom.display) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        # self.Channels_Top_ComboBox.currentIndexChanged.connect(self.Graph_1.Update_Current_Channel)
+        # self.Channels_Bottom_ComboBox.currentIndexChanged.connect(self.Graph_2.Update_Current_Channel)
 
 
     def retranslateUi(self, MainWindow):
@@ -698,9 +691,8 @@ class Ui_MainWindow(object):
         self.Channels_Top_ComboBox.setItemText(0, _translate("MainWindow", "Channel 1"))
         self.Edit1_Label_Button.setText(_translate("MainWindow", "  Edit Label"))
         self.Color_Top_Button.setText(_translate("MainWindow", "Select Color"))
-        self.AddChannel_Top_Button.setText(_translate("MainWindow", "Add Channel"))
         self.Move_Top_Button.setText(_translate("MainWindow", "  Move"))
-        self.Hide_Top_Button.setText(_translate("MainWindow", "Hide / Unhide"))
+        self.Hide_Top_Button.setText(_translate("MainWindow", "Hide  "))
         self.CineSpeed_Top_Label.setText(_translate("MainWindow", "Cine Speed"))
         self.Load2_Button.setText(_translate("MainWindow", "  Load Signal"))
         self.Play2_Button.setText(_translate("MainWindow", "   Pause         "))
@@ -709,9 +701,8 @@ class Ui_MainWindow(object):
         self.Channels_Bottom_ComboBox.setItemText(0, _translate("MainWindow", "Channel 1"))
         self.Edit2_Label_Button.setText(_translate("MainWindow", "  Edit Label"))
         self.Color_Bottom_Button_2.setText(_translate("MainWindow", "Select Color"))
-        self.AddChannel_Bottom_Button.setText(_translate("MainWindow", "Add Channel"))
         self.Move_Bottom_Button.setText(_translate("MainWindow", "  Move"))
-        self.Hide_Bottom_Button.setText(_translate("MainWindow", "Hide / Unhide"))
+        self.Hide_Bottom_Button.setText(_translate("MainWindow", "Hide   "))
         self.CineSpeed_Bottom_Label.setText(_translate("MainWindow", "Cine Speed"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Controls"))
         self.Snapshot_Button.setText(_translate("MainWindow", "   Snapshot"))
@@ -722,7 +713,7 @@ class Ui_MainWindow(object):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt; font-weight:600;\">Live Signal Viewer</span></p></body></html>"))
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt; font-weight:600;\">RealTime Signal Viewer</span></p></body></html>"))
         self.menuAbout.setTitle(_translate("MainWindow", "About"))
         self.actionMohamed.setText(_translate("MainWindow", "Mohamed Hazem"))
         self.actionAhmed_Taha.setText(_translate("MainWindow", "Ahmed Taha"))
