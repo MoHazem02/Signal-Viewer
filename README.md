@@ -54,7 +54,7 @@ ICU Monitor Signal Viewer is a desktop application built with Python that enable
 
 2. Run the application:
    ````
-   python main.py
+   python Application.py
    ```
 
 3. Load signals from the desired channels using the application's interface.
