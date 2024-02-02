@@ -134,6 +134,9 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1689, 871)
         MainWindow.setMinimumSize(QtCore.QSize(1201, 801))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("Assets/viewer.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        MainWindow.setWindowIcon(icon)
         MainWindow.setStyleSheet("background-color: #1e1e2f;\n" "color:white;\n""")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setMinimumSize(QtCore.QSize(641, 300))
@@ -634,8 +637,8 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.frame_3)
         self.gridLayout.addLayout(self.verticalLayout, 2, 0, 1, 1)
         self.Title = QtWidgets.QTextBrowser(self.centralwidget)
-        self.Title.setMinimumSize(QtCore.QSize(200, 51))
-        self.Title.setMaximumSize(QtCore.QSize(341, 51))
+        self.Title.setMinimumSize(QtCore.QSize(371, 61))
+        self.Title.setMaximumSize(QtCore.QSize(381, 71))
         self.Title.setStyleSheet("border:none;")
         self.Title.setObjectName("Title")
         self.gridLayout.addWidget(self.Title, 1, 0, 1, 1, QtCore.Qt.AlignHCenter)
@@ -713,7 +716,7 @@ class Ui_MainWindow(object):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt; font-weight:600;\">RealTime Signal Viewer</span></p></body></html>"))
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:18pt; font-weight:600;\">RealTime Signal Viewer</span></p></body></html>"))
         self.menuAbout.setTitle(_translate("MainWindow", "About"))
         self.actionMohamed.setText(_translate("MainWindow", "Mohamed Hazem"))
         self.actionAhmed_Taha.setText(_translate("MainWindow", "Ahmed Taha"))
